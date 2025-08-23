@@ -7,7 +7,7 @@ export interface QuestionBase {
   prompt: string;
   explanation?: string; // shown after answer
   topicId: TopicId;
-  difficulty: 'beginner' | 'intermediate';
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
   points: number;
 }
 

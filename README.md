@@ -82,8 +82,8 @@ A React Native Expo application for learning Rust programming through interactiv
 
 ### Installation
 ```bash
-# Clone and navigate to app directory
-cd rust-learning-app/app
+# Clone and navigate to the directory
+cd rust-learning-app
 
 # Install dependencies
 npm install

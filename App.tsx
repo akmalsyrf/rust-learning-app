@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import AppNavigator from './src/navigation/AppNavigator';
 import { useDataStore } from './src/state/useDataStore';
-import { sampleData } from './src/data/sampleData';
+import { sampleData } from './src/data';
 
 export default function App() {
   const dataStore = useDataStore();
