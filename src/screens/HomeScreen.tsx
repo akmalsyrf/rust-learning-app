@@ -4,18 +4,51 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
+import { useDataStore } from '../state/useDataStore';
 import { lightTheme, darkTheme } from '../theme';
 
 export default function HomeScreen({ navigation }: any) {
-  // Hardcode values for now to avoid store issues
-  const isDark = false;
-  const theme = lightTheme;
-  const xp = 0;
-  const currentStreakDays = 0;
-  const getTodayXP = () => 0;
+  const { getEffectiveTheme } = useSettingsStore();
+  const { xp, currentStreakDays, getTodayXP, highestStreakDays, getLessonStars } = useProgressStore();
+  const { getTopics, getLessonsForTopic } = useDataStore();
+  
+  const isDark = getEffectiveTheme() === 'dark';
+  const theme = isDark ? darkTheme : lightTheme;
   
   const styles = createStyles(theme);
   const todayXP = getTodayXP();
+  
+  // Find the next lesson to continue
+  const getNextLesson = () => {
+    const allTopics = getTopics();
+    for (const topic of allTopics) {
+      const lessons = getLessonsForTopic(topic.id);
+      for (const lesson of lessons) {
+        if (getLessonStars(lesson.id) === 0) {
+          return lesson;
+        }
+      }
+    }
+    return null; // All lessons completed
+  };
+  
+  const nextLesson = getNextLesson();
+  
+  const calculateOverallProgress = () => {
+    const allTopics = getTopics();
+    let totalLessons = 0;
+    let completedLessons = 0;
+    
+    allTopics.forEach(topic => {
+      const lessons = getLessonsForTopic(topic.id);
+      totalLessons += lessons.length;
+      completedLessons += lessons.filter(lesson => getLessonStars(lesson.id) > 0).length;
+    });
+    
+    return totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
+  };
+  
+  const overallProgress = calculateOverallProgress();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,14 +108,41 @@ export default function HomeScreen({ navigation }: any) {
           </Text>
         </View>
 
+        {/* Progress Overview */}
+        <View style={styles.progressOverview}>
+          <Text style={styles.sectionTitle}>Progress Overview</Text>
+          <View style={styles.overviewCard}>
+            <View style={styles.overviewItem}>
+              <Text style={styles.overviewValue}>{overallProgress}%</Text>
+              <Text style={styles.overviewLabel}>Overall Progress</Text>
+            </View>
+            <View style={styles.overviewItem}>
+              <Text style={styles.overviewValue}>{highestStreakDays}</Text>
+              <Text style={styles.overviewLabel}>Best Streak</Text>
+            </View>
+            <View style={styles.overviewItem}>
+              <Text style={styles.overviewValue}>{xp}</Text>
+              <Text style={styles.overviewLabel}>Total XP</Text>
+            </View>
+          </View>
+        </View>
+
         {/* Quick Actions */}
         <View style={styles.actionsContainer}>
           <TouchableOpacity 
             style={styles.primaryAction}
-            onPress={() => navigation.navigate('Modules')}
+            onPress={() => {
+              if (nextLesson) {
+                navigation.navigate('Lesson', { lessonId: nextLesson.id });
+              } else {
+                navigation.navigate('Modules');
+              }
+            }}
           >
             <Ionicons name="play" size={20} color="white" />
-            <Text style={styles.primaryActionText}>Continue Learning</Text>
+            <Text style={styles.primaryActionText}>
+              {nextLesson ? 'Continue Learning' : 'Browse Modules'}
+            </Text>
           </TouchableOpacity>
 
           <View style={styles.secondaryActions}>
@@ -253,5 +313,29 @@ const createStyles = (theme: any) => StyleSheet.create({
     fontSize: theme.typography.body.fontSize,
     color: theme.colors.textSecondary,
     marginBottom: theme.spacing.xs,
+  },
+  progressOverview: {
+    marginBottom: theme.spacing.lg,
+  },
+  overviewCard: {
+    backgroundColor: theme.colors.surface,
+    padding: theme.spacing.md,
+    borderRadius: theme.borderRadius.lg,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  overviewItem: {
+    alignItems: 'center',
+  },
+  overviewValue: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: theme.colors.primary,
+    marginBottom: theme.spacing.xs,
+  },
+  overviewLabel: {
+    fontSize: theme.typography.caption.fontSize,
+    color: theme.colors.textSecondary,
+    textAlign: 'center',
   },
 });

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "rust-learning-app",
+    "slug": "rust-learning-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,7 +20,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.akmalsyrf.rustlearningapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -30,7 +31,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "e1a3b4bb-f140-43b7-805e-c70b854aacf5"
+        "projectId": "48a2ae9d-ad6b-4e99-a3ca-dec162764a75"
       }
     }
   }

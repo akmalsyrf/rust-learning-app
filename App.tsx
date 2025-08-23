@@ -17,7 +17,7 @@ export default function App() {
     } catch (error) {
       console.warn('Error loading data:', error);
     }
-  }, []); // Empty dependency array - only run once on mount
+  }, []);
 
   return (
     <>
