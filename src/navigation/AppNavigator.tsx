@@ -16,25 +16,10 @@ import LeaderboardScreen from '../screens/LeaderboardScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AboutScreen from '../screens/AboutScreen';
 
-// Import theme
+// Import theme and types
 import { useSettingsStore } from '../state/useSettingsStore';
 import { lightTheme, darkTheme } from '../theme';
-
-export type RootStackParamList = {
-  MainTabs: undefined;
-  Lesson: { lessonId: string };
-  Quiz: { lessonId: string };
-  CodePractice: { lessonId: string };
-  Results: { lessonResult: any };
-  About: undefined;
-};
-
-export type TabParamList = {
-  Home: undefined;
-  Modules: undefined;
-  Leaderboard: undefined;
-  Profile: undefined;
-};
+import { RootStackParamList, TabParamList } from '../types/navigation';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<TabParamList>();

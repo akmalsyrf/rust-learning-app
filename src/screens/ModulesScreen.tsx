@@ -6,8 +6,9 @@ import { useSettingsStore } from '../state/useSettingsStore';
 import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
+import { ModulesScreenProps } from '../types/navigation';
 
-export default function ModulesScreen({ navigation }: any) {
+export default function ModulesScreen({ navigation }: ModulesScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { getTopics, getLessonsForTopic } = useDataStore();
   const { getLessonStars } = useProgressStore();

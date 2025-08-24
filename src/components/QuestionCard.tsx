@@ -42,21 +42,19 @@ export default function QuestionCard({
           const isSelected = selectedAnswer === index || userAnswer === index;
           const isCorrectChoice = question.correctIndex === index;
           
-          let choiceStyle = [styles.choice];
-          let textStyle = [styles.choiceText];
+          const choiceStyle = [
+            styles.choice,
+            showResult && isCorrectChoice && styles.correctChoice,
+            showResult && isSelected && !isCorrect && styles.incorrectChoice,
+            !showResult && isSelected && styles.selectedChoice,
+          ].filter(Boolean);
           
-          if (showResult) {
-            if (isCorrectChoice) {
-              choiceStyle.push(styles.correctChoice);
-              textStyle.push(styles.correctChoiceText);
-            } else if (isSelected && !isCorrect) {
-              choiceStyle.push(styles.incorrectChoice);
-              textStyle.push(styles.incorrectChoiceText);
-            }
-          } else if (isSelected) {
-            choiceStyle.push(styles.selectedChoice);
-            textStyle.push(styles.selectedChoiceText);
-          }
+          const textStyle = [
+            styles.choiceText,
+            showResult && isCorrectChoice && styles.correctChoiceText,
+            showResult && isSelected && !isCorrect && styles.incorrectChoiceText,
+            !showResult && isSelected && styles.selectedChoiceText,
+          ].filter(Boolean);
           
           return (
             <TouchableOpacity
@@ -91,21 +89,19 @@ export default function QuestionCard({
           const isSelected = selectedAnswer === value || userAnswer === value;
           const isCorrectChoice = question.answer === value;
           
-          let choiceStyle = [styles.trueFalseChoice];
-          let textStyle = [styles.trueFalseText];
+          const choiceStyle = [
+            styles.trueFalseChoice,
+            showResult && isCorrectChoice && styles.correctChoice,
+            showResult && isSelected && !isCorrect && styles.incorrectChoice,
+            !showResult && isSelected && styles.selectedChoice,
+          ].filter(Boolean);
           
-          if (showResult) {
-            if (isCorrectChoice) {
-              choiceStyle.push(styles.correctChoice);
-              textStyle.push(styles.correctChoiceText);
-            } else if (isSelected && !isCorrect) {
-              choiceStyle.push(styles.incorrectChoice);
-              textStyle.push(styles.incorrectChoiceText);
-            }
-          } else if (isSelected) {
-            choiceStyle.push(styles.selectedChoice);
-            textStyle.push(styles.selectedChoiceText);
-          }
+          const textStyle = [
+            styles.trueFalseText,
+            showResult && isCorrectChoice && styles.correctChoiceText,
+            showResult && isSelected && !isCorrect && styles.incorrectChoiceText,
+            !showResult && isSelected && styles.selectedChoiceText,
+          ].filter(Boolean);
           
           return (
             <TouchableOpacity
@@ -220,21 +216,19 @@ export default function QuestionCard({
             const isSelected = selectedAnswer === index || userAnswer === index;
             const isCorrectChoice = question.correctIndex === index;
             
-            let choiceStyle = [styles.codeChoice];
-            let textStyle = [styles.codeChoiceText];
+            const choiceStyle = [
+              styles.codeChoice,
+              showResult && isCorrectChoice && styles.correctChoice,
+              showResult && isSelected && !isCorrect && styles.incorrectChoice,
+              !showResult && isSelected && styles.selectedChoice,
+            ].filter(Boolean);
             
-            if (showResult) {
-              if (isCorrectChoice) {
-                choiceStyle.push(styles.correctChoice);
-                textStyle.push(styles.correctChoiceText);
-              } else if (isSelected && !isCorrect) {
-                choiceStyle.push(styles.incorrectChoice);
-                textStyle.push(styles.incorrectChoiceText);
-              }
-            } else if (isSelected) {
-              choiceStyle.push(styles.selectedChoice);
-              textStyle.push(styles.selectedChoiceText);
-            }
+            const textStyle = [
+              styles.codeChoiceText,
+              showResult && isCorrectChoice && styles.correctChoiceText,
+              showResult && isSelected && !isCorrect && styles.incorrectChoiceText,
+              !showResult && isSelected && styles.selectedChoiceText,
+            ].filter(Boolean);
             
             return (
               <TouchableOpacity

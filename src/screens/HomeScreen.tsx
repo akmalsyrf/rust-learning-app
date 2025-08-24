@@ -5,9 +5,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { useDataStore } from '../state/useDataStore';
-import { lightTheme, darkTheme } from '../theme';
+import { lightTheme, darkTheme, Theme } from '../theme';
+import { HomeScreenProps } from '../types/navigation';
 
-export default function HomeScreen({ navigation }: any) {
+export default function HomeScreen({ navigation }: HomeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { xp, currentStreakDays, getTodayXP, highestStreakDays, getLessonStars } = useProgressStore();
   const { getTopics, getLessonsForTopic } = useDataStore();
@@ -176,7 +177,7 @@ export default function HomeScreen({ navigation }: any) {
   );
 }
 
-const createStyles = (theme: any) => StyleSheet.create({
+const createStyles = (theme: Theme) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
@@ -189,7 +190,7 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   welcomeText: {
     fontSize: theme.typography.heading.fontSize,
-    fontWeight: theme.typography.heading.fontWeight,
+    fontWeight: theme.typography.heading.fontWeight as any,
     color: theme.colors.text,
     marginBottom: theme.spacing.xs,
   },
@@ -237,7 +238,7 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   goalTitle: {
     fontSize: theme.typography.subheading.fontSize,
-    fontWeight: theme.typography.subheading.fontWeight,
+    fontWeight: theme.typography.subheading.fontWeight as any,
     color: theme.colors.text,
   },
   goalProgress: {
@@ -305,7 +306,7 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   recentTitle: {
     fontSize: theme.typography.subheading.fontSize,
-    fontWeight: theme.typography.subheading.fontWeight,
+    fontWeight: theme.typography.subheading.fontWeight as any,
     color: theme.colors.text,
     marginBottom: theme.spacing.md,
   },
@@ -316,6 +317,12 @@ const createStyles = (theme: any) => StyleSheet.create({
   },
   progressOverview: {
     marginBottom: theme.spacing.lg,
+  },
+  sectionTitle: {
+    fontSize: theme.typography.subheading.fontSize,
+    fontWeight: theme.typography.subheading.fontWeight as any,
+    color: theme.colors.text,
+    marginBottom: theme.spacing.md,
   },
   overviewCard: {
     backgroundColor: theme.colors.surface,

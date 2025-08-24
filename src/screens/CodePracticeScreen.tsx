@@ -3,8 +3,9 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { lightTheme, darkTheme } from '../theme';
+import { CodePracticeScreenProps } from '../types/navigation';
 
-export default function CodePracticeScreen({ route }: any) {
+export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
   const { lessonId } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
   

@@ -82,10 +82,15 @@ export default function XPBadge({
   const level = getXPLevel(xp);
   const levelColor = getLevelColor(level);
 
+  const getSizeStyle = () => {
+    const sizeKey = `container${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles;
+    return styles[sizeKey];
+  };
+
   return (
     <View style={[
       styles.container, 
-      styles[`container${size.charAt(0).toUpperCase() + size.slice(1)}`],
+      getSizeStyle(),
       animated && styles.animatedContainer
     ]}>
       {showIcon && (

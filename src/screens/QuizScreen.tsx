@@ -8,15 +8,7 @@ import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
 import QuestionCard from '../components/QuestionCard';
 import { Question, QuestionResult, LessonResult } from '../types';
-
-interface QuizScreenProps {
-  route: {
-    params: {
-      lessonId: string;
-    };
-  };
-  navigation: any;
-}
+import { QuizScreenProps } from '../types/navigation';
 
 export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const { lessonId } = route.params;

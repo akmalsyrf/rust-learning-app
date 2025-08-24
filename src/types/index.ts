@@ -81,6 +81,7 @@ export interface UserProgress {
   lessonStars: Record<LessonId, 0 | 1 | 2 | 3>;
   xp: number;
   currentStreakDays: number;
+  highestStreakDays: number;
   lastActiveDate: string; // yyyy-mm-dd
   dailyXpCap: number; // track daily XP to prevent farming
   lastXpResetDate: string; // yyyy-mm-dd

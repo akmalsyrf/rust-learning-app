@@ -1,14 +1,15 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
+import { ProfileScreenProps } from '../types/navigation';
 
-export default function ProfileScreen({ navigation }: any) {
-  const { getEffectiveTheme, theme, setTheme } = useSettingsStore();
-  const { xp, currentStreakDays, getTotalCorrectAnswers } = useProgressStore();
+export default function ProfileScreen({ navigation }: ProfileScreenProps) {
+  const { getEffectiveTheme, theme, setTheme, clearStorage: clearSettings } = useSettingsStore();
+  const { xp, currentStreakDays, getTotalCorrectAnswers, clearStorage: clearProgress } = useProgressStore();
   
   const isDark = getEffectiveTheme() === 'dark';
   const currentTheme = isDark ? darkTheme : lightTheme;
@@ -18,6 +19,34 @@ export default function ProfileScreen({ navigation }: any) {
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark');
+  };
+
+  const handleClearData = () => {
+    Alert.alert(
+      'Clear All Data',
+      'This will permanently delete all your progress and settings. Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Clear',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await Promise.all([
+                clearProgress(),
+                clearSettings(),
+              ]);
+              Alert.alert('Success', 'All data has been cleared successfully');
+            } catch (error) {
+              Alert.alert('Error', 'Failed to clear data. Please try again.');
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
@@ -129,6 +158,21 @@ export default function ProfileScreen({ navigation }: any) {
             <View style={styles.settingLeft}>
               <Ionicons name="information-circle" size={20} color={currentTheme.colors.text} />
               <Text style={styles.settingText}>About</Text>
+            </View>
+            <View style={styles.settingRight}>
+              <Ionicons name="chevron-forward" size={16} color={currentTheme.colors.textSecondary} />
+            </View>
+          </TouchableOpacity>
+        </View>
+
+        {/* Data Management */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Data Management</Text>
+          
+          <TouchableOpacity style={styles.settingItem} onPress={handleClearData}>
+            <View style={styles.settingLeft}>
+              <Ionicons name="trash" size={20} color={currentTheme.colors.error} />
+              <Text style={[styles.settingText, { color: currentTheme.colors.error }]}>Clear All Data</Text>
             </View>
             <View style={styles.settingRight}>
               <Ionicons name="chevron-forward" size={16} color={currentTheme.colors.textSecondary} />

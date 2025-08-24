@@ -3,8 +3,9 @@ import { View, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { lightTheme, darkTheme } from '../theme';
+import { ResultsScreenProps } from '../types/navigation';
 
-export default function ResultsScreen({ route }: any) {
+export default function ResultsScreen({ route }: ResultsScreenProps) {
   const { lessonResult } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
   

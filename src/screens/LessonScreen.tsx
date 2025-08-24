@@ -1,20 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
-
-interface LessonScreenProps {
-  route: {
-    params: {
-      lessonId: string;
-    };
-  };
-  navigation: any;
-}
+import { LessonScreenProps } from '../types/navigation';
 
 export default function LessonScreen({ route, navigation }: LessonScreenProps) {
   const { lessonId } = route.params;

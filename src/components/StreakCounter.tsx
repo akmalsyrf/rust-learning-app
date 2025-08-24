@@ -63,8 +63,13 @@ export default function StreakCounter({
     return 'Incredible dedication!';
   };
 
+  const getSizeStyle = () => {
+    const sizeKey = `container${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles;
+    return styles[sizeKey] as any;
+  };
+
   return (
-    <View style={[styles.container, styles[`container${size.charAt(0).toUpperCase() + size.slice(1)}`]]}>
+    <View style={[styles.container, getSizeStyle()]}>
       <View style={styles.iconContainer}>
         <Ionicons 
           name={streakDays > 0 ? 'flame' : 'flame-outline'} 
