@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import CodeEditor from './CodeEditor';
 import SyntaxHighlighter from './SyntaxHighlighter';
@@ -27,6 +28,7 @@ interface CodePracticeCardProps {
 
 const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplete, onHint }) => {
   const { getEffectiveTheme } = useSettingsStore();
+  const { t } = useTranslation();
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
@@ -54,9 +56,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
     const validation = codeExecutionService.validateRustCode(userCode);
     if (!validation.isValid) {
       Alert.alert(
-        'Code Validation Error',
-        `Please fix the following issues:\n\n${validation.errors.join('\n')}`,
-        [{ text: 'OK' }]
+        t('codePractice.codeValidationError', 'Code Validation Error'),
+        `${t('codePractice.pleaseFixIssues', 'Please fix the following issues')}:\n\n${validation.errors.join('\n')}`,
+        [{ text: t('common.ok', 'OK') }]
       );
       return;
     }
@@ -69,13 +71,18 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       setExecutionResult(result);
 
       if (!result.success) {
-        Alert.alert('Code Execution Failed', result.error, [{ text: 'OK' }]);
+        Alert.alert(t('codePractice.codeExecutionFailed', 'Code Execution Failed'), result.error, [
+          { text: t('common.ok', 'OK') },
+        ]);
       }
     } catch (error) {
       Alert.alert(
-        'Execution Error',
-        'An error occurred while executing your code. Please try again.',
-        [{ text: 'OK' }]
+        t('codePractice.executionError', 'Execution Error'),
+        t(
+          'codePractice.executionErrorText',
+          'An error occurred while executing your code. Please try again.'
+        ),
+        [{ text: t('common.ok', 'OK') }]
       );
     } finally {
       setIsExecuting(false);
@@ -85,18 +92,26 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
   const handleCheckSolution = async () => {
     // Check if code has been executed first
     if (!executionResult) {
-      Alert.alert('Code Not Executed', 'Please run your code first before checking the solution.', [
-        { text: 'OK' },
-      ]);
+      Alert.alert(
+        t('codePractice.codeNotExecuted', 'Code Not Executed'),
+        t(
+          'codePractice.pleaseRunCodeFirst',
+          'Please run your code first before checking the solution.'
+        ),
+        [{ text: t('common.ok', 'OK') }]
+      );
       return;
     }
 
     // Check if execution was successful
     if (!executionResult.success) {
       Alert.alert(
-        'Code Execution Failed',
-        'Please fix the errors in your code before checking the solution.',
-        [{ text: 'OK' }]
+        t('codePractice.codeExecutionFailed', 'Code Execution Failed'),
+        t(
+          'codePractice.pleaseFixErrors',
+          'Please fix the errors in your code before checking the solution.'
+        ),
+        [{ text: t('common.ok', 'OK') }]
       );
       return;
     }
@@ -104,9 +119,12 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
     // Check if expected output is available
     if (!practice.expectedOutput) {
       Alert.alert(
-        'No Expected Output',
-        'This practice does not have an expected output to check against.',
-        [{ text: 'OK' }]
+        t('codePractice.noExpectedOutput', 'No Expected Output'),
+        t(
+          'codePractice.noExpectedOutputText',
+          'This practice does not have an expected output to check against.'
+        ),
+        [{ text: t('common.ok', 'OK') }]
       );
       return;
     }
@@ -120,11 +138,11 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
     if (isCorrect) {
       setSolutionStatus('correct');
       Alert.alert(
-        '🎉 Correct Solution!',
-        `Your code output matches the expected output!\n\nOutput: "${userOutput}"`,
+        `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
+        `${t('codePractice.yourCodeOutputMatches', 'Your code output matches the expected output!')}\n\nOutput: "${userOutput}"`,
         [
           {
-            text: 'Great!',
+            text: t('codePractice.great', 'Great!'),
             onPress: () => {
               if (onComplete) {
                 onComplete(practice.id, userCode);
@@ -136,9 +154,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
     } else {
       setSolutionStatus('incorrect');
       Alert.alert(
-        '❌ Incorrect Solution',
-        `Your code output does not match the expected output.\n\nYour output: "${userOutput}"\nExpected: "${expectedOutput}"\n\nPlease check your code and try again.`,
-        [{ text: 'Try Again' }]
+        `❌ ${t('codePractice.incorrectSolution', 'Incorrect Solution')}`,
+        `${t('codePractice.yourCodeOutputDoesNotMatch', 'Your code output does not match the expected output.')}\n\nYour output: "${userOutput}"\nExpected: "${expectedOutput}"\n\n${t('codePractice.pleaseCheckCode', 'Please check your code and try again.')}`,
+        [{ text: t('codePractice.tryAgain', 'Try Again') }]
       );
     }
   };
@@ -214,7 +232,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
                 color={theme.colors.white}
               />
               <Text style={styles.statusText}>
-                {solutionStatus === 'correct' ? 'Correct' : 'Incorrect'}
+                {solutionStatus === 'correct'
+                  ? t('codePractice.correct', 'Correct')
+                  : t('codePractice.incorrect', 'Incorrect')}
               </Text>
             </View>
           )}
@@ -228,7 +248,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
 
       {/* Code Editor */}
       <View style={styles.editorSection}>
-        <Text style={styles.sectionTitle}>Your Code:</Text>
+        <Text style={styles.sectionTitle}>{t('codePractice.yourCode', 'Your Code:')}</Text>
         <CodeEditor
           initialCode={practice.initialCode}
           language='rust'
@@ -240,7 +260,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       {/* Expected Output (if available) */}
       {practice.expectedOutput && (
         <View style={styles.outputSection}>
-          <Text style={styles.sectionTitle}>Expected Output:</Text>
+          <Text style={styles.sectionTitle}>
+            {t('codePractice.expectedOutput', 'Expected Output:')}
+          </Text>
           <SyntaxHighlighter
             code={practice.expectedOutput}
             language='rust'
@@ -254,7 +276,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       {/* Hints */}
       <View style={styles.hintsSection}>
         <View style={styles.hintsHeader}>
-          <Text style={styles.sectionTitle}>Hints ({practice.hints.length})</Text>
+          <Text style={styles.sectionTitle}>
+            {t('codePractice.hints', 'Hints')} ({practice.hints.length})
+          </Text>
           <TouchableOpacity style={styles.hintToggle} onPress={() => setShowHints(!showHints)}>
             <Ionicons
               name={showHints ? 'chevron-up' : 'chevron-down'}
@@ -284,7 +308,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
                       usedHints.includes(index) && styles.hintButtonTextUsed,
                     ]}
                   >
-                    Hint {index + 1}
+                    {t('codePractice.hint', 'Hint')} {index + 1}
                   </Text>
                 </TouchableOpacity>
 
@@ -307,12 +331,18 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
           ) : (
             <Ionicons name='play' size={20} color={theme.colors.white} />
           )}
-          <Text style={styles.actionButtonText}>{isExecuting ? 'Running...' : 'Run Code'}</Text>
+          <Text style={styles.actionButtonText}>
+            {isExecuting
+              ? t('codePractice.running', 'Running...')
+              : t('codePractice.runCode', 'Run Code')}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
           <Ionicons name='checkmark' size={20} color={theme.colors.white} />
-          <Text style={styles.actionButtonText}>Check Solution</Text>
+          <Text style={styles.actionButtonText}>
+            {t('codePractice.checkSolution', 'Check Solution')}
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -321,7 +351,8 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
         >
           <Ionicons name='eye' size={20} color={theme.colors.primary} />
           <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
-            {showSolution ? 'Hide' : 'Show'} Solution
+            {showSolution ? t('codePractice.hide', 'Hide') : t('codePractice.show', 'Show')}{' '}
+            {t('codePractice.solution', 'Solution')}
           </Text>
         </TouchableOpacity>
       </View>
@@ -329,7 +360,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       {/* Execution Result (when available) */}
       {executionResult && (
         <View style={styles.executionSection}>
-          <Text style={styles.sectionTitle}>Execution Result:</Text>
+          <Text style={styles.sectionTitle}>
+            {t('codePractice.executionResult', 'Execution Result:')}
+          </Text>
           <View
             style={[
               styles.executionResult,
@@ -344,23 +377,29 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
           {/* Solution Check Result */}
           {practice.expectedOutput && (
             <View style={styles.checkResultSection}>
-              <Text style={styles.checkResultTitle}>Solution Check:</Text>
+              <Text style={styles.checkResultTitle}>
+                {t('codePractice.solutionCheck', 'Solution Check:')}
+              </Text>
               <View style={styles.checkResultContent}>
                 <View style={styles.outputComparison}>
-                  <Text style={styles.comparisonLabel}>Your Output:</Text>
+                  <Text style={styles.comparisonLabel}>
+                    {t('codePractice.yourOutput', 'Your Output:')}
+                  </Text>
                   <Text style={styles.comparisonValue}>
                     {executionResult.output.trim() || '(empty)'}
                   </Text>
                 </View>
                 <View style={styles.outputComparison}>
-                  <Text style={styles.comparisonLabel}>Expected Output:</Text>
+                  <Text style={styles.comparisonLabel}>
+                    {t('codePractice.expectedOutputLabel', 'Expected Output:')}
+                  </Text>
                   <Text style={styles.comparisonValue}>{practice.expectedOutput.trim()}</Text>
                 </View>
                 <View style={styles.comparisonResult}>
                   <Text style={styles.comparisonResultText}>
                     {executionResult.output.trim() === practice.expectedOutput.trim()
-                      ? '✅ Match'
-                      : '❌ No Match'}
+                      ? `✅ ${t('codePractice.match', 'Match')}`
+                      : `❌ ${t('codePractice.noMatch', 'No Match')}`}
                   </Text>
                 </View>
               </View>
@@ -372,7 +411,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       {/* Solution (when shown) */}
       {showSolution && (
         <View style={styles.solutionSection}>
-          <Text style={styles.sectionTitle}>Solution:</Text>
+          <Text style={styles.sectionTitle}>{t('codePractice.solution', 'Solution:')}</Text>
           <SyntaxHighlighter
             code={practice.solution || practice.initialCode}
             language='rust'

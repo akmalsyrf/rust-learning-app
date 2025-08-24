@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
+import { useLanguage } from '../i18n/context/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 import { ProfileScreenProps } from '../types/navigation';
 
@@ -15,6 +17,8 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
     getTotalCorrectAnswers,
     clearStorage: clearProgress,
   } = useProgressStore();
+  const { currentLanguage } = useLanguage();
+  const { t } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
   const currentTheme = isDark ? darkTheme : lightTheme;
@@ -28,22 +32,31 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
   const handleClearData = () => {
     Alert.alert(
-      'Clear All Data',
-      'This will permanently delete all your progress and settings. Are you sure?',
+      t('settings.clearData', 'Clear All Data'),
+      t(
+        'settings.clearDataWarning',
+        'This will permanently delete all your progress and settings. Are you sure?'
+      ),
       [
         {
-          text: 'Cancel',
+          text: t('common.cancel', 'Cancel'),
           style: 'cancel',
         },
         {
-          text: 'Clear',
+          text: t('settings.clear', 'Clear'),
           style: 'destructive',
           onPress: async () => {
             try {
               await Promise.all([clearProgress(), clearSettings()]);
-              Alert.alert('Success', 'All data has been cleared successfully');
+              Alert.alert(
+                t('common.success', 'Success'),
+                t('settings.dataClearedSuccess', 'All data has been cleared successfully')
+              );
             } catch (error) {
-              Alert.alert('Error', 'Failed to clear data. Please try again.');
+              Alert.alert(
+                t('common.error', 'Error'),
+                t('settings.dataClearedError', 'Failed to clear data. Please try again.')
+              );
             }
           },
         },
@@ -59,8 +72,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <View style={styles.avatar}>
             <Ionicons name='person' size={40} color={currentTheme.colors.primary} />
           </View>
-          <Text style={styles.username}>Rust Learner</Text>
-          <Text style={styles.joinDate}>Learning since January 2024</Text>
+          <Text style={styles.username}>{t('profile.username', 'Rust Learner')}</Text>
+          <Text style={styles.joinDate}>
+            {t('profile.joinDate', 'Learning since January 2024')}
+          </Text>
         </View>
 
         {/* Stats Overview */}
@@ -68,25 +83,25 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <View style={styles.statCard}>
             <Ionicons name='star' size={24} color={currentTheme.colors.accent} />
             <Text style={styles.statNumber}>{xp}</Text>
-            <Text style={styles.statLabel}>Total XP</Text>
+            <Text style={styles.statLabel}>{t('profile.totalXP', 'Total XP')}</Text>
           </View>
 
           <View style={styles.statCard}>
             <Ionicons name='flame' size={24} color={currentTheme.colors.streak} />
             <Text style={styles.statNumber}>{currentStreakDays}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={styles.statLabel}>{t('profile.currentStreak', 'Day Streak')}</Text>
           </View>
 
           <View style={styles.statCard}>
             <Ionicons name='checkmark-circle' size={24} color={currentTheme.colors.success} />
             <Text style={styles.statNumber}>{totalCorrect}</Text>
-            <Text style={styles.statLabel}>Correct Answers</Text>
+            <Text style={styles.statLabel}>{t('profile.correctAnswers', 'Correct Answers')}</Text>
           </View>
         </View>
 
         {/* Achievements */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Achievements</Text>
+          <Text style={styles.sectionTitle}>{t('profile.achievements', 'Achievements')}</Text>
           <View style={styles.achievementsGrid}>
             <View
               style={[styles.achievement, currentStreakDays >= 3 && styles.achievementUnlocked]}
@@ -104,7 +119,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                   currentStreakDays >= 3 && styles.achievementTextUnlocked,
                 ]}
               >
-                3-Day Streak
+                {t('profile.achievement3DayStreak', '3-Day Streak')}
               </Text>
             </View>
 
@@ -115,7 +130,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 color={xp >= 100 ? currentTheme.colors.accent : currentTheme.colors.border}
               />
               <Text style={[styles.achievementText, xp >= 100 && styles.achievementTextUnlocked]}>
-                100 XP
+                {t('profile.achievement100XP', '100 XP')}
               </Text>
             </View>
 
@@ -133,7 +148,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                   totalCorrect >= 10 && styles.achievementTextUnlocked,
                 ]}
               >
-                10 Correct
+                {t('profile.achievement10Correct', '10 Correct')}
               </Text>
             </View>
           </View>
@@ -141,7 +156,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
         {/* Settings */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Settings</Text>
+          <Text style={styles.sectionTitle}>{t('settings.title', 'Settings')}</Text>
 
           <TouchableOpacity style={styles.settingItem} onPress={toggleTheme}>
             <View style={styles.settingLeft}>
@@ -150,10 +165,34 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
                 size={20}
                 color={currentTheme.colors.text}
               />
-              <Text style={styles.settingText}>Theme</Text>
+              <Text style={styles.settingText}>{t('settings.theme', 'Theme')}</Text>
             </View>
             <View style={styles.settingRight}>
-              <Text style={styles.settingValue}>{isDark ? 'Dark' : 'Light'}</Text>
+              <Text style={styles.settingValue}>
+                {isDark ? t('settings.dark', 'Dark') : t('settings.light', 'Light')}
+              </Text>
+              <Ionicons
+                name='chevron-forward'
+                size={16}
+                color={currentTheme.colors.textSecondary}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.navigate('LanguageSettings')}
+          >
+            <View style={styles.settingLeft}>
+              <Ionicons name='language' size={20} color={currentTheme.colors.text} />
+              <Text style={styles.settingText}>{t('settings.language', 'Language')}</Text>
+            </View>
+            <View style={styles.settingRight}>
+              <Text style={styles.settingValue}>
+                {currentLanguage === 'en'
+                  ? t('settings.english', 'English')
+                  : t('settings.indonesian', 'Indonesian')}
+              </Text>
               <Ionicons
                 name='chevron-forward'
                 size={16}
@@ -165,10 +204,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <TouchableOpacity style={styles.settingItem}>
             <View style={styles.settingLeft}>
               <Ionicons name='notifications' size={20} color={currentTheme.colors.text} />
-              <Text style={styles.settingText}>Notifications</Text>
+              <Text style={styles.settingText}>{t('settings.notifications', 'Notifications')}</Text>
             </View>
             <View style={styles.settingRight}>
-              <Text style={styles.settingValue}>On</Text>
+              <Text style={styles.settingValue}>{t('common.yes', 'On')}</Text>
               <Ionicons
                 name='chevron-forward'
                 size={16}
@@ -180,7 +219,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <TouchableOpacity style={styles.settingItem} onPress={() => navigation.navigate('About')}>
             <View style={styles.settingLeft}>
               <Ionicons name='information-circle' size={20} color={currentTheme.colors.text} />
-              <Text style={styles.settingText}>About</Text>
+              <Text style={styles.settingText}>{t('settings.about', 'About')}</Text>
             </View>
             <View style={styles.settingRight}>
               <Ionicons
@@ -194,13 +233,13 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
         {/* Data Management */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Data Management</Text>
+          <Text style={styles.sectionTitle}>{t('settings.dataUsage', 'Data Management')}</Text>
 
           <TouchableOpacity style={styles.settingItem} onPress={handleClearData}>
             <View style={styles.settingLeft}>
               <Ionicons name='trash' size={20} color={currentTheme.colors.error} />
               <Text style={[styles.settingText, { color: currentTheme.colors.error }]}>
-                Clear All Data
+                {t('settings.clearCache', 'Clear All Data')}
               </Text>
             </View>
             <View style={styles.settingRight}>
@@ -215,10 +254,14 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
         {/* Progress Summary */}
         <View style={styles.progressCard}>
-          <Text style={styles.progressTitle}>Learning Progress</Text>
+          <Text style={styles.progressTitle}>
+            {t('profile.learningProgress', 'Learning Progress')}
+          </Text>
           <Text style={styles.progressDescription}>
-            You're doing great! Keep up the daily practice to maintain your streak and unlock more
-            achievements.
+            {t(
+              'profile.progressDescription',
+              "You're doing great! Keep up the daily practice to maintain your streak and unlock more achievements."
+            )}
           </Text>
 
           <View style={styles.progressStats}>
@@ -226,11 +269,11 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
               <Text style={styles.progressStatValue}>
                 {Math.round((totalCorrect / Math.max(totalCorrect + 5, 1)) * 100)}%
               </Text>
-              <Text style={styles.progressStatLabel}>Accuracy</Text>
+              <Text style={styles.progressStatLabel}>{t('profile.accuracy', 'Accuracy')}</Text>
             </View>
             <View style={styles.progressStat}>
               <Text style={styles.progressStatValue}>{Math.min(currentStreakDays, 7)}/7</Text>
-              <Text style={styles.progressStatLabel}>This Week</Text>
+              <Text style={styles.progressStatLabel}>{t('profile.thisWeek', 'This Week')}</Text>
             </View>
           </View>
         </View>

@@ -5,6 +5,8 @@ import { useDataStore } from './src/state/useDataStore';
 import { useProgressStore } from './src/state/useProgressStore';
 import { useSettingsStore } from './src/state/useSettingsStore';
 import { sampleData } from './src/data';
+import { LanguageProvider } from './src/i18n/context/LanguageContext';
+import './src/i18n'; // Initialize i18n
 
 export default function App() {
   const dataStore = useDataStore();
@@ -32,9 +34,9 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <LanguageProvider>
       <AppNavigator />
       <StatusBar style='auto' />
-    </>
+    </LanguageProvider>
   );
 }

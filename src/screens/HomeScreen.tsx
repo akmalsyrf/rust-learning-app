@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { useDataStore } from '../state/useDataStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { HomeScreenProps } from '../types/navigation';
 import { getNextLesson } from '../utils';
@@ -14,6 +15,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const { xp, currentStreakDays, getTodayXP, highestStreakDays, getLessonStars } =
     useProgressStore();
   const { getTopics, getLessonsForTopic } = useDataStore();
+  const { t } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
@@ -49,8 +51,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.welcomeText}>Welcome back!</Text>
-          <Text style={styles.subtitle}>Ready to learn Rust?</Text>
+          <Text style={styles.welcomeText}>{t('home.welcomeBack', 'Welcome back!')}</Text>
+          <Text style={styles.subtitle}>{t('home.readyToLearn', 'Ready to learn Rust?')}</Text>
         </View>
 
         {/* Stats Cards */}
@@ -61,7 +63,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               <Ionicons name='flame' size={24} color={theme.colors.streak} />
             </View>
             <Text style={styles.statNumber}>{currentStreakDays}</Text>
-            <Text style={styles.statLabel}>Day Streak</Text>
+            <Text style={styles.statLabel}>{t('home.dayStreak', 'Day Streak')}</Text>
           </View>
 
           {/* XP Card */}
@@ -70,7 +72,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               <Ionicons name='star' size={24} color={theme.colors.accent} />
             </View>
             <Text style={styles.statNumber}>{xp}</Text>
-            <Text style={styles.statLabel}>Total XP</Text>
+            <Text style={styles.statLabel}>{t('home.totalXP', 'Total XP')}</Text>
           </View>
 
           {/* Today XP Card */}
@@ -79,14 +81,14 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               <Ionicons name='today' size={24} color={theme.colors.primary} />
             </View>
             <Text style={styles.statNumber}>{todayXP}</Text>
-            <Text style={styles.statLabel}>Today XP</Text>
+            <Text style={styles.statLabel}>{t('home.todayXP', 'Today XP')}</Text>
           </View>
         </View>
 
         {/* Daily Goal */}
         <View style={styles.goalCard}>
           <View style={styles.goalHeader}>
-            <Text style={styles.goalTitle}>Daily Goal</Text>
+            <Text style={styles.goalTitle}>{t('home.dailyGoal', 'Daily Goal')}</Text>
             <Text style={styles.goalProgress}>{todayXP}/50 XP</Text>
           </View>
           <View style={styles.progressBar}>
@@ -95,25 +97,27 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             />
           </View>
           <Text style={styles.goalDescription}>
-            Complete lessons to earn XP and maintain your streak!
+            {t('home.goalDescription', 'Complete lessons to earn XP and maintain your streak!')}
           </Text>
         </View>
 
         {/* Progress Overview */}
         <View style={styles.progressOverview}>
-          <Text style={styles.sectionTitle}>Progress Overview</Text>
+          <Text style={styles.sectionTitle}>{t('home.progressOverview', 'Progress Overview')}</Text>
           <View style={styles.overviewCard}>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{overallProgress}%</Text>
-              <Text style={styles.overviewLabel}>Overall Progress</Text>
+              <Text style={styles.overviewLabel}>
+                {t('home.overallProgress', 'Overall Progress')}
+              </Text>
             </View>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{highestStreakDays}</Text>
-              <Text style={styles.overviewLabel}>Best Streak</Text>
+              <Text style={styles.overviewLabel}>{t('home.bestStreak', 'Best Streak')}</Text>
             </View>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{xp}</Text>
-              <Text style={styles.overviewLabel}>Total XP</Text>
+              <Text style={styles.overviewLabel}>{t('home.totalXP', 'Total XP')}</Text>
             </View>
           </View>
         </View>
@@ -132,7 +136,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           >
             <Ionicons name='play' size={20} color='white' />
             <Text style={styles.primaryActionText}>
-              {nextLesson ? 'Continue Learning' : 'Browse Modules'}
+              {nextLesson
+                ? t('home.continueLearning', 'Continue Learning')
+                : t('home.browseModules', 'Browse Modules')}
             </Text>
           </TouchableOpacity>
 
@@ -142,7 +148,9 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               onPress={() => navigation.navigate('Leaderboard')}
             >
               <Ionicons name='trophy' size={20} color={theme.colors.text} />
-              <Text style={styles.secondaryActionText}>Leaderboard</Text>
+              <Text style={styles.secondaryActionText}>
+                {t('navigation.leaderboard', 'Leaderboard')}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -150,17 +158,21 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               onPress={() => navigation.navigate('Profile')}
             >
               <Ionicons name='person' size={20} color={theme.colors.text} />
-              <Text style={styles.secondaryActionText}>Profile</Text>
+              <Text style={styles.secondaryActionText}>{t('navigation.profile', 'Profile')}</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Recent Activity (Placeholder) */}
         <View style={styles.recentCard}>
-          <Text style={styles.recentTitle}>Recent Activity</Text>
-          <Text style={styles.recentItem}>• Completed "Variables and Types"</Text>
-          <Text style={styles.recentItem}>• Earned 30 XP today</Text>
-          <Text style={styles.recentItem}>• 3-day streak maintained!</Text>
+          <Text style={styles.recentTitle}>{t('home.recentActivity', 'Recent Activity')}</Text>
+          <Text style={styles.recentItem}>
+            • {t('home.completedLesson', 'Completed "Variables and Types"')}
+          </Text>
+          <Text style={styles.recentItem}>• {t('home.earnedXP', 'Earned 30 XP today')}</Text>
+          <Text style={styles.recentItem}>
+            • {t('home.streakMaintained', '3-day streak maintained!')}
+          </Text>
         </View>
       </ScrollView>
     </SafeAreaView>

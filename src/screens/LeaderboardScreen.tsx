@@ -4,11 +4,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useProgressStore } from '../state/useProgressStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 
 export default function LeaderboardScreen() {
   const { getEffectiveTheme } = useSettingsStore();
   const { xp } = useProgressStore();
+  const { t } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
@@ -27,8 +29,12 @@ export default function LeaderboardScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Weekly Leaderboard</Text>
-          <Text style={styles.subtitle}>See how you rank among learners</Text>
+          <Text style={styles.title}>
+            {t('leaderboard.weeklyLeaderboard', 'Weekly Leaderboard')}
+          </Text>
+          <Text style={styles.subtitle}>
+            {t('leaderboard.seeHowYouRank', 'See how you rank among learners')}
+          </Text>
         </View>
 
         <View style={styles.podium}>
@@ -72,7 +78,10 @@ export default function LeaderboardScreen() {
         <View style={styles.infoCard}>
           <Ionicons name='information-circle-outline' size={20} color={theme.colors.info} />
           <Text style={styles.infoText}>
-            Leaderboard resets every Monday. Keep learning to climb the ranks!
+            {t(
+              'leaderboard.resetInfo',
+              'Leaderboard resets every Monday. Keep learning to climb the ranks!'
+            )}
           </Text>
         </View>
       </ScrollView>

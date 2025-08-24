@@ -11,6 +11,7 @@ export type RootStackParamList = {
   CodePractice: { lessonId?: string; topicId?: string };
   Results: { lessonResult: LessonResult };
   About: undefined;
+  LanguageSettings: undefined;
 };
 
 // Tab navigator param list
@@ -74,5 +75,9 @@ export type ProfileScreenProps = {
 };
 
 export type AboutScreenProps = {
+  navigation: StackNavigationProps;
+};
+
+export type LanguageSettingsScreenProps = {
   navigation: StackNavigationProps;
 };

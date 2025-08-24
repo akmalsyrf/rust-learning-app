@@ -76,6 +76,20 @@ export interface Lesson {
   order: number;
 }
 
+export interface CodePractice {
+  id: string;
+  title: string;
+  description: string;
+  initialCode: string;
+  expectedOutput?: string;
+  solution: string;
+  hints: string[];
+  difficulty: 'easy' | 'medium' | 'hard';
+  category: string;
+  lessonId: string;
+  topicId: string;
+}
+
 export interface UserProgress {
   completedQuestions: Record<QuestionId, { correct: boolean; timestamp: number }>;
   lessonStars: Record<LessonId, 0 | 1 | 2 | 3>;

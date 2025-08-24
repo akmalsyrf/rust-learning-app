@@ -1,16 +1,4 @@
-export interface CodePractice {
-  id: string;
-  title: string;
-  description: string;
-  initialCode: string;
-  expectedOutput?: string;
-  solution: string;
-  hints: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: string;
-  lessonId: string;
-  topicId: string;
-}
+import { CodePractice } from '../types';
 
 export const codePractices: CodePractice[] = [
   // Fundamentals
@@ -332,5 +320,659 @@ export const codePractices: CodePractice[] = [
     category: 'Collections',
     lessonId: 'vectors',
     topicId: 'collections',
+  },
+  // Data Types & Operations
+  {
+    id: 'cp-016',
+    title: 'Arithmetic Operations',
+    description: 'Perform and print the results of basic arithmetic operations.',
+    initialCode:
+      'fn main() {\n  let a = 15;\n  let b = 4;\n\n  // Calculate sum, difference, product, quotient, and remainder\n  let sum = a + b;\n  let diff = a - b;\n  let prod = a * b;\n  let quot = a / b;\n  let rem = a % b;\n\n  // Print the results\n\n}',
+    expectedOutput: 'Sum: 19\nDifference: 11\nProduct: 60\nQuotient: 3\nRemainder: 3',
+    solution:
+      'fn main() {\n  let a = 15;\n  let b = 4;\n\n  let sum = a + b;\n  let diff = a - b;\n  let prod = a * b;\n  let quot = a / b;\n  let rem = a % b;\n\n  println!("Sum: {}", sum);\n  println!("Difference: {}", diff);\n  println!("Product: {}", prod);\n  println!("Quotient: {}", quot);\n  println!("Remainder: {}", rem);\n}',
+    hints: [
+      'Use + for addition',
+      'Use - for subtraction',
+      'Use * for multiplication',
+      'Use / for integer division',
+      'Use % for the remainder (modulo)',
+    ],
+    difficulty: 'easy',
+    category: 'Operators',
+    lessonId: 'operators',
+    topicId: 'data-types',
+  },
+
+  // Control Structures
+  {
+    id: 'cp-017',
+    title: 'Countdown with While Loop',
+    description: 'Use a `while` loop to create a countdown from 5 to 1, then print "Liftoff!".',
+    initialCode:
+      'fn main() {\n  let mut count = 5;\n\n  println!("Starting countdown...");\n\n  // Use a while loop to count down from 5 to 1\n  \n\n  println!("Liftoff!");\n}',
+    expectedOutput: 'Starting countdown...\n5\n4\n3\n2\n1\nLiftoff!',
+    solution:
+      'fn main() {\n  let mut count = 5;\n\n  println!("Starting countdown...");\n\n  while count > 0 {\n    println!("{}", count);\n    count -= 1;\n  }\n\n  println!("Liftoff!");\n}',
+    hints: [
+      'The variable `count` needs to be mutable (`mut`) to be changed.',
+      'The loop condition should check if `count` is greater than 0.',
+      'Decrement the counter inside the loop using `count -= 1;`.',
+    ],
+    difficulty: 'easy',
+    category: 'Loops',
+    lessonId: 'while-loops',
+    topicId: 'control-structures',
+  },
+
+  // Collections
+  {
+    id: 'cp-018',
+    title: 'Tuple Destructuring',
+    description:
+      'Create a tuple to hold user information (name, age, is_active) and then destructure it into separate variables.',
+    initialCode:
+      'fn main() {\n  let user_data = ("Alex", 34, true);\n\n  // Destructure the tuple into three variables: name, age, and is_active\n  \n\n  println!("Name: {}", name);\n  println!("Age: {}", age);\n  println!("Active: {}", is_active);\n}',
+    expectedOutput: 'Name: Alex\nAge: 34\nActive: true',
+    solution:
+      'fn main() {\n  let user_data = ("Alex", 34, true);\n\n  let (name, age, is_active) = user_data;\n\n  println!("Name: {}", name);\n  println!("Age: {}", age);\n  println!("Active: {}", is_active);\n}',
+    hints: [
+      'Use `let (var1, var2, ...)` to destructure a tuple.',
+      'The number of variables must match the number of elements in the tuple.',
+      'You can also access tuple elements by index, like `user_data.0`.',
+    ],
+    difficulty: 'easy',
+    category: 'Collections',
+    lessonId: 'tuples',
+    topicId: 'collections',
+  },
+
+  // Structs & Enums
+  {
+    id: 'cp-019',
+    title: 'Struct Method Implementation',
+    description:
+      'Define a `Rectangle` struct and implement a method `area` that calculates its area.',
+    initialCode:
+      'struct Rectangle {\n  width: u32,\n  height: u32,\n}\n\n// Implement methods for the Rectangle struct\nimpl Rectangle {\n  // Define the area method here\n  // It should take an immutable reference to self and return a u32\n\n}\n\nfn main() {\n  let rect = Rectangle { width: 30, height: 50 };\n  println!("The area of the rectangle is {}", rect.area());\n}',
+    expectedOutput: 'The area of the rectangle is 1500',
+    solution:
+      'struct Rectangle {\n  width: u32,\n  height: u32,\n}\n\nimpl Rectangle {\n  fn area(&self) -> u32 {\n    self.width * self.height\n  }\n}\n\nfn main() {\n  let rect = Rectangle { width: 30, height: 50 };\n  println!("The area of the rectangle is {}", rect.area());\n}',
+    hints: [
+      'Start the method definition with `fn area(&self) -> u32 { ... }`.',
+      'Inside the method, access fields using `self.width` and `self.height`.',
+      'The last expression is the return value, so no semicolon is needed.',
+    ],
+    difficulty: 'medium',
+    category: 'Structs',
+    lessonId: 'struct-methods',
+    topicId: 'structs-enums',
+  },
+
+  // Memory Management
+  {
+    id: 'cp-020',
+    title: 'Modifying with Mutable References',
+    description:
+      'Create a function that takes a mutable reference to a `String` and appends a word to it.',
+    initialCode:
+      '// This function takes a mutable reference and appends ", world"\nfn append_world(s: &mut String) {\n  // Your code here\n}\n\nfn main() {\n  let mut my_string = String::from("hello");\n  println!("Before: {}", my_string);\n\n  append_world(&mut my_string);\n\n  println!("After: {}", my_string);\n}',
+    expectedOutput: 'Before: hello\nAfter: hello, world',
+    solution:
+      'fn append_world(s: &mut String) {\n  s.push_str(", world");\n}\n\nfn main() {\n  let mut my_string = String::from("hello");\n  println!("Before: {}", my_string);\n\n  append_world(&mut my_string);\n\n  println!("After: {}", my_string);\n}',
+    hints: [
+      'The variable `my_string` must be declared as `mut` to be borrowed mutably.',
+      'The function signature for the parameter is `s: &mut String`.',
+      'Use the `push_str()` method to append a string slice to a `String`.',
+    ],
+    difficulty: 'medium',
+    category: 'Borrowing',
+    lessonId: 'mutable-ref',
+    topicId: 'memory-management',
+  },
+
+  // Functional Programming
+  {
+    id: 'cp-021',
+    title: 'Simple Closure',
+    description: 'Use a closure to double a number and call it.',
+    initialCode:
+      'fn main() {\n  let number = 10;\n\n  // Define a closure that takes an integer and returns it doubled\n  \n\n  // Call the closure with `number` and store the result\n  let result = \n\n  println!("{} doubled is {}", number, result);\n}',
+    expectedOutput: '10 doubled is 20',
+    solution:
+      'fn main() {\n  let number = 10;\n\n  let double = |x| x * 2;\n\n  let result = double(number);\n  println!("{} doubled is {}", number, result);\n}',
+    hints: [
+      'Closure syntax is `|parameter| body`.',
+      'You can assign the closure to a variable.',
+      'Call the closure like a regular function.',
+    ],
+    difficulty: 'medium',
+    category: 'Functional',
+    lessonId: 'closures',
+    topicId: 'functional-programming',
+  },
+
+  // Error Handling
+  {
+    id: 'cp-022',
+    title: 'Error Propagation with ?',
+    description:
+      'Implement a function that parses two strings into numbers, adds them, and uses the `?` operator for concise error handling.',
+    initialCode:
+      'use std::num::ParseIntError;\n\n// Implement this function using the `?` operator\nfn add_str_numbers(a: &str, b: &str) -> Result<i32, ParseIntError> {\n  // Your code here\n}\n\n// The main function is used to test your implementation\nfn main() {\n  match add_str_numbers("10", "20") {\n    Ok(sum) => println!("Sum: {}", sum),\n    Err(e) => println!("An unexpected error occurred: {}", e),\n  }\n\n  match add_str_numbers("5", "abc") {\n    Ok(_) => println!("This test case should have failed!"),\n    Err(e) => println!("Correctly handled error: {}", e),\n  }\n}',
+    expectedOutput: 'Sum: 30\nCorrectly handled error: invalid digit found in string',
+    solution:
+      'use std::num::ParseIntError;\n\nfn add_str_numbers(a: &str, b: &str) -> Result<i32, ParseIntError> {\n  let num_a = a.parse::<i32>()?;\n  let num_b = b.parse::<i32>()?;\n  Ok(num_a + num_b)\n}\n\n// The main function is used to test your implementation\nfn main() {\n  match add_str_numbers("10", "20") {\n    Ok(sum) => println!("Sum: {}", sum),\n    Err(e) => println!("An unexpected error occurred: {}", e),\n  }\n\n  match add_str_numbers("5", "abc") {\n    Ok(_) => println!("This test case should have failed!"),\n    Err(e) => println!("Correctly handled error: {}", e),\n  }\n}',
+    hints: [
+      'Use `str.parse::<i32>()` to convert a string slice to a number.',
+      'The `parse` method returns a `Result`.',
+      'Append `?` to a `Result`-returning expression to propagate the error.',
+      'If both parses succeed, return the sum wrapped in `Ok()`.',
+    ],
+    difficulty: 'hard',
+    category: 'Error Handling',
+    lessonId: 'recoverable-errors',
+    topicId: 'error-handling',
+  },
+  // =================================================================
+  // Lanjutan Fundamentals
+  // =================================================================
+  {
+    id: 'cp-023',
+    title: 'Using Comments',
+    description: 'Write a program that uses different types of comments to explain the code.',
+    initialCode:
+      'fn main() {\n  let a = 5;\n  let b = 10;\n\n  // Add your comments here\n\n  let sum = a + b;\n  println!("The sum is: {}", sum);\n}',
+    expectedOutput: 'The sum is: 15',
+    solution:
+      '// This is the main function where the program execution begins.\nfn main() {\n  let a = 5; // Declare the first variable\n  let b = 10; // Declare the second variable\n\n  /*\n   * This is a block comment.\n   * We calculate the sum of a and b.\n   */\n  let sum = a + b;\n  println!("The sum is: {}", sum); // Print the final sum\n}',
+    hints: [
+      'Use `//` for single-line comments.',
+      'Use `/* ... */` for multi-line block comments.',
+      "Comments do not affect the program's output.",
+    ],
+    difficulty: 'easy',
+    category: 'Basic Syntax',
+    lessonId: 'comments',
+    topicId: 'fundamentals',
+  },
+  {
+    id: 'cp-024',
+    title: 'String Literals',
+    description: 'Declare a string literal and print its value.',
+    initialCode:
+      'fn main() {\n  // Declare a string literal variable named `greeting`\n\n\n  // Print the greeting\n\n}',
+    expectedOutput: 'Hello from a string literal!',
+    solution:
+      'fn main() {\n  let greeting: &str = "Hello from a string literal!";\n  println!("{}", greeting);\n}',
+    hints: [
+      'String literals have the type `&str`.',
+      'The value is enclosed in double quotes.',
+      'You can use type annotation `: &str` for clarity.',
+    ],
+    difficulty: 'easy',
+    category: 'Data Types',
+    lessonId: 'string-literals',
+    topicId: 'fundamentals',
+  },
+
+  // =================================================================
+  // Lanjutan Data Types & Operations
+  // =================================================================
+  {
+    id: 'cp-025',
+    title: 'Using Constants',
+    description: 'Define a constant for the maximum number of retries and use it in your code.',
+    initialCode:
+      '// Define a constant for MAX_RETRIES with value 3\n\n\nfn main() {\n  println!("Maximum number of retries: {}", MAX_RETRIES);\n}',
+    expectedOutput: 'Maximum number of retries: 3',
+    solution:
+      'const MAX_RETRIES: u32 = 3;\n\nfn main() {\n  println!("Maximum number of retries: {}", MAX_RETRIES);\n}',
+    hints: [
+      'Use the `const` keyword to declare constants.',
+      'Constant names are typically in SCREAMING_SNAKE_CASE.',
+      'You must explicitly annotate the type of a constant (e.g., `: u32`).',
+    ],
+    difficulty: 'easy',
+    category: 'Variables',
+    lessonId: 'constants',
+    topicId: 'data-types',
+  },
+  {
+    id: 'cp-026',
+    title: 'Type Casting',
+    description: 'Cast a floating-point number into an integer to perform integer division.',
+    initialCode:
+      'fn main() {\n  let float_value: f64 = 12.9;\n  \n  // Cast the float_value to a u32 integer\n  let int_value = \n\n  println!("{} as an integer is {}", float_value, int_value);\n}',
+    expectedOutput: '12.9 as an integer is 12',
+    solution:
+      'fn main() {\n  let float_value: f64 = 12.9;\n  \n  let int_value = float_value as u32;\n\n  println!("{} as an integer is {}", float_value, int_value);\n}',
+    hints: [
+      'Use the `as` keyword for explicit type casting.',
+      'Casting a float to an integer truncates the decimal part.',
+      'The syntax is `value as NewType`.',
+    ],
+    difficulty: 'medium',
+    category: 'Data Types',
+    lessonId: 'type-alias-casting',
+    topicId: 'data-types',
+  },
+
+  // =================================================================
+  // Lanjutan Control Structures
+  // =================================================================
+  {
+    id: 'cp-027',
+    title: 'Loop with Break and Continue',
+    description:
+      'Use a `loop` to iterate from 1 to 10. Print only the odd numbers and stop the loop if the number is greater than 7.',
+    initialCode:
+      'fn main() {\n  let mut i = 0;\n  loop {\n    i += 1;\n    // If i is even, skip to the next iteration\n\n\n    // If i is greater than 7, break the loop\n\n\n    println!("{}", i);\n  }\n}',
+    expectedOutput: '1\n3\n5\n7',
+    solution:
+      'fn main() {\n  let mut i = 0;\n  loop {\n    i += 1;\n    if i % 2 == 0 {\n      continue;\n    }\n    if i > 7 {\n      break;\n    }\n    println!("{}", i);\n  }\n}',
+    hints: [
+      'Use `continue` to skip the rest of the current iteration.',
+      'Use `break` to exit the loop entirely.',
+      'The modulo operator `%` can check for even numbers (`num % 2 == 0`).',
+    ],
+    difficulty: 'medium',
+    category: 'Loops',
+    lessonId: 'loop-break-continue',
+    topicId: 'control-structures',
+  },
+
+  // =================================================================
+  // Lanjutan Collections
+  // =================================================================
+  {
+    id: 'cp-028',
+    title: 'Array Initialization',
+    description:
+      'Declare an array of 5 integers, initialize it with some values, and print the third element.',
+    initialCode:
+      'fn main() {\n  // Declare an array named `numbers` with 5 elements\n  \n\n  // Print the third element (at index 2)\n\n}',
+    expectedOutput: 'The third element is: 30',
+    solution:
+      'fn main() {\n  let numbers: [i32; 5] = [10, 20, 30, 40, 50];\n  println!("The third element is: {}", numbers[2]);\n}',
+    hints: [
+      'The type annotation for an array is `[type; size]`.',
+      'Array elements are accessed using zero-based indexing with square brackets `[]`.',
+      'All elements in an array must have the same type.',
+    ],
+    difficulty: 'easy',
+    category: 'Collections',
+    lessonId: 'arrays',
+    topicId: 'collections',
+  },
+  {
+    id: 'cp-029',
+    title: 'Creating a Slice',
+    description: 'Create a slice that contains the second and third elements of an array.',
+    initialCode:
+      'fn main() {\n  let data = [11, 22, 33, 44, 55];\n\n  // Create a slice containing the elements 22 and 33\n  let slice = \n\n  println!("The slice is: {:?}", slice);\n}',
+    expectedOutput: 'The slice is: [22, 33]',
+    solution:
+      'fn main() {\n  let data = [11, 22, 33, 44, 55];\n  let slice = &data[1..3];\n  println!("The slice is: {:?}", slice);\n}',
+    hints: [
+      'A slice is a reference to a part of a collection, so it starts with `&`.',
+      'The range syntax `[start..end]` creates a slice.',
+      'The range is exclusive of the `end` index.',
+    ],
+    difficulty: 'medium',
+    category: 'Collections',
+    lessonId: 'slices',
+    topicId: 'collections',
+  },
+
+  // =================================================================
+  // Lanjutan Functions & Modules
+  // =================================================================
+  {
+    id: 'cp-030',
+    title: 'Inline Modules',
+    description: 'Organize related functions into an inline module and call a function from it.',
+    initialCode:
+      '// Define a module named `greetings`\nmod greetings {\n  // Define a public function `hello` inside the module\n\n}\n\nfn main() {\n  // Call the `hello` function from the `greetings` module\n\n}',
+    expectedOutput: 'Hello from the greetings module!',
+    solution:
+      'mod greetings {\n  pub fn hello() {\n    println!("Hello from the greetings module!");\n  }\n}\n\nfn main() {\n  greetings::hello();\n}',
+    hints: [
+      'Use the `mod` keyword to define a module.',
+      'Use the `pub` keyword to make a function or item public (visible outside the module).',
+      'Access items in a module using the path `module_name::item_name`.',
+    ],
+    difficulty: 'medium',
+    category: 'Modules',
+    lessonId: 'inline-modules',
+    topicId: 'functions-modules',
+  },
+  {
+    id: 'cp-031',
+    title: 'Using `use` Statements',
+    description: 'Bring a function into scope with the `use` keyword to call it directly.',
+    initialCode:
+      'mod math {\n  pub fn add(a: i32, b: i32) -> i32 {\n    a + b\n  }\n}\n\n// Bring the `add` function into the current scope\n\n\nfn main() {\n  // Call `add` directly without the module path\n  let result = add(5, 10);\n  println!("5 + 10 = {}", result);\n}',
+    expectedOutput: '5 + 10 = 15',
+    solution:
+      'mod math {\n  pub fn add(a: i32, b: i32) -> i32 {\n    a + b\n  }\n}\n\nuse math::add;\n\nfn main() {\n  let result = add(5, 10);\n  println!("5 + 10 = {}", result);\n}',
+    hints: [
+      'The syntax is `use path::to::item;`.',
+      '`use` statements are typically placed at the top of the scope.',
+      'Once an item is in scope with `use`, you can refer to it directly.',
+    ],
+    difficulty: 'medium',
+    category: 'Modules',
+    lessonId: 'use-statements',
+    topicId: 'module-system-advanced',
+  },
+
+  // =================================================================
+  // Lanjutan Structs & Enums
+  // =================================================================
+  {
+    id: 'cp-032',
+    title: 'Struct Update Syntax',
+    description:
+      'Create a new struct instance using values from an existing instance with the struct update syntax.',
+    initialCode:
+      'struct User {\n  username: String,\n  email: String,\n  active: bool,\n}\n\nfn main() {\n  let user1 = User {\n    username: String::from("user1"),\n    email: String::from("user1@example.com"),\n    active: true,\n  };\n\n  // Create user2 with a new username but the same email and active status as user1\n  let user2 = \n\n  println!("User 2: {} <{}>", user2.username, user2.email);\n}',
+    expectedOutput: 'User 2: user2 <user1@example.com>',
+    solution:
+      'struct User {\n  username: String,\n  email: String,\n  active: bool,\n}\n\nfn main() {\n  let user1 = User {\n    username: String::from("user1"),\n    email: String::from("user1@example.com"),\n    active: true,\n  };\n\n  let user2 = User {\n    username: String::from("user2"),\n    ..user1\n  };\n\n  println!("User 2: {} <{}>", user2.username, user2.email);\n}',
+    hints: [
+      'The struct update syntax is `..instance_name`.',
+      'It must come last in the struct initializer.',
+      'This syntax moves the remaining fields, so `user1` may become partially unusable if fields are not `Copy`.',
+    ],
+    difficulty: 'easy',
+    category: 'Structs',
+    lessonId: 'struct-update',
+    topicId: 'structs-enums',
+  },
+  {
+    id: 'cp-033',
+    title: 'Tuple Structs',
+    description: 'Define and use a tuple struct to represent a color with RGB values.',
+    initialCode:
+      '// Define a tuple struct `Color` that holds three u8 values (R, G, B)\n\n\nfn main() {\n  // Create an instance of `Color` for blue (0, 0, 255)\n\n\n  // Access the green value (the second element) and print it\n  \n}',
+    expectedOutput: 'The green value is: 0',
+    solution:
+      'struct Color(u8, u8, u8);\n\nfn main() {\n  let blue = Color(0, 0, 255);\n  println!("The green value is: {}", blue.1);\n}',
+    hints: [
+      'Define a tuple struct like `struct Name(Type1, Type2);`.',
+      'Instantiate it like calling a function: `Name(value1, value2)`.',
+      'Access elements using dot notation and zero-based indexing, like `instance.0`.',
+    ],
+    difficulty: 'easy',
+    category: 'Structs',
+    lessonId: 'tuple-structs',
+    topicId: 'structs-enums',
+  },
+  {
+    id: 'cp-034',
+    title: 'Enum Methods',
+    description: 'Implement a method on an enum to perform a different action for each variant.',
+    initialCode:
+      'enum Message {\n  Write(String),\n  Quit,\n}\n\n// Implement methods for the Message enum\nimpl Message {\n  // Create a method `process` that prints a different message for each variant\n  \n}\n\nfn main() {\n  let msg1 = Message::Write(String::from("Hello"));\n  let msg2 = Message::Quit;\n\n  msg1.process();\n  msg2.process();\n}',
+    expectedOutput: 'Writing message: Hello\nQuitting...',
+    solution:
+      'enum Message {\n  Write(String),\n  Quit,\n}\n\nimpl Message {\n  fn process(&self) {\n    match self {\n      Message::Write(text) => println!("Writing message: {}", text),\n      Message::Quit => println!("Quitting..."),\n    }\n  }\n}\n\nfn main() {\n  let msg1 = Message::Write(String::from("Hello"));\n  let msg2 = Message::Quit;\n\n  msg1.process();\n  msg2.process();\n}',
+    hints: [
+      'Use an `impl` block just like with structs: `impl EnumName { ... }`.',
+      'Inside the method, use a `match` statement on `self` to handle the different variants.',
+      'Methods usually take `&self` as their first parameter.',
+    ],
+    difficulty: 'medium',
+    category: 'Enums',
+    lessonId: 'enum-methods',
+    topicId: 'structs-enums',
+  },
+
+  // =================================================================
+  // Lanjutan Memory Management
+  // =================================================================
+  {
+    id: 'cp-035',
+    title: 'String Slices',
+    description: 'Create a function that takes a string slice and returns the first word.',
+    initialCode:
+      '// This function returns the first word of a string slice\nfn first_word(s: &str) -> &str {\n  // Your code here\n}\n\nfn main() {\n  let my_string = String::from("hello world");\n  let word = first_word(&my_string);\n  println!("The first word is: {}", word);\n}',
+    expectedOutput: 'The first word is: hello',
+    solution:
+      'fn first_word(s: &str) -> &str {\n  let bytes = s.as_bytes();\n\n  for (i, &item) in bytes.iter().enumerate() {\n    if item == b\' \' {\n      return &s[0..i];\n    }\n  }\n\n  &s[..]\n}\n\nfn main() {\n  let my_string = String::from("hello world");\n  let word = first_word(&my_string);\n  println!("The first word is: {}", word);\n}',
+    hints: [
+      'The function should accept `&str` so it can work on both `String` and string literals.',
+      "Iterate through the string's bytes using `.as_bytes()` and `.iter().enumerate()`.",
+      'When you find a space, return a slice from the beginning of the string to the current index.',
+      'If no space is found, the whole string is one word.',
+    ],
+    difficulty: 'medium',
+    category: 'Slices',
+    lessonId: 'slice-references',
+    topicId: 'memory-management',
+  },
+
+  // =================================================================
+  // Lanjutan Traits & Generics
+  // =================================================================
+  {
+    id: 'cp-036',
+    title: 'Trait Default Implementation',
+    description:
+      'Define a trait with a default method, and then implement it for a struct, overriding the default.',
+    initialCode:
+      'trait Summary {\n  fn summarize(&self) -> String {\n    String::from("(Read more...)")\n  }\n}\n\nstruct Article {\n  headline: String,\n  author: String,\n}\n\n// Implement the Summary trait for Article, overriding summarize\n\n\nfn main() {\n  let article = Article {\n    headline: String::from("Rust is Awesome!"),\n    author: String::from("Jane Doe"),\n  };\n  println!("Article Summary: {}", article.summarize());\n}',
+    expectedOutput: 'Article Summary: Rust is Awesome! by Jane Doe',
+    solution:
+      'trait Summary {\n  fn summarize(&self) -> String {\n    String::from("(Read more...)")\n  }\n}\n\nstruct Article {\n  headline: String,\n  author: String,\n}\n\nimpl Summary for Article {\n  fn summarize(&self) -> String {\n    format!("{} by {}", self.headline, self.author)\n  }\n}\n\nfn main() {\n  let article = Article {\n    headline: String::from("Rust is Awesome!"),\n    author: String::from("Jane Doe"),\n  };\n  println!("Article Summary: {}", article.summarize());\n}',
+    hints: [
+      'You can define a default implementation for a method directly inside the `trait` block.',
+      'When implementing the trait, you can choose to either use the default or provide a custom implementation.',
+      'Use `format!` macro to construct the new summary string.',
+    ],
+    difficulty: 'medium',
+    category: 'Traits',
+    lessonId: 'trait-default',
+    topicId: 'traits-generics',
+  },
+  {
+    id: 'cp-037',
+    title: 'Trait Bounds',
+    description:
+      'Create a generic function that works on any type that implements both the `Display` and `PartialOrd` traits.',
+    initialCode:
+      'use std::fmt::Display;\n\n// Create a generic function `compare_and_print` with trait bounds\n\n\nfn main() {\n  compare_and_print(5, 10);\n  compare_and_print("apple", "banana");\n}',
+    expectedOutput:
+      'Comparing 5 and 10. The larger is 10.\nComparing apple and banana. The larger is banana.',
+    solution:
+      'use std::fmt::Display;\n\nfn compare_and_print<T: Display + PartialOrd>(a: T, b: T) {\n  let larger = if a > b { a } else { b };\n  println!("Comparing {} and {}. The larger is {}.", a, b, larger);\n}\n\nfn main() {\n  compare_and_print(5, 10);\n  compare_and_print("apple", "banana");\n}',
+    hints: [
+      'Use the `<T: Trait1 + Trait2>` syntax to specify trait bounds on a generic type `T`.',
+      'The `Display` trait is needed for printing with `{}`.',
+      'The `PartialOrd` trait is needed for comparison with `>`.',
+    ],
+    difficulty: 'hard',
+    category: 'Generics',
+    lessonId: 'trait-bound',
+    topicId: 'traits-generics',
+  },
+  {
+    id: 'cp-038',
+    title: 'Lifetime Annotation',
+    description:
+      'Fix a function that returns the longest of two string slices by adding the correct lifetime annotations.',
+    initialCode:
+      '// Add lifetime annotations to this function\nfn longest(x: &str, y: &str) -> &str {\n  if x.len() > y.len() {\n    x\n  } else {\n    y\n  }\n}\n\nfn main() {\n  let string1 = String::from("long string is long");\n  let result;\n  {\n    let string2 = String::from("xyz");\n    result = longest(string1.as_str(), string2.as_str());\n  }\n  println!("The longest string is {}", result);\n}',
+    expectedOutput: 'The longest string is long string is long',
+    solution:
+      'fn longest<\'a>(x: &\'a str, y: &\'a str) -> &\'a str {\n  if x.len() > y.len() {\n    x\n  } else {\n    y\n  }\n}\n\nfn main() {\n  let string1 = String::from("long string is long");\n  let result;\n  // NOTE: The original code has a dangling reference problem.\n  // This corrected version demonstrates a valid use of the `longest` function.\n  let string2 = String::from("xyz");\n  result = longest(string1.as_str(), string2.as_str());\n  println!("The longest string is {}", result);\n}',
+    hints: [
+      "Lifetime annotations start with an apostrophe, like `'a`.",
+      "Declare the generic lifetime parameter after the function name: `fn name<'a>(...)`.",
+      'Use the same lifetime parameter for all references that are related.',
+      'The returned reference must be tied to the lifetime of one of the input references.',
+    ],
+    difficulty: 'hard',
+    category: 'Ownership',
+    lessonId: 'lifetime-annotation',
+    topicId: 'traits-generics',
+  },
+
+  // =================================================================
+  // Lanjutan Advanced Types
+  // =================================================================
+  {
+    id: 'cp-039',
+    title: 'Function Pointers',
+    description: 'Create a function that accepts a function pointer to perform an operation.',
+    initialCode:
+      'fn add_one(x: i32) -> i32 {\n  x + 1\n}\n\n// Create a function that takes an integer and a function pointer `f`\nfn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {\n  // Call the function `f` twice on the argument\n\n}\n\nfn main() {\n  let answer = do_twice(add_one, 5);\n  println!("The answer is: {}", answer);\n}',
+    expectedOutput: 'The answer is: 7',
+    solution:
+      'fn add_one(x: i32) -> i32 {\n  x + 1\n}\n\nfn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {\n  f(f(arg))\n}\n\nfn main() {\n  let answer = do_twice(add_one, 5);\n  println!("The answer is: {}", answer);\n}',
+    hints: [
+      'The type `fn(i32) -> i32` represents a pointer to a function that takes an `i32` and returns an `i32`.',
+      'You can pass the name of a function as an argument where a function pointer is expected.',
+      'Call the function pointer variable just like a regular function.',
+    ],
+    difficulty: 'hard',
+    category: 'Functions',
+    lessonId: 'advanced-functions',
+    topicId: 'advanced-types',
+  },
+
+  // =================================================================
+  // Lanjutan Functional Programming
+  // =================================================================
+  {
+    id: 'cp-040',
+    title: 'Iterator Adaptors',
+    description:
+      'Use iterator adaptors to double each number in a vector and then collect the results into a new vector.',
+    initialCode:
+      'fn main() {\n  let numbers = vec![1, 2, 3, 4, 5];\n\n  // Use `.iter()`, `.map()`, and `.collect()`\n  let doubled: Vec<i32> = \n\n  println!("Original: {:?}, Doubled: {:?}", numbers, doubled);\n}',
+    expectedOutput: 'Original: [1, 2, 3, 4, 5], Doubled: [2, 4, 6, 8, 10]',
+    solution:
+      'fn main() {\n  let numbers = vec![1, 2, 3, 4, 5];\n  let doubled: Vec<i32> = numbers.iter().map(|&x| x * 2).collect();\n  println!("Original: {:?}, Doubled: {:?}", numbers, doubled);\n}',
+    hints: [
+      'Start the chain with `.iter()` to create an iterator.',
+      'Use `.map()` with a closure to transform each element.',
+      'Use `.collect()` to consume the iterator and create a new collection from its values.',
+      'You may need to specify the type of the new collection, like `collect::<Vec<i32>>()`.',
+    ],
+    difficulty: 'medium',
+    category: 'Functional',
+    lessonId: 'iterator-adaptors',
+    topicId: 'functional-programming',
+  },
+
+  // =================================================================
+  // Lanjutan System Programming
+  // =================================================================
+  {
+    id: 'cp-041',
+    title: 'Unsafe Rust',
+    description: 'Use an `unsafe` block to dereference a raw pointer.',
+    initialCode:
+      'fn main() {\n  let mut num = 5;\n\n  let r1 = &num as *const i32;\n  let r2 = &mut num as *mut i32;\n\n  // Use an unsafe block to dereference r1 and print its value\n  \n}',
+    expectedOutput: 'r1 is: 5',
+    solution:
+      'fn main() {\n  let mut num = 5;\n\n  let r1 = &num as *const i32;\n  let r2 = &mut num as *mut i32;\n\n  unsafe {\n    println!("r1 is: {}", *r1);\n    // *r2 = 10; // Also possible\n  }\n}',
+    hints: [
+      'Operations like dereferencing raw pointers must be enclosed in an `unsafe { ... }` block.',
+      'Create a raw pointer by casting a reference with `as *const T` or `as *mut T`.',
+      'Dereference a raw pointer with the asterisk `*` operator.',
+    ],
+    difficulty: 'hard',
+    category: 'System',
+    lessonId: 'unsafe',
+    topicId: 'system-programming',
+  },
+  {
+    id: 'cp-042',
+    title: 'Conditional Compilation',
+    description:
+      'Use the `#[cfg]` attribute to include code only when compiling for a specific target operating system.',
+    initialCode:
+      'fn main() {\n  // Use #[cfg] to print a message specific to the OS\n  // This example will only show output on one of the platforms.\n\n\n  println!("This prints on all systems.");\n}',
+    expectedOutput: 'Running on Windows!\nThis prints on all systems.',
+    solution:
+      'fn main() {\n  #[cfg(target_os = "windows")]\n  {\n    println!("Running on Windows!");\n  }\n\n  #[cfg(target_os = "linux")]\n  {\n    println!("Running on Linux!");\n  }\n\n  println!("This prints on all systems.");\n}',
+    hints: [
+      'The attribute for conditional compilation is `#[cfg(...)]`.',
+      'You can check the target OS with `target_os = "os_name"`.',
+      'This code will produce different output depending on the system you compile it on.',
+    ],
+    difficulty: 'medium',
+    category: 'Attributes',
+    lessonId: 'attributes',
+    topicId: 'system-programming',
+  },
+
+  // =================================================================
+  // Lanjutan Advanced Concepts
+  // =================================================================
+  {
+    id: 'cp-043',
+    title: 'Using Box<T>',
+    description: 'Use a `Box<T>` to store an integer on the heap.',
+    initialCode:
+      'fn main() {\n  // Create a Box that stores the value 10 on the heap\n  \n\n  // Dereference the box to print its value\n\n}',
+    expectedOutput: 'The value in the box is: 10',
+    solution:
+      'fn main() {\n  let b = Box::new(10);\n  println!("The value in the box is: {}", *b);\n}',
+    hints: [
+      'Use `Box::new(value)` to allocate memory on the heap and place the value inside.',
+      '`Box<T>` is a smart pointer.',
+      'Use the `*` dereference operator to access the value inside the `Box`.',
+    ],
+    difficulty: 'medium',
+    category: 'Smart Pointers',
+    lessonId: 'smart-pointers',
+    topicId: 'advanced-concepts',
+  },
+  {
+    id: 'cp-044',
+    title: 'Spawning a Thread',
+    description: 'Use `thread::spawn` to run code in a new thread.',
+    initialCode:
+      'use std::thread;\nuse std::time::Duration;\n\nfn main() {\n  // Spawn a new thread that prints a message\n  \n\n  // Keep the main thread alive long enough for the new thread to finish\n  thread::sleep(Duration::from_millis(1));\n}',
+    expectedOutput: 'Hello from the new thread!',
+    solution:
+      'use std::thread;\nuse std::time::Duration;\n\nfn main() {\n  let handle = thread::spawn(|| {\n    println!("Hello from the new thread!");\n  });\n\n  // Wait for the spawned thread to finish\n  handle.join().unwrap();\n}',
+    hints: [
+      '`thread::spawn` takes a closure as an argument.',
+      'The main thread will exit without waiting for other threads unless you explicitly wait.',
+      'Call `.join()` on the handle returned by `thread::spawn` to wait for the thread to complete.',
+    ],
+    difficulty: 'hard',
+    category: 'Concurrency',
+    lessonId: 'concurrency',
+    topicId: 'advanced-concepts',
+  },
+
+  // =================================================================
+  // Lanjutan Error Handling
+  // =================================================================
+  {
+    id: 'cp-045',
+    title: 'Unrecoverable Errors with panic!',
+    description: 'Use `panic!` to stop execution when an invalid condition is met.',
+    initialCode:
+      'fn check_age(age: i32) {\n  if age < 0 {\n    // Panic with a message if age is negative\n\n  } else {\n    println!("Age is valid: {}", age);\n  }\n}\n\nfn main() {\n  // This call should succeed\n  check_age(25);\n  // This call should panic\n  check_age(-5);\n}',
+    expectedOutput: 'Age is valid: 25',
+    solution:
+      'fn check_age(age: i32) {\n  if age < 0 {\n    panic!("Age cannot be negative!");\n  } else {\n    println!("Age is valid: {}", age);\n  }\n}\n\nfn main() {\n  check_age(25);\n}',
+    hints: [
+      'The `panic!` macro will immediately terminate the current thread.',
+      'Provide a descriptive error message as an argument to `panic!`.',
+      'Execution stops at the panic, so any code after it will not run.',
+      'For this practice, only the non-panicking output is expected.',
+    ],
+    difficulty: 'easy',
+    category: 'Error Handling',
+    lessonId: 'panic',
+    topicId: 'error-handling',
   },
 ];

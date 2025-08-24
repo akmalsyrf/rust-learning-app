@@ -31,13 +31,16 @@
     "expo-font": "~13.3.2",
     "expo-notifications": "~0.31.4",
     "expo-status-bar": "~2.2.3",
+    "i18next": "^25.4.2",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-i18next": "^15.7.2",
     "react-native": "0.79.6",
     "react-native-safe-area-context": "^5.6.1",
     "react-native-screens": "^4.15.2",
     "react-native-web": "^0.20.0",
-    "zustand": "^5.0.8"
+    "zustand": "^5.0.8",
+    "expo-localization": "~16.1.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

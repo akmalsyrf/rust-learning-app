@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { CodePracticeScreenProps } from '../types/navigation';
 import { useDataStore } from '../state/useDataStore';
-import { CodePractice } from '../data/codePractices';
+import { CodePractice } from '../types';
 import CodePracticeCard from '../components/CodePracticeCard';
+import { useLanguage } from '../i18n';
 
 export default function CodePracticeScreen({ navigation, route }: CodePracticeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
+  const { t } = useTranslation();
+  const { currentLanguage } = useLanguage();
+  const isCurrLangNeedsPlural = currentLanguage !== 'id';
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
@@ -89,15 +94,17 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>Code Practice</Text>
-          <Text style={styles.subtitle}>Practice Rust programming with interactive exercises</Text>
+          <Text style={styles.title}>{t('codePractice.title', 'Code Practice')}</Text>
+          <Text style={styles.subtitle}>
+            {t('codePractice.subtitle', 'Practice Rust programming with interactive exercises')}
+          </Text>
         </View>
 
         {/* Filters */}
         <View style={styles.filtersContainer}>
           {/* Difficulty Filter */}
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Difficulty:</Text>
+            <Text style={styles.filterLabel}>{t('codePractice.difficulty', 'Difficulty:')}</Text>
             <View style={styles.filterButtons}>
               {difficulties.map(difficulty => (
                 <TouchableOpacity
@@ -126,8 +133,11 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
                     ]}
                   >
                     {difficulty === 'all'
-                      ? 'All'
-                      : difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+                      ? t('codePractice.all', 'All')
+                      : t(
+                          `difficulty.${difficulty}`,
+                          difficulty.charAt(0).toUpperCase() + difficulty.slice(1)
+                        )}
                   </Text>
                 </TouchableOpacity>
               ))}
@@ -136,7 +146,7 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
 
           {/* Category Filter */}
           <View style={styles.filterSection}>
-            <Text style={styles.filterLabel}>Category:</Text>
+            <Text style={styles.filterLabel}>{t('codePractice.category', 'Category:')}</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.filterButtons}>
                 {categories.map(category => (
@@ -154,7 +164,7 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
                         selectedCategory === category && styles.filterButtonTextActive,
                       ]}
                     >
-                      {category === 'all' ? 'All' : category}
+                      {category === 'all' ? t('codePractice.all', 'All') : category}
                     </Text>
                   </TouchableOpacity>
                 ))}
@@ -166,7 +176,9 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
         {/* Practice Count */}
         <View style={styles.practiceCount}>
           <Text style={styles.practiceCountText}>
-            {filteredPractices.length} practice{filteredPractices.length !== 1 ? 's' : ''} found
+            {filteredPractices.length} {t('codePractice.practice', 'practice')}
+            {filteredPractices.length !== 1 && isCurrLangNeedsPlural ? 's' : ''}{' '}
+            {t('codePractice.found', 'found')}
           </Text>
         </View>
 
@@ -185,9 +197,14 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
         ) : (
           <View style={styles.emptyState}>
             <Ionicons name='code-slash' size={64} color={theme.colors.textSecondary} />
-            <Text style={styles.emptyStateTitle}>No Practices Found</Text>
+            <Text style={styles.emptyStateTitle}>
+              {t('codePractice.noPracticesFound', 'No Practices Found')}
+            </Text>
             <Text style={styles.emptyStateText}>
-              Try adjusting your filters or check back later for more exercises.
+              {t(
+                'codePractice.emptyStateText',
+                'Try adjusting your filters or check back later for more exercises.'
+              )}
             </Text>
           </View>
         )}
@@ -196,24 +213,34 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
         <View style={styles.infoCard}>
           <View style={styles.infoHeader}>
             <Ionicons name='information-circle' size={24} color={theme.colors.primary} />
-            <Text style={styles.infoTitle}>About Code Practice</Text>
+            <Text style={styles.infoTitle}>
+              {t('codePractice.aboutCodePractice', 'About Code Practice')}
+            </Text>
           </View>
           <Text style={styles.infoText}>
-            These interactive exercises help you learn Rust by writing actual code. Each practice
-            includes hints, expected output, and a solution to check your work.
+            {t(
+              'codePractice.infoText',
+              'These interactive exercises help you learn Rust by writing actual code. Each practice includes hints, expected output, and a solution to check your work.'
+            )}
           </Text>
           <View style={styles.infoFeatures}>
             <View style={styles.infoFeature}>
               <Ionicons name='checkmark-circle' size={16} color={theme.colors.success} />
-              <Text style={styles.infoFeatureText}>Syntax highlighting</Text>
+              <Text style={styles.infoFeatureText}>
+                {t('codePractice.syntaxHighlighting', 'Syntax highlighting')}
+              </Text>
             </View>
             <View style={styles.infoFeature}>
               <Ionicons name='checkmark-circle' size={16} color={theme.colors.success} />
-              <Text style={styles.infoFeatureText}>Interactive hints</Text>
+              <Text style={styles.infoFeatureText}>
+                {t('codePractice.interactiveHints', 'Interactive hints')}
+              </Text>
             </View>
             <View style={styles.infoFeature}>
               <Ionicons name='checkmark-circle' size={16} color={theme.colors.success} />
-              <Text style={styles.infoFeatureText}>Solution checking</Text>
+              <Text style={styles.infoFeatureText}>
+                {t('codePractice.solutionChecking', 'Solution checking')}
+              </Text>
             </View>
           </View>
         </View>

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import { Ionicons } from '@expo/vector-icons';
 import { Question } from '../types';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 
 interface QuestionCardProps {
@@ -25,6 +26,7 @@ export default function QuestionCard({
   setTextInput,
 }: QuestionCardProps) {
   const { getEffectiveTheme } = useSettingsStore();
+  const { t } = useTranslation();
   const [selectedAnswer, setSelectedAnswer] = useState<string | number | boolean | null>(null);
 
   const isDark = getEffectiveTheme() === 'dark';
@@ -119,7 +121,9 @@ export default function QuestionCard({
                   size={24}
                   color={isSelected ? theme.colors.background : theme.colors.text}
                 />
-                <Text style={textStyle}>{value ? 'True' : 'False'}</Text>
+                <Text style={textStyle}>
+                  {value ? t('questionCard.true', 'True') : t('questionCard.false', 'False')}
+                </Text>
                 {showResult && isCorrectChoice && (
                   <Ionicons name='checkmark' size={20} color={theme.colors.correct} />
                 )}
@@ -151,7 +155,7 @@ export default function QuestionCard({
               handleAnswer(text);
             }
           }}
-          placeholder='Type your answer here...'
+          placeholder={t('questionCard.typeAnswerHere', 'Type your answer here...')}
           placeholderTextColor={theme.colors.textSecondary}
           editable={!showResult}
           autoCapitalize='none'
@@ -159,7 +163,9 @@ export default function QuestionCard({
         />
         {showResult && (
           <View style={styles.correctAnswerContainer}>
-            <Text style={styles.correctAnswerLabel}>Correct answer(s):</Text>
+            <Text style={styles.correctAnswerLabel}>
+              {t('questionCard.correctAnswer', 'Correct answer(s):')}
+            </Text>
             <Text style={styles.correctAnswerText}>{question.acceptableAnswers.join(', ')}</Text>
           </View>
         )}
@@ -175,7 +181,9 @@ export default function QuestionCard({
         <View style={styles.codeBlock}>
           <Text style={styles.codeText}>{question.code}</Text>
         </View>
-        <Text style={styles.codePrompt}>What will this code output?</Text>
+        <Text style={styles.codePrompt}>
+          {t('questionCard.whatWillCodeOutput', 'What will this code output?')}
+        </Text>
         <TextInput
           id={question.id}
           key={question.id}
@@ -192,7 +200,7 @@ export default function QuestionCard({
               handleAnswer(text);
             }
           }}
-          placeholder='Enter the expected output...'
+          placeholder={t('questionCard.enterExpectedOutput', 'Enter the expected output...')}
           placeholderTextColor={theme.colors.textSecondary}
           editable={!showResult}
           multiline

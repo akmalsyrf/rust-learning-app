@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { Topic, Lesson, Question, TopicId, LessonId, QuestionId } from '../types';
-import { CodePractice } from '../data/codePractices';
+import { Topic, Lesson, Question, TopicId, LessonId, QuestionId, CodePractice } from '../types';
 
 interface DataState {
   topics: Topic[];

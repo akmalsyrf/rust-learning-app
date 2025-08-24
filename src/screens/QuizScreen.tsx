@@ -5,6 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
+import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 import QuestionCard from '../components/QuestionCard';
 import { Question, QuestionResult, LessonResult, Lesson } from '../types';
@@ -16,6 +17,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { getLesson, getQuestionsForLesson, getTopics, getLessonsForTopic } = useDataStore();
   const { completeQuestion, completeLesson, getLessonStars } = useProgressStore();
+  const { t } = useTranslation();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
@@ -47,9 +49,11 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
 
   useEffect(() => {
     if (!lesson || questions.length === 0) {
-      Alert.alert('Error', 'Lesson or questions not found', [
-        { text: 'OK', onPress: () => navigation.goBack() },
-      ]);
+      Alert.alert(
+        t('common.error', 'Error'),
+        t('quiz.lessonOrQuestionsNotFound', 'Lesson or questions not found'),
+        [{ text: t('common.ok', 'OK'), onPress: () => navigation.goBack() }]
+      );
     }
   }, [lesson, questions, navigation]);
 
@@ -157,7 +161,9 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
           <Ionicons name='alert-circle-outline' size={64} color={theme.colors.error} />
-          <Text style={styles.errorText}>No questions available</Text>
+          <Text style={styles.errorText}>
+            {t('quiz.noQuestionsAvailable', 'No questions available')}
+          </Text>
         </View>
       </SafeAreaView>
     );
@@ -176,7 +182,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
               size={64}
               color={percentage >= 70 ? theme.colors.success : theme.colors.warning}
             />
-            <Text style={styles.resultsTitle}>Quiz Complete!</Text>
+            <Text style={styles.resultsTitle}>{t('quiz.quizComplete', 'Quiz Complete!')}</Text>
             <Text style={styles.resultsScore}>
               {correctCount}/{questions.length} ({percentage}%)
             </Text>
@@ -185,15 +191,15 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
           <View style={styles.resultsSummary}>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryValue}>{correctCount}</Text>
-              <Text style={styles.summaryLabel}>Correct</Text>
+              <Text style={styles.summaryLabel}>{t('quiz.correct', 'Correct')}</Text>
             </View>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryValue}>{questions.length - correctCount}</Text>
-              <Text style={styles.summaryLabel}>Incorrect</Text>
+              <Text style={styles.summaryLabel}>{t('quiz.incorrect', 'Incorrect')}</Text>
             </View>
             <View style={styles.summaryItem}>
               <Text style={styles.summaryValue}>{correctCount * 10}</Text>
-              <Text style={styles.summaryLabel}>XP Earned</Text>
+              <Text style={styles.summaryLabel}>{t('quiz.xpEarned', 'XP Earned')}</Text>
             </View>
           </View>
 
@@ -208,12 +214,14 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
                 }
               }}
             >
-              <Text style={styles.primaryButtonText}>Continue Learning</Text>
+              <Text style={styles.primaryButtonText}>
+                {t('quiz.continueLearning', 'Continue Learning')}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.secondaryButton} onPress={restartQuiz}>
               <Ionicons name='refresh' size={16} color={theme.colors.primary} />
-              <Text style={styles.secondaryButtonText}>Retake Quiz</Text>
+              <Text style={styles.secondaryButtonText}>{t('quiz.retakeQuiz', 'Retake Quiz')}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -229,7 +237,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
       <View style={styles.header}>
         <View style={styles.progressContainer}>
           <Text style={styles.progressText}>
-            {currentQuestionIndex + 1} of {questions.length}
+            {currentQuestionIndex + 1} {t('quiz.of', 'of')} {questions.length}
           </Text>
           <View style={styles.progressBar}>
             <View style={[styles.progressFill, { width: `${progress}%` }]} />
@@ -267,7 +275,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
               currentQuestionIndex === 0 && styles.navButtonTextDisabled,
             ]}
           >
-            Previous
+            {t('quiz.previous', 'Previous')}
           </Text>
         </TouchableOpacity>
 
@@ -283,7 +291,9 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
               !hasAnswered && styles.navButtonTextDisabled,
             ]}
           >
-            {currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next'}
+            {currentQuestionIndex === questions.length - 1
+              ? t('quiz.finish', 'Finish')
+              : t('quiz.next', 'Next')}
           </Text>
           <Ionicons
             name='chevron-forward'

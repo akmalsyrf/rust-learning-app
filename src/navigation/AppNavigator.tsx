@@ -15,6 +15,7 @@ import ResultsScreen from '../screens/ResultsScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AboutScreen from '../screens/AboutScreen';
+import LanguageSettings from '../components/LanguageSettings';
 
 // Import theme and types
 import { useSettingsStore } from '../state/useSettingsStore';
@@ -112,6 +113,11 @@ export default function AppNavigator() {
         />
         <Stack.Screen name='Results' component={ResultsScreen} options={{ title: 'Results' }} />
         <Stack.Screen name='About' component={AboutScreen} options={{ title: 'About' }} />
+        <Stack.Screen
+          name='LanguageSettings'
+          component={LanguageSettings}
+          options={{ title: 'Language Settings' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

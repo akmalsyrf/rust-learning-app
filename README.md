@@ -21,6 +21,15 @@ A comprehensive React Native Expo application for learning Rust programming thro
 - ✅ **350+ Interactive Questions**: Multiple choice, true/false, fill-in-the-blank, code prediction, and code fix
 - ✅ **Progressive Difficulty**: Beginner to advanced with proper learning curve
 
+### 🌍 Internationalization (i18n)
+
+- ✅ **Dual Language Support**: English and Indonesian (Bahasa Indonesia)
+- ✅ **Automatic Language Detection**: Device locale detection with fallback to English
+- ✅ **Complete Translation Coverage**: 100% translated across all screens and components
+- ✅ **Persistent Language Preference**: User language choice saved across app sessions
+- ✅ **Cultural Adaptation**: Natural Indonesian translations for learning context
+- ✅ **Real-time Language Switching**: Instant language change without app restart
+
 ### 🎮 Gamification System
 
 - ✅ **Streak System**: Daily streak tracking with visual indicators and motivational messages
@@ -252,6 +261,29 @@ src/data/
 └── questions.ts     # 350+ questions across all difficulty levels
 ```
 
+### Internationalization (i18n) Architecture
+
+```
+src/i18n/
+├── index.ts                    # i18n configuration and initialization
+├── context/
+│   └── LanguageContext.tsx    # React context for language management
+├── locales/
+│   ├── en.ts                  # English translations (266+ keys)
+│   └── id.ts                  # Indonesian translations (266+ keys)
+└── components/
+    └── LanguageSettings.tsx   # Language selection UI component
+```
+
+#### Translation Coverage
+
+- **Screens**: 7 screens fully translated (100%)
+- **Components**: 2 major components fully translated (100%)
+- **Total Keys**: 266+ translation keys
+- **Languages**: English (en) and Indonesian (id)
+- **Fallback**: Automatic fallback to English for missing keys
+- **Persistence**: AsyncStorage for language preference
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -307,6 +339,14 @@ npx expo start --tunnel
 5. **Track Progress**: Monitor your daily streak and compete on the weekly leaderboard
 6. **Customize**: Adjust theme and preferences in the Profile section
 
+### 🌍 **Language Settings**
+
+1. **Access Language Settings**: Go to Profile → Settings → Language
+2. **Choose Language**: Select between English or Indonesian
+3. **Instant Switch**: Language changes immediately across the entire app
+4. **Persistent Preference**: Your choice is saved and remembered
+5. **Automatic Detection**: App detects your device language on first launch
+
 ### 📊 **Progress System Details**
 
 #### XP Earning Mechanics
@@ -357,6 +397,67 @@ npx expo start --tunnel
 - **Progress Indicators**: Animated progress bars and completion badges
 - **Icons**: Ionicons for consistency across platforms
 
+## 🌍 Internationalization Implementation
+
+### Supported Languages
+
+#### 🇺🇸 **English (en)**
+
+- **Default Language**: Primary app language
+- **Fallback**: Automatic fallback for missing translations
+- **Content**: All UI elements, messages, and learning content
+
+#### 🇮🇩 **Indonesian (Bahasa Indonesia)**
+
+- **Native Support**: Complete Indonesian localization
+- **Cultural Adaptation**: Natural language flow for Indonesian users
+- **Learning Context**: Appropriate terminology for programming education
+
+### Translation Structure
+
+#### **Screen Translations**
+
+- **HomeScreen**: Welcome messages, stats, daily goals, quick actions
+- **ProfileScreen**: User stats, achievements, settings, progress summary
+- **LeaderboardScreen**: Rankings, competitive elements, info messages
+- **ModulesScreen**: Topic navigation, progress indicators, empty states
+- **QuizScreen**: Question flow, results, navigation, error messages
+- **CodePracticeScreen**: Code practice interface, filters, info cards
+- **LessonScreen**: Lesson content, quiz info, practice sections
+
+#### **Component Translations**
+
+- **CodePracticeCard**: Code editor, hints, solution checking, execution results
+- **QuestionCard**: Question types, placeholders, labels, feedback messages
+
+#### **Common Elements**
+
+- **Navigation**: Tab labels, screen titles, button text
+- **Settings**: Theme options, language selection, data management
+- **Messages**: Success, error, warning, and informational alerts
+- **Time & Numbers**: Date formatting, count displays, progress indicators
+
+### Technical Implementation
+
+#### **i18n Libraries**
+
+- **i18next**: Core internationalization framework
+- **react-i18next**: React integration with hooks and components
+- **expo-localization**: Device locale detection
+
+#### **State Management**
+
+- **LanguageContext**: React Context for global language state
+- **AsyncStorage**: Persistent language preference storage
+- **Real-time Updates**: Immediate language switching across all components
+
+#### **Development Features**
+
+- **Debug Mode**: Missing key warnings during development
+- **Fallback System**: Automatic English fallback for missing translations
+- **Type Safety**: TypeScript support for translation keys
+- **Hot Reload**: Translation updates without app restart
+
 ## 📖 Content Attribution & License
 
 ### Source Material
@@ -406,7 +507,6 @@ This mobile application is created for educational purposes. The app code is ava
 - [ ] **Offline Sync**: Advanced conflict resolution and background sync
 - [ ] **Performance**: Memory optimization and lazy loading
 - [ ] **Accessibility**: Full screen reader support and font scaling
-- [ ] **Internationalization**: Multiple language support beyond English
 
 ## 🤝 Contributing
 
@@ -419,6 +519,7 @@ This project welcomes contributions from the community:
 - **Performance**: Optimizing app performance and memory usage
 - **Features**: Adding new question types or learning mechanics
 - **Testing**: Expanding test coverage and quality assurance
+- **Internationalization**: Adding new languages, improving translations, cultural adaptation
 
 ### Development Guidelines
 
@@ -427,6 +528,14 @@ This project welcomes contributions from the community:
 3. Include proper error handling
 4. Add tests for new features
 5. Update documentation accordingly
+
+### i18n Development Guidelines
+
+1. **Translation Keys**: Use descriptive, hierarchical key names (e.g., `screenName.sectionName.elementName`)
+2. **Fallback Values**: Always provide English fallback text in translation calls
+3. **Cultural Context**: Consider cultural differences when translating learning content
+4. **Pluralization**: Handle plural forms appropriately for each language
+5. **Testing**: Test translations in both languages before submitting changes
 
 ## 📧 Contact & Support
 
@@ -443,6 +552,8 @@ For questions, feedback, or collaboration opportunities:
 - **📝 Lessons**: 68 structured lessons (A.1-A.55 complete)
 - **❓ Questions**: 350+ interactive questions
 - **🎨 Components**: 15+ reusable UI components
+- **🌍 Languages**: 2 languages (English & Indonesian)
+- **🔤 Translations**: 266+ translation keys
 - **⚡ Performance**: < 2 second app load time
 - **📱 Compatibility**: iOS 12+, Android 8+ support
 

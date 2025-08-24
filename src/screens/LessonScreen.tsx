@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useTranslation } from 'react-i18next';
 import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
 import { LessonScreenProps } from '../types/navigation';
+import { useLanguage } from '../i18n';
 
 export default function LessonScreen({ route, navigation }: LessonScreenProps) {
   const { lessonId } = route.params;
+  const { currentLanguage } = useLanguage();
+  const isCurrLangNeedsPlural = currentLanguage !== 'id';
   const { getEffectiveTheme } = useSettingsStore();
+  const { t } = useTranslation();
   const { getLesson, getTopic, getQuestionsForLesson } = useDataStore();
   const { getLessonStars } = useProgressStore();
 
@@ -28,9 +33,11 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
       <SafeAreaView style={styles.container}>
         <View style={styles.errorContainer}>
           <Ionicons name='alert-circle-outline' size={64} color={theme.colors.error} />
-          <Text style={styles.errorText}>Lesson not found</Text>
+          <Text style={styles.errorText}>
+            {t('lessonScreen.lessonNotFound', 'Lesson not found')}
+          </Text>
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Text style={styles.backButtonText}>Go Back</Text>
+            <Text style={styles.backButtonText}>{t('lessonScreen.goBack', 'Go Back')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -60,7 +67,9 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
           </View>
 
           <View style={styles.progressIndicator}>
-            <Text style={styles.progressText}>Your Progress</Text>
+            <Text style={styles.progressText}>
+              {t('lessonScreen.yourProgress', 'Your Progress')}
+            </Text>
             <View style={styles.starsContainer}>{renderStars(stars)}</View>
           </View>
         </View>
@@ -74,8 +83,13 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
           <View style={styles.attributionContainer}>
             <Ionicons name='link-outline' size={16} color={theme.colors.primary} />
             <Text style={styles.attributionText}>
-              Based on content from{' '}
-              <Text style={styles.attributionLink}>Dasar Pemrograman Rust</Text>
+              {t('lessonScreen.basedOnContentFrom', 'Based on content from')}{' '}
+              <Text
+                style={styles.attributionLink}
+                onPress={() => Linking.openURL(lesson.attributionUrl)}
+              >
+                {t('lessonScreen.dasarPemrogramanRust', 'Dasar Pemrograman Rust')}
+              </Text>
             </Text>
           </View>
         </View>
@@ -87,27 +101,38 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
               <Ionicons name='help-circle' size={24} color={theme.colors.primary} />
             </View>
             <View style={styles.quizInfo}>
-              <Text style={styles.quizTitle}>Practice Quiz</Text>
+              <Text style={styles.quizTitle}>
+                {t('lessonScreen.practiceQuiz', 'Practice Quiz')}
+              </Text>
               <Text style={styles.quizSubtitle}>
-                {questions.length} questions • Test your understanding
+                {questions.length} {t('lessonScreen.questions', 'questions')} •{' '}
+                {t('lessonScreen.testYourUnderstanding', 'Test your understanding')}
               </Text>
             </View>
           </View>
 
           <View style={styles.questionTypes}>
-            <Text style={styles.questionTypesTitle}>Question Types:</Text>
+            <Text style={styles.questionTypesTitle}>
+              {t('lessonScreen.questionTypes', 'Question Types:')}
+            </Text>
             <View style={styles.questionTypesGrid}>
               <View style={styles.questionType}>
                 <Ionicons name='checkmark-circle-outline' size={16} color={theme.colors.success} />
-                <Text style={styles.questionTypeText}>Multiple Choice</Text>
+                <Text style={styles.questionTypeText}>
+                  {t('lessonScreen.multipleChoice', 'Multiple Choice')}
+                </Text>
               </View>
               <View style={styles.questionType}>
                 <Ionicons name='code-outline' size={16} color={theme.colors.info} />
-                <Text style={styles.questionTypeText}>Code Reading</Text>
+                <Text style={styles.questionTypeText}>
+                  {t('lessonScreen.codeReading', 'Code Reading')}
+                </Text>
               </View>
               <View style={styles.questionType}>
                 <Ionicons name='create-outline' size={16} color={theme.colors.warning} />
-                <Text style={styles.questionTypeText}>Fill in Blanks</Text>
+                <Text style={styles.questionTypeText}>
+                  {t('lessonScreen.fillInBlanks', 'Fill in Blanks')}
+                </Text>
               </View>
             </View>
           </View>
@@ -118,7 +143,9 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
           >
             <Ionicons name='play' size={20} color='white' />
             <Text style={styles.startQuizButtonText}>
-              {stars > 0 ? 'Retake Quiz' : 'Start Quiz'}
+              {stars > 0
+                ? t('lessonScreen.retakeQuiz', 'Retake Quiz')
+                : t('lessonScreen.startQuiz', 'Start Quiz')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -130,8 +157,12 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
               <Ionicons name='code-slash' size={24} color={theme.colors.secondary} />
             </View>
             <View style={styles.practiceInfo}>
-              <Text style={styles.practiceTitle}>Code Practice</Text>
-              <Text style={styles.practiceSubtitle}>Hands-on coding exercises</Text>
+              <Text style={styles.practiceTitle}>
+                {t('lessonScreen.codePractice', 'Code Practice')}
+              </Text>
+              <Text style={styles.practiceSubtitle}>
+                {t('lessonScreen.handsOnCodingExercises', 'Hands-on coding exercises')}
+              </Text>
             </View>
           </View>
 
@@ -140,18 +171,25 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
             onPress={() => navigation.navigate('CodePractice', { lessonId })}
           >
             <Ionicons name='code' size={20} color={theme.colors.secondary} />
-            <Text style={styles.practiceButtonText}>Try Code Exercises</Text>
+            <Text style={styles.practiceButtonText}>
+              {t('lessonScreen.tryCodeExercises', 'Try Code Exercises')}
+            </Text>
           </TouchableOpacity>
         </View>
 
         {/* Progress Summary */}
         {stars > 0 && (
           <View style={styles.summaryCard}>
-            <Text style={styles.summaryTitle}>Your Achievement</Text>
+            <Text style={styles.summaryTitle}>
+              {t('lessonScreen.yourAchievement', 'Your Achievement')}
+            </Text>
             <View style={styles.summaryContent}>
               <View style={styles.starsContainer}>{renderStars(stars)}</View>
               <Text style={styles.summaryText}>
-                Great work! You've completed this lesson with {stars} star{stars !== 1 ? 's' : ''}.
+                {t('lessonScreen.greatWork', 'Great work!')}{' '}
+                {t('lessonScreen.youveCompletedLesson', "You've completed this lesson with")}{' '}
+                {stars} {t('lessonScreen.star', 'star')}
+                {stars !== 1 && isCurrLangNeedsPlural ? 's' : ''}.
               </Text>
             </View>
           </View>
