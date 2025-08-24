@@ -7,6 +7,7 @@ import { useProgressStore } from '../state/useProgressStore';
 import { useDataStore } from '../state/useDataStore';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { HomeScreenProps } from '../types/navigation';
+import { getNextLesson } from '../utils';
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
@@ -20,21 +21,12 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const styles = createStyles(theme);
   const todayXP = getTodayXP();
 
-  // Find the next lesson to continue
-  const getNextLesson = () => {
-    const allTopics = getTopics();
-    for (const topic of allTopics) {
-      const lessons = getLessonsForTopic(topic.id);
-      for (const lesson of lessons) {
-        if (getLessonStars(lesson.id) === 0) {
-          return lesson;
-        }
-      }
-    }
-    return null; // All lessons completed
-  };
-
-  const nextLesson = getNextLesson();
+  const allTopics = getTopics();
+  const nextLesson = getNextLesson({
+    allTopics,
+    getLessonsForTopic,
+    getLessonStars,
+  });
 
   const calculateOverallProgress = () => {
     const allTopics = getTopics();

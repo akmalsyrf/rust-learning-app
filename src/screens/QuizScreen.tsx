@@ -7,14 +7,15 @@ import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
 import { lightTheme, darkTheme } from '../theme';
 import QuestionCard from '../components/QuestionCard';
-import { Question, QuestionResult, LessonResult } from '../types';
+import { Question, QuestionResult, LessonResult, Lesson } from '../types';
 import { QuizScreenProps } from '../types/navigation';
+import { getNextLesson } from '../utils';
 
 export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const { lessonId } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
-  const { getLesson, getQuestionsForLesson } = useDataStore();
-  const { completeQuestion, completeLesson } = useProgressStore();
+  const { getLesson, getQuestionsForLesson, getTopics, getLessonsForTopic } = useDataStore();
+  const { completeQuestion, completeLesson, getLessonStars } = useProgressStore();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
@@ -25,6 +26,18 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
+
+  const [nextLesson, setNextLesson] = useState<Lesson | null>(null);
+  // Find the next lesson to continue after the quiz is finished
+  useEffect(() => {
+    const allTopics = getTopics();
+    const nextLesson = getNextLesson({
+      allTopics,
+      getLessonsForTopic,
+      getLessonStars,
+    });
+    setNextLesson(nextLesson);
+  }, [showResults]);
 
   const lesson = getLesson(lessonId);
   const questions = getQuestionsForLesson(lessonId);
@@ -185,7 +198,16 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
           </View>
 
           <View style={styles.actionButtons}>
-            <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              style={styles.primaryButton}
+              onPress={() => {
+                if (nextLesson) {
+                  navigation.navigate('Lesson', { lessonId: nextLesson.id });
+                } else {
+                  navigation.goBack();
+                }
+              }}
+            >
               <Text style={styles.primaryButtonText}>Continue Learning</Text>
             </TouchableOpacity>
 

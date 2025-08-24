@@ -380,7 +380,7 @@ export const questions: Question[] = [
     id: 'const-q4',
     type: 'fib',
     prompt: 'By convention, constant variable names in Rust are written in _________ case.',
-    acceptableAnswers: ['UPPERCASE', 'SCREAMING_SNAKE_CASE', 'SCREAMING SNAKE CASE', 'UPPER_CASE'],
+    acceptableAnswers: ['UPPER', 'SCREAMING_SNAKE', 'SCREAMING SNAKE'],
     explanation:
       'The convention is to use all uppercase letters with underscores between words, e.g., `MAX_SPEED`.',
     topicId: 'data-types',
