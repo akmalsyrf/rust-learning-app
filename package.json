@@ -16,7 +16,9 @@
     "code:fix": "npm run lint:fix && npm run format",
     "quality": "npm run code:check",
     "quality:fix": "npm run code:fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:android:prod": "eas build --platform android --profile production",
+    "build:ios:prod": "eas build --platform ios --profile production"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
