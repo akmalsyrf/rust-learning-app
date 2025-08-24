@@ -11,6 +11,8 @@ interface QuestionCardProps {
   showResult?: boolean;
   userAnswer?: string | number | boolean;
   isCorrect?: boolean;
+  textInput: string;
+  setTextInput: (text: string) => void;
 }
 
 export default function QuestionCard({
@@ -19,10 +21,11 @@ export default function QuestionCard({
   showResult = false,
   userAnswer,
   isCorrect,
+  textInput,
+  setTextInput,
 }: QuestionCardProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const [selectedAnswer, setSelectedAnswer] = useState<string | number | boolean | null>(null);
-  const [textInput, setTextInput] = useState('');
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
@@ -134,6 +137,8 @@ export default function QuestionCard({
     return (
       <View style={styles.fillInBlankContainer}>
         <TextInput
+          id={question.id}
+          key={question.id}
           style={[
             styles.textInput,
             showResult && isCorrect && styles.correctInput,
@@ -172,6 +177,8 @@ export default function QuestionCard({
         </View>
         <Text style={styles.codePrompt}>What will this code output?</Text>
         <TextInput
+          id={question.id}
+          key={question.id}
           style={[
             styles.textInput,
             styles.codeInput,

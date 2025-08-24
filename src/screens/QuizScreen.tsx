@@ -29,6 +29,8 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const lesson = getLesson(lessonId);
   const questions = getQuestionsForLesson(lessonId);
   const currentQuestion = questions[currentQuestionIndex];
+  // for fill in the blank and code output questions, we need to store the text input
+  const [textInput, setTextInput] = useState('');
 
   useEffect(() => {
     if (!lesson || questions.length === 0) {
@@ -69,6 +71,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const handleNext = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(prev => prev + 1);
+      setTextInput('');
     } else {
       finishQuiz();
     }
@@ -217,7 +220,12 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
       </View>
 
       <ScrollView style={styles.questionContainer} showsVerticalScrollIndicator={false}>
-        <QuestionCard question={currentQuestion} onAnswer={handleAnswer} />
+        <QuestionCard
+          question={currentQuestion}
+          onAnswer={handleAnswer}
+          textInput={textInput}
+          setTextInput={setTextInput}
+        />
       </ScrollView>
 
       <View style={styles.navigationButtons}>
