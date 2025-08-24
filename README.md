@@ -8,9 +8,9 @@ A comprehensive React Native Expo application for learning Rust programming thro
 | ------------------------------ | ---------------------------------- | ------------------------------------ |
 | ![Homepage](docs/homepage.jpg) | ![Learn Page](docs/learn-page.jpg) | ![Lesson Page](docs/lesson-page.jpg) |
 
-| Dark Mode                                   | Leaderboard                               | Profile Page                           |
-| ------------------------------------------- | ----------------------------------------- | -------------------------------------- |
-| ![Dark Mode](docs/learn-page-dark-mode.jpg) | ![Leaderboard](docs/leaderboard-page.jpg) | ![Profile Page](docs/profile-page.jpg) |
+| Dark Mode                                   | Leaderboard                               | Code Practice Page                                 |
+| ------------------------------------------- | ----------------------------------------- | -------------------------------------------------- |
+| ![Dark Mode](docs/learn-page-dark-mode.jpg) | ![Leaderboard](docs/leaderboard-page.jpg) | ![Code Practice Page](docs/code-practice-page.jpg) |
 
 ## 🎯 Features Implemented
 

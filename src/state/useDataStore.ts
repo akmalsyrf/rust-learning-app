@@ -1,10 +1,12 @@
 import { create } from 'zustand';
 import { Topic, Lesson, Question, TopicId, LessonId, QuestionId } from '../types';
+import { CodePractice } from '../data/codePractices';
 
 interface DataState {
   topics: Topic[];
   lessons: Record<LessonId, Lesson>;
   questions: Record<QuestionId, Question>;
+  codePractices: CodePractice[];
 
   // Computed getters
   getTopics: () => Topic[];
@@ -13,15 +15,25 @@ interface DataState {
   getQuestion: (questionId: QuestionId) => Question | undefined;
   getLessonsForTopic: (topicId: TopicId) => Lesson[];
   getQuestionsForLesson: (lessonId: LessonId) => Question[];
+  getCodePractices: () => CodePractice[];
+  getCodePractice: (id: string) => CodePractice | undefined;
+  getCodePracticesForLesson: (lessonId: LessonId) => CodePractice[];
+  getCodePracticesForTopic: (topicId: TopicId) => CodePractice[];
 
   // Actions
-  loadData: (data: { topics: Topic[]; lessons: Lesson[]; questions: Question[] }) => void;
+  loadData: (data: {
+    topics: Topic[];
+    lessons: Lesson[];
+    questions: Question[];
+    codePractices: CodePractice[];
+  }) => void;
 }
 
 export const useDataStore = create<DataState>((set, get) => ({
   topics: [],
   lessons: {},
   questions: {},
+  codePractices: [],
 
   getTopics: () => {
     return get().topics.sort((a, b) => a.order - b.order);
@@ -56,22 +68,43 @@ export const useDataStore = create<DataState>((set, get) => ({
     return lesson.questions.map(questionId => get().questions[questionId]).filter(Boolean);
   },
 
+  getCodePractices: () => {
+    return get().codePractices;
+  },
+
+  getCodePractice: (id: string) => {
+    return get().codePractices.find(practice => practice.id === id);
+  },
+
+  getCodePracticesForLesson: (lessonId: LessonId) => {
+    return get().codePractices.filter(practice => practice.lessonId === lessonId);
+  },
+
+  getCodePracticesForTopic: (topicId: TopicId) => {
+    return get().codePractices.filter(practice => practice.topicId === topicId);
+  },
+
   loadData: data => {
     const lessonsMap: Record<LessonId, Lesson> = {};
     const questionsMap: Record<QuestionId, Question> = {};
 
-    data.lessons.forEach(lesson => {
-      lessonsMap[lesson.id] = lesson;
-    });
+    if (data.lessons && Array.isArray(data.lessons)) {
+      data.lessons.forEach(lesson => {
+        lessonsMap[lesson.id] = lesson;
+      });
+    }
 
-    data.questions.forEach(question => {
-      questionsMap[question.id] = question;
-    });
+    if (data.questions && Array.isArray(data.questions)) {
+      data.questions.forEach(question => {
+        questionsMap[question.id] = question;
+      });
+    }
 
     set({
-      topics: data.topics,
+      topics: data.topics || [],
       lessons: lessonsMap,
       questions: questionsMap,
+      codePractices: data.codePractices || [],
     });
   },
 }));

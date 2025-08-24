@@ -15,6 +15,7 @@ export interface Theme {
     correct: string;
     incorrect: string;
     streak: string;
+    white: string;
   };
   spacing: {
     xs: number;
@@ -50,6 +51,23 @@ export interface Theme {
       fontFamily: string;
       lineHeight: number;
     };
+    sizes: {
+      xs: number;
+      sm: number;
+      md: number;
+      lg: number;
+      xl: number;
+    };
+    lineHeights: {
+      normal: number;
+      relaxed: number;
+    };
+    weights: {
+      normal: string;
+      medium: string;
+      semibold: string;
+      bold: string;
+    };
   };
   borderRadius: {
     sm: number;
@@ -81,6 +99,7 @@ export const lightTheme: Theme = {
     correct: '#10B981',
     incorrect: '#EF4444',
     streak: '#F59E0B',
+    white: '#FFFFFF',
   },
   spacing: {
     xs: 4,
@@ -116,6 +135,23 @@ export const lightTheme: Theme = {
       fontFamily: 'monospace',
       lineHeight: 20,
     },
+    sizes: {
+      xs: 12,
+      sm: 14,
+      md: 16,
+      lg: 18,
+      xl: 20,
+    },
+    lineHeights: {
+      normal: 20,
+      relaxed: 24,
+    },
+    weights: {
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '700',
+    },
   },
   borderRadius: {
     sm: 4,
@@ -148,5 +184,6 @@ export const darkTheme: Theme = {
     correct: '#34D399',
     incorrect: '#F87171',
     streak: '#FBBF24',
+    white: '#FFFFFF',
   },
 };

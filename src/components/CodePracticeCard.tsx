@@ -1,0 +1,646 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useSettingsStore } from '../state/useSettingsStore';
+import { lightTheme, darkTheme, Theme } from '../theme';
+import CodeEditor from './CodeEditor';
+import SyntaxHighlighter from './SyntaxHighlighter';
+import { codeExecutionService, RustExecutionResult } from '../services/codeExecution';
+
+interface CodePractice {
+  id: string;
+  title: string;
+  description: string;
+  initialCode: string;
+  solution: string;
+  expectedOutput?: string;
+  hints: string[];
+  difficulty: 'easy' | 'medium' | 'hard';
+  category: string;
+}
+
+interface CodePracticeCardProps {
+  practice: CodePractice;
+  onComplete?: (practiceId: string, userCode: string) => void;
+  onHint?: (practiceId: string, hintIndex: number) => void;
+}
+
+const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplete, onHint }) => {
+  const { getEffectiveTheme } = useSettingsStore();
+  const isDark = getEffectiveTheme() === 'dark';
+  const theme = isDark ? darkTheme : lightTheme;
+  const styles = createStyles(theme);
+
+  const [userCode, setUserCode] = useState(practice.initialCode);
+  const [showSolution, setShowSolution] = useState(false);
+  const [showHints, setShowHints] = useState(false);
+  const [usedHints, setUsedHints] = useState<number[]>([]);
+  const [executionResult, setExecutionResult] = useState<RustExecutionResult | null>(null);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [solutionStatus, setSolutionStatus] = useState<'not_checked' | 'correct' | 'incorrect'>(
+    'not_checked'
+  );
+
+  const handleCodeChange = (code: string) => {
+    setUserCode(code);
+    // Reset solution status when code changes
+    if (solutionStatus !== 'not_checked') {
+      setSolutionStatus('not_checked');
+    }
+  };
+
+  const handleRunCode = async () => {
+    // Validate code before execution
+    const validation = codeExecutionService.validateRustCode(userCode);
+    if (!validation.isValid) {
+      Alert.alert(
+        'Code Validation Error',
+        `Please fix the following issues:\n\n${validation.errors.join('\n')}`,
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
+    setIsExecuting(true);
+    setExecutionResult(null);
+
+    try {
+      const result = await codeExecutionService.executeRustCode(userCode);
+      setExecutionResult(result);
+
+      if (!result.success) {
+        Alert.alert('Code Execution Failed', result.error, [{ text: 'OK' }]);
+      }
+    } catch (error) {
+      Alert.alert(
+        'Execution Error',
+        'An error occurred while executing your code. Please try again.',
+        [{ text: 'OK' }]
+      );
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
+  const handleCheckSolution = async () => {
+    // Check if code has been executed first
+    if (!executionResult) {
+      Alert.alert('Code Not Executed', 'Please run your code first before checking the solution.', [
+        { text: 'OK' },
+      ]);
+      return;
+    }
+
+    // Check if execution was successful
+    if (!executionResult.success) {
+      Alert.alert(
+        'Code Execution Failed',
+        'Please fix the errors in your code before checking the solution.',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
+    // Check if expected output is available
+    if (!practice.expectedOutput) {
+      Alert.alert(
+        'No Expected Output',
+        'This practice does not have an expected output to check against.',
+        [{ text: 'OK' }]
+      );
+      return;
+    }
+
+    // Compare output with expected output
+    const userOutput = executionResult.output.trim();
+    const expectedOutput = practice.expectedOutput.trim();
+
+    const isCorrect = userOutput === expectedOutput;
+
+    if (isCorrect) {
+      setSolutionStatus('correct');
+      Alert.alert(
+        '🎉 Correct Solution!',
+        `Your code output matches the expected output!\n\nOutput: "${userOutput}"`,
+        [
+          {
+            text: 'Great!',
+            onPress: () => {
+              if (onComplete) {
+                onComplete(practice.id, userCode);
+              }
+            },
+          },
+        ]
+      );
+    } else {
+      setSolutionStatus('incorrect');
+      Alert.alert(
+        '❌ Incorrect Solution',
+        `Your code output does not match the expected output.\n\nYour output: "${userOutput}"\nExpected: "${expectedOutput}"\n\nPlease check your code and try again.`,
+        [{ text: 'Try Again' }]
+      );
+    }
+  };
+
+  const handleShowHint = (hintIndex: number) => {
+    if (!usedHints.includes(hintIndex)) {
+      setUsedHints([...usedHints, hintIndex]);
+      if (onHint) {
+        onHint(practice.id, hintIndex);
+      }
+    }
+    setShowHints(true);
+  };
+
+  const getDifficultyColor = (difficulty: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return theme.colors.success;
+      case 'medium':
+        return theme.colors.warning;
+      case 'hard':
+        return theme.colors.error;
+      default:
+        return theme.colors.textSecondary;
+    }
+  };
+
+  const getDifficultyIcon = (difficulty: string) => {
+    switch (difficulty) {
+      case 'easy':
+        return 'leaf';
+      case 'medium':
+        return 'trending-up';
+      case 'hard':
+        return 'flame';
+      default:
+        return 'help-circle';
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      {/* Header */}
+      <View style={styles.header}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{practice.title}</Text>
+          <View style={styles.difficultyBadge}>
+            <Ionicons
+              name={getDifficultyIcon(practice.difficulty) as any}
+              size={16}
+              color={getDifficultyColor(practice.difficulty)}
+            />
+            <Text
+              style={[styles.difficultyText, { color: getDifficultyColor(practice.difficulty) }]}
+            >
+              {practice.difficulty.toUpperCase()}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.headerRight}>
+          <Text style={styles.category}>{practice.category}</Text>
+          {/* Solution Status Indicator */}
+          {solutionStatus !== 'not_checked' && (
+            <View
+              style={[
+                styles.statusBadge,
+                solutionStatus === 'correct' ? styles.statusCorrect : styles.statusIncorrect,
+              ]}
+            >
+              <Ionicons
+                name={solutionStatus === 'correct' ? 'checkmark-circle' : 'close-circle'}
+                size={16}
+                color={theme.colors.white}
+              />
+              <Text style={styles.statusText}>
+                {solutionStatus === 'correct' ? 'Correct' : 'Incorrect'}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
+      {/* Description */}
+      <View style={styles.descriptionContainer}>
+        <Text style={styles.description}>{practice.description}</Text>
+      </View>
+
+      {/* Code Editor */}
+      <View style={styles.editorSection}>
+        <Text style={styles.sectionTitle}>Your Code:</Text>
+        <CodeEditor
+          initialCode={practice.initialCode}
+          language='rust'
+          onCodeChange={handleCodeChange}
+          placeholder='// Write your Rust code here...'
+        />
+      </View>
+
+      {/* Expected Output (if available) */}
+      {practice.expectedOutput && (
+        <View style={styles.outputSection}>
+          <Text style={styles.sectionTitle}>Expected Output:</Text>
+          <SyntaxHighlighter
+            code={practice.expectedOutput}
+            language='rust'
+            theme={isDark ? 'dark' : 'light'}
+            fontSize={12}
+            lineHeight={16}
+          />
+        </View>
+      )}
+
+      {/* Hints */}
+      <View style={styles.hintsSection}>
+        <View style={styles.hintsHeader}>
+          <Text style={styles.sectionTitle}>Hints ({practice.hints.length})</Text>
+          <TouchableOpacity style={styles.hintToggle} onPress={() => setShowHints(!showHints)}>
+            <Ionicons
+              name={showHints ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={theme.colors.primary}
+            />
+          </TouchableOpacity>
+        </View>
+
+        {showHints && (
+          <View style={styles.hintsList}>
+            {practice.hints.map((hint, index) => (
+              <View key={index} style={styles.hintItem}>
+                <TouchableOpacity
+                  style={[styles.hintButton, usedHints.includes(index) && styles.hintButtonUsed]}
+                  onPress={() => handleShowHint(index)}
+                  disabled={usedHints.includes(index)}
+                >
+                  <Ionicons
+                    name={usedHints.includes(index) ? 'checkmark-circle' : 'bulb'}
+                    size={16}
+                    color={usedHints.includes(index) ? theme.colors.success : theme.colors.primary}
+                  />
+                  <Text
+                    style={[
+                      styles.hintButtonText,
+                      usedHints.includes(index) && styles.hintButtonTextUsed,
+                    ]}
+                  >
+                    Hint {index + 1}
+                  </Text>
+                </TouchableOpacity>
+
+                {usedHints.includes(index) && <Text style={styles.hintText}>{hint}</Text>}
+              </View>
+            ))}
+          </View>
+        )}
+      </View>
+
+      {/* Action Buttons */}
+      <View style={styles.actions}>
+        <TouchableOpacity
+          style={[styles.actionButton, isExecuting && styles.actionButtonDisabled]}
+          onPress={handleRunCode}
+          disabled={isExecuting}
+        >
+          {isExecuting ? (
+            <ActivityIndicator size='small' color={theme.colors.white} />
+          ) : (
+            <Ionicons name='play' size={20} color={theme.colors.white} />
+          )}
+          <Text style={styles.actionButtonText}>{isExecuting ? 'Running...' : 'Run Code'}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
+          <Ionicons name='checkmark' size={20} color={theme.colors.white} />
+          <Text style={styles.actionButtonText}>Check Solution</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.actionButton, styles.secondaryButton]}
+          onPress={() => setShowSolution(!showSolution)}
+        >
+          <Ionicons name='eye' size={20} color={theme.colors.primary} />
+          <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
+            {showSolution ? 'Hide' : 'Show'} Solution
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Execution Result (when available) */}
+      {executionResult && (
+        <View style={styles.executionSection}>
+          <Text style={styles.sectionTitle}>Execution Result:</Text>
+          <View
+            style={[
+              styles.executionResult,
+              executionResult.success ? styles.executionSuccess : styles.executionError,
+            ]}
+          >
+            <Text style={styles.executionResultText}>
+              {codeExecutionService.formatExecutionResult(executionResult)}
+            </Text>
+          </View>
+
+          {/* Solution Check Result */}
+          {practice.expectedOutput && (
+            <View style={styles.checkResultSection}>
+              <Text style={styles.checkResultTitle}>Solution Check:</Text>
+              <View style={styles.checkResultContent}>
+                <View style={styles.outputComparison}>
+                  <Text style={styles.comparisonLabel}>Your Output:</Text>
+                  <Text style={styles.comparisonValue}>
+                    {executionResult.output.trim() || '(empty)'}
+                  </Text>
+                </View>
+                <View style={styles.outputComparison}>
+                  <Text style={styles.comparisonLabel}>Expected Output:</Text>
+                  <Text style={styles.comparisonValue}>{practice.expectedOutput.trim()}</Text>
+                </View>
+                <View style={styles.comparisonResult}>
+                  <Text style={styles.comparisonResultText}>
+                    {executionResult.output.trim() === practice.expectedOutput.trim()
+                      ? '✅ Match'
+                      : '❌ No Match'}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Solution (when shown) */}
+      {showSolution && (
+        <View style={styles.solutionSection}>
+          <Text style={styles.sectionTitle}>Solution:</Text>
+          <SyntaxHighlighter
+            code={practice.solution || practice.initialCode}
+            language='rust'
+            theme={isDark ? 'dark' : 'light'}
+            fontSize={14}
+            lineHeight={20}
+          />
+        </View>
+      )}
+    </View>
+  );
+};
+
+const createStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      backgroundColor: theme.colors.background,
+      borderRadius: theme.borderRadius.lg,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      padding: theme.spacing.lg,
+      marginBottom: theme.spacing.lg,
+    },
+    header: {
+      marginBottom: theme.spacing.md,
+    },
+    headerRight: {
+      alignItems: 'flex-end',
+      gap: theme.spacing.sm,
+    },
+    statusBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      borderRadius: theme.borderRadius.sm,
+    },
+    statusCorrect: {
+      backgroundColor: theme.colors.success,
+    },
+    statusIncorrect: {
+      backgroundColor: theme.colors.error,
+    },
+    statusText: {
+      color: theme.colors.white,
+      fontSize: theme.typography.sizes.xs,
+      fontWeight: '600' as any,
+    },
+    checkResultSection: {
+      marginTop: theme.spacing.md,
+      padding: theme.spacing.sm,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+    },
+    checkResultTitle: {
+      fontSize: theme.typography.sizes.sm,
+      fontWeight: '600' as any,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.sm,
+    },
+    checkResultContent: {
+      gap: theme.spacing.sm,
+    },
+    outputComparison: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    comparisonLabel: {
+      fontSize: theme.typography.sizes.xs,
+      color: theme.colors.textSecondary,
+      fontWeight: '500' as any,
+    },
+    comparisonValue: {
+      fontSize: theme.typography.sizes.xs,
+      color: theme.colors.text,
+      fontFamily: 'monospace',
+      flex: 1,
+      textAlign: 'right',
+      marginLeft: theme.spacing.sm,
+    },
+    comparisonResult: {
+      alignItems: 'center',
+      paddingTop: theme.spacing.sm,
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.border,
+    },
+    comparisonResultText: {
+      fontSize: theme.typography.sizes.sm,
+      fontWeight: '600' as any,
+      color: theme.colors.text,
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.xs,
+    },
+    title: {
+      fontSize: theme.typography.heading.fontSize,
+      fontWeight: theme.typography.heading.fontWeight as any,
+      color: theme.colors.text,
+      flex: 1,
+    },
+    difficultyBadge: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+    },
+    difficultyText: {
+      fontSize: theme.typography.caption.fontSize,
+      fontWeight: '600' as any,
+    },
+    category: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+      textTransform: 'uppercase' as any,
+      letterSpacing: 0.5,
+    },
+    descriptionContainer: {
+      marginBottom: theme.spacing.lg,
+    },
+    description: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.text,
+      lineHeight: theme.typography.body.lineHeight,
+    },
+    editorSection: {
+      marginBottom: theme.spacing.lg,
+    },
+    sectionTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight as any,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.sm,
+    },
+    outputSection: {
+      marginBottom: theme.spacing.lg,
+    },
+    hintsSection: {
+      marginBottom: theme.spacing.lg,
+    },
+    hintsHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.sm,
+    },
+    hintToggle: {
+      padding: theme.spacing.xs,
+    },
+    hintsList: {
+      gap: theme.spacing.sm,
+    },
+    hintItem: {
+      gap: theme.spacing.xs,
+    },
+    hintButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      alignSelf: 'flex-start',
+    },
+    hintButtonUsed: {
+      backgroundColor: theme.colors.success + '20',
+      borderColor: theme.colors.success,
+    },
+    hintButtonText: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.primary,
+      fontWeight: '500' as any,
+    },
+    hintButtonTextUsed: {
+      color: theme.colors.success,
+    },
+    hintText: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+      fontStyle: 'italic' as any,
+      paddingLeft: theme.spacing.md,
+      paddingRight: theme.spacing.sm,
+    },
+    actions: {
+      flexDirection: 'row',
+      gap: theme.spacing.sm,
+      marginBottom: theme.spacing.lg,
+    },
+    actionButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.xs,
+      paddingHorizontal: theme.spacing.md,
+      paddingVertical: theme.spacing.sm,
+      backgroundColor: theme.colors.primary,
+      borderRadius: theme.borderRadius.sm,
+      flex: 1,
+      justifyContent: 'center',
+    },
+    actionButtonDisabled: {
+      backgroundColor: theme.colors.textSecondary,
+      opacity: 0.6,
+    },
+    actionButtonText: {
+      color: theme.colors.white,
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600' as any,
+    },
+    secondaryButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: theme.colors.primary,
+    },
+    secondaryButtonText: {
+      color: theme.colors.primary,
+    },
+    solutionSection: {
+      marginTop: theme.spacing.lg,
+    },
+    executionSection: {
+      marginTop: theme.spacing.lg,
+    },
+    executionResult: {
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      backgroundColor: theme.colors.surface,
+    },
+    executionSuccess: {
+      borderColor: theme.colors.success,
+      backgroundColor: theme.colors.success + '10',
+    },
+    executionError: {
+      borderColor: theme.colors.error,
+      backgroundColor: theme.colors.error + '10',
+    },
+    executionResultText: {
+      fontSize: theme.typography.body.fontSize,
+      fontFamily: 'monospace',
+      lineHeight: theme.typography.body.lineHeight,
+      color: theme.colors.text, // Ensure text color matches theme
+    },
+    debugInfo: {
+      marginTop: theme.spacing.sm,
+      padding: theme.spacing.sm,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.sm,
+    },
+    debugText: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+      fontFamily: 'monospace',
+    },
+  });
+
+export default CodePracticeCard;

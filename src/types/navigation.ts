@@ -8,7 +8,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   Lesson: { lessonId: string };
   Quiz: { lessonId: string };
-  CodePractice: { lessonId: string };
+  CodePractice: { lessonId?: string; topicId?: string };
   Results: { lessonResult: LessonResult };
   About: undefined;
 };
