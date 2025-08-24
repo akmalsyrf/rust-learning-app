@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.expo/
+dist/
+build/
+*.tsbuildinfo
+
+# Environment files
+.env*
+
+# IDE files
+.vscode/
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Coverage directory
+coverage/
+*.lcov
+
+# Cache directories
+.cache
+.parcel-cache
+.eslintcache
+
+# Config files
+*.config.js
+*.config.ts
+metro.config.js
+babel.config.js
+
+# Generated files
+Pods/
+ios/
+android/

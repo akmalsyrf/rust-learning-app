@@ -69,26 +69,14 @@ function TabNavigator() {
         },
       })}
     >
-      <Tab.Screen 
-        name="Home" 
-        component={HomeScreen}
-        options={{ title: 'Home' }}
-      />
-      <Tab.Screen 
-        name="Modules" 
-        component={ModulesScreen}
-        options={{ title: 'Learn' }}
-      />
-      <Tab.Screen 
-        name="Leaderboard" 
+      <Tab.Screen name='Home' component={HomeScreen} options={{ title: 'Home' }} />
+      <Tab.Screen name='Modules' component={ModulesScreen} options={{ title: 'Learn' }} />
+      <Tab.Screen
+        name='Leaderboard'
         component={LeaderboardScreen}
         options={{ title: 'Leaderboard' }}
       />
-      <Tab.Screen 
-        name="Profile" 
-        component={ProfileScreen}
-        options={{ title: 'Profile' }}
-      />
+      <Tab.Screen name='Profile' component={ProfileScreen} options={{ title: 'Profile' }} />
     </Tab.Navigator>
   );
 }
@@ -97,7 +85,7 @@ export default function AppNavigator() {
   // Hardcode theme for now to avoid store issues
   const isDark = false;
   const theme = lightTheme;
-  
+
   // Debug log
   console.log('AppNavigator rendered, isDark:', isDark);
 
@@ -114,36 +102,16 @@ export default function AppNavigator() {
           },
         }}
       >
-        <Stack.Screen 
-          name="MainTabs" 
-          component={TabNavigator}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen 
-          name="Lesson" 
-          component={LessonScreen}
-          options={{ title: 'Lesson' }}
-        />
-        <Stack.Screen 
-          name="Quiz" 
-          component={QuizScreen}
-          options={{ title: 'Quiz' }}
-        />
-        <Stack.Screen 
-          name="CodePractice" 
+        <Stack.Screen name='MainTabs' component={TabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name='Lesson' component={LessonScreen} options={{ title: 'Lesson' }} />
+        <Stack.Screen name='Quiz' component={QuizScreen} options={{ title: 'Quiz' }} />
+        <Stack.Screen
+          name='CodePractice'
           component={CodePracticeScreen}
           options={{ title: 'Code Practice' }}
         />
-        <Stack.Screen 
-          name="Results" 
-          component={ResultsScreen}
-          options={{ title: 'Results' }}
-        />
-        <Stack.Screen 
-          name="About" 
-          component={AboutScreen}
-          options={{ title: 'About' }}
-        />
+        <Stack.Screen name='Results' component={ResultsScreen} options={{ title: 'Results' }} />
+        <Stack.Screen name='About' component={AboutScreen} options={{ title: 'About' }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

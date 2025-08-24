@@ -14,7 +14,8 @@ export const lessons: Lesson[] = [
   {
     id: 'comments',
     title: 'Comments',
-    summary: 'Learn about different types of comments in Rust including line, block, and doc comments.',
+    summary:
+      'Learn about different types of comments in Rust including line, block, and doc comments.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-comments.html',
     topicId: 'fundamentals',
     order: 2,
@@ -70,7 +71,8 @@ export const lessons: Lesson[] = [
   {
     id: 'type-alias-casting',
     title: 'Type Alias & Casting',
-    summary: 'Learn about creating type aliases with `type` and explicit type casting using the `as` keyword.',
+    summary:
+      'Learn about creating type aliases with `type` and explicit type casting using the `as` keyword.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-type-alias-type-casting.html',
     topicId: 'data-types',
     order: 3,
@@ -99,7 +101,8 @@ export const lessons: Lesson[] = [
   {
     id: 'loop-break-continue',
     title: 'Loop, Break, Continue',
-    summary: 'Learn about infinite loops, returning values from loops, and flow control with break/continue.',
+    summary:
+      'Learn about infinite loops, returning values from loops, and flow control with break/continue.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-loop-break-continue.html',
     topicId: 'control-structures',
     order: 3,
@@ -128,7 +131,8 @@ export const lessons: Lesson[] = [
   {
     id: 'slices',
     title: 'Slices',
-    summary: 'Understanding how to create references to a contiguous sequence of elements in a collection.',
+    summary:
+      'Understanding how to create references to a contiguous sequence of elements in a collection.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-slices.html',
     topicId: 'collections',
     order: 2,
@@ -137,7 +141,8 @@ export const lessons: Lesson[] = [
   {
     id: 'tuples',
     title: 'Tuples',
-    summary: 'Learn about tuples for grouping values of different types, destructuring, and element access.',
+    summary:
+      'Learn about tuples for grouping values of different types, destructuring, and element access.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-tuples.html',
     topicId: 'collections',
     order: 3,
@@ -146,7 +151,8 @@ export const lessons: Lesson[] = [
   {
     id: 'vectors',
     title: 'Vectors',
-    summary: 'Understanding dynamic, growable arrays (vectors), including creating, updating, and reading elements.',
+    summary:
+      'Understanding dynamic, growable arrays (vectors), including creating, updating, and reading elements.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-vectors.html',
     topicId: 'collections',
     order: 4,
@@ -157,7 +163,8 @@ export const lessons: Lesson[] = [
   {
     id: 'functions',
     title: 'Functions',
-    summary: 'Learn how to define functions with parameters and return values, and understand the difference between statements and expressions.',
+    summary:
+      'Learn how to define functions with parameters and return values, and understand the difference between statements and expressions.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-functions.html',
     topicId: 'functions-modules',
     order: 1,
@@ -235,7 +242,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-struct-update-syntax.html',
     topicId: 'structs-enums',
     order: 2,
-    questions: ['struct-update-q1', 'struct-update-q2', 'struct-update-q3', 'struct-update-q4', 'struct-update-q5'],
+    questions: [
+      'struct-update-q1',
+      'struct-update-q2',
+      'struct-update-q3',
+      'struct-update-q4',
+      'struct-update-q5',
+    ],
   },
   {
     id: 'tuple-structs',
@@ -244,7 +257,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-tuple-structs.html',
     topicId: 'structs-enums',
     order: 3,
-    questions: ['tuple-struct-q1', 'tuple-struct-q2', 'tuple-struct-q3', 'tuple-struct-q4', 'tuple-struct-q5'],
+    questions: [
+      'tuple-struct-q1',
+      'tuple-struct-q2',
+      'tuple-struct-q3',
+      'tuple-struct-q4',
+      'tuple-struct-q5',
+    ],
   },
   {
     id: 'unit-structs',
@@ -253,12 +272,19 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-unit-structs.html',
     topicId: 'structs-enums',
     order: 4,
-    questions: ['unit-struct-q1', 'unit-struct-q2', 'unit-struct-q3', 'unit-struct-q4', 'unit-struct-q5'],
+    questions: [
+      'unit-struct-q1',
+      'unit-struct-q2',
+      'unit-struct-q3',
+      'unit-struct-q4',
+      'unit-struct-q5',
+    ],
   },
   {
     id: 'struct-methods',
     title: 'Struct Methods',
-    summary: 'Learn how to implement methods and associated functions for structs using `impl` blocks.',
+    summary:
+      'Learn how to implement methods and associated functions for structs using `impl` blocks.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-struct-methods.html',
     topicId: 'structs-enums',
     order: 5,
@@ -267,7 +293,8 @@ export const lessons: Lesson[] = [
   {
     id: 'enums',
     title: 'Enums',
-    summary: 'Understanding how to define enumerations, which can encode meaning and attach data to variants.',
+    summary:
+      'Understanding how to define enumerations, which can encode meaning and attach data to variants.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-enums.html',
     topicId: 'structs-enums',
     order: 6,
@@ -280,7 +307,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-enum-methods.html',
     topicId: 'structs-enums',
     order: 7,
-    questions: ['enum-method-q1', 'enum-method-q2', 'enum-method-q3', 'enum-method-q4', 'enum-method-q5'],
+    questions: [
+      'enum-method-q1',
+      'enum-method-q2',
+      'enum-method-q3',
+      'enum-method-q4',
+      'enum-method-q5',
+    ],
   },
 
   // Advanced Module System (A.32-A.34)
@@ -300,7 +333,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-nested-use.html',
     topicId: 'module-system-advanced',
     order: 2,
-    questions: ['nested-use-q1', 'nested-use-q2', 'nested-use-q3', 'nested-use-q4', 'nested-use-q5'],
+    questions: [
+      'nested-use-q1',
+      'nested-use-q2',
+      'nested-use-q3',
+      'nested-use-q4',
+      'nested-use-q5',
+    ],
   },
   {
     id: 'use-external-crates',
@@ -309,14 +348,21 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-use-external-crates.html',
     topicId: 'module-system-advanced',
     order: 3,
-    questions: ['external-crate-q1', 'external-crate-q2', 'external-crate-q3', 'external-crate-q4', 'external-crate-q5'],
+    questions: [
+      'external-crate-q1',
+      'external-crate-q2',
+      'external-crate-q3',
+      'external-crate-q4',
+      'external-crate-q5',
+    ],
   },
 
   // Memory Management (A.35-A.39)
   {
     id: 'ownership',
     title: 'Ownership',
-    summary: 'Learn Rust\'s core feature: the ownership system, move semantics, and how memory is managed.',
+    summary:
+      "Learn Rust's core feature: the ownership system, move semantics, and how memory is managed.",
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-ownership.html',
     topicId: 'memory-management',
     order: 1,
@@ -334,7 +380,8 @@ export const lessons: Lesson[] = [
   {
     id: 'mutable-ref',
     title: 'Mutable References',
-    summary: 'Understanding how to create mutable references to modify borrowed data and the one-writer rule.',
+    summary:
+      'Understanding how to create mutable references to modify borrowed data and the one-writer rule.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-mutable-references.html',
     topicId: 'memory-management',
     order: 3,
@@ -343,8 +390,10 @@ export const lessons: Lesson[] = [
   {
     id: 'ref-dangling-ref',
     title: 'Dangling References',
-    summary: 'Learn how Rust\'s compiler prevents dangling references, ensuring all references point to valid data.',
-    attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-references-dangling-references.html',
+    summary:
+      "Learn how Rust's compiler prevents dangling references, ensuring all references point to valid data.",
+    attributionUrl:
+      'https://dasarpemrogramanrust.novalagung.com/A-references-dangling-references.html',
     topicId: 'memory-management',
     order: 4,
     questions: ['dangle-q1', 'dangle-q2', 'dangle-q3', 'dangle-q4', 'dangle-q5'],
@@ -373,10 +422,17 @@ export const lessons: Lesson[] = [
     id: 'trait-default',
     title: 'Trait Default Implementation',
     summary: 'Understanding how to provide default implementations for trait methods.',
-    attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-default-implementation.html',
+    attributionUrl:
+      'https://dasarpemrogramanrust.novalagung.com/A-trait-default-implementation.html',
     topicId: 'traits-generics',
     order: 2,
-    questions: ['trait-default-q1', 'trait-default-q2', 'trait-default-q3', 'trait-default-q4', 'trait-default-q5'],
+    questions: [
+      'trait-default-q1',
+      'trait-default-q2',
+      'trait-default-q3',
+      'trait-default-q4',
+      'trait-default-q5',
+    ],
   },
   {
     id: 'trait-parameter',
@@ -385,7 +441,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-as-parameter.html',
     topicId: 'traits-generics',
     order: 3,
-    questions: ['trait-param-q1', 'trait-param-q2', 'trait-param-q3', 'trait-param-q4', 'trait-param-q5'],
+    questions: [
+      'trait-param-q1',
+      'trait-param-q2',
+      'trait-param-q3',
+      'trait-param-q4',
+      'trait-param-q5',
+    ],
   },
   {
     id: 'trait-return',
@@ -394,7 +456,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-as-return-type.html',
     topicId: 'traits-generics',
     order: 4,
-    questions: ['trait-return-q1', 'trait-return-q2', 'trait-return-q3', 'trait-return-q4', 'trait-return-q5'],
+    questions: [
+      'trait-return-q1',
+      'trait-return-q2',
+      'trait-return-q3',
+      'trait-return-q4',
+      'trait-return-q5',
+    ],
   },
   {
     id: 'trait-bound',
@@ -403,16 +471,29 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-bound.html',
     topicId: 'traits-generics',
     order: 5,
-    questions: ['trait-bound-q1', 'trait-bound-q2', 'trait-bound-q3', 'trait-bound-q4', 'trait-bound-q5'],
+    questions: [
+      'trait-bound-q1',
+      'trait-bound-q2',
+      'trait-bound-q3',
+      'trait-bound-q4',
+      'trait-bound-q5',
+    ],
   },
   {
     id: 'trait-conditionally',
     title: 'Conditional Trait Implementation',
     summary: 'Conditionally implementing traits for types that meet certain criteria.',
-    attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-implementation-conditionally.html',
+    attributionUrl:
+      'https://dasarpemrogramanrust.novalagung.com/A-trait-implementation-conditionally.html',
     topicId: 'traits-generics',
     order: 6,
-    questions: ['trait-cond-q1', 'trait-cond-q2', 'trait-cond-q3', 'trait-cond-q4', 'trait-cond-q5'],
+    questions: [
+      'trait-cond-q1',
+      'trait-cond-q2',
+      'trait-cond-q3',
+      'trait-cond-q4',
+      'trait-cond-q5',
+    ],
   },
   {
     id: 'trait-blanket',
@@ -455,7 +536,8 @@ export const lessons: Lesson[] = [
   {
     id: 'newtype-pattern',
     title: 'Newtype Pattern',
-    summary: 'Using a tuple struct with one element to create a new type for type safety and abstraction.',
+    summary:
+      'Using a tuple struct with one element to create a new type for type safety and abstraction.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-newtype-pattern.html',
     topicId: 'advanced-types',
     order: 2,
@@ -464,11 +546,18 @@ export const lessons: Lesson[] = [
   {
     id: 'type-alias',
     title: 'Type Alias Advanced',
-    summary: 'Advanced usage of type aliases for reducing repetition and simplifying complex types.',
+    summary:
+      'Advanced usage of type aliases for reducing repetition and simplifying complex types.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-type-alias-advanced.html',
     topicId: 'advanced-types',
     order: 3,
-    questions: ['type-alias-adv-q1', 'type-alias-adv-q2', 'type-alias-adv-q3', 'type-alias-adv-q4', 'type-alias-adv-q5'],
+    questions: [
+      'type-alias-adv-q1',
+      'type-alias-adv-q2',
+      'type-alias-adv-q3',
+      'type-alias-adv-q4',
+      'type-alias-adv-q5',
+    ],
   },
   {
     id: 'never-type',
@@ -482,7 +571,8 @@ export const lessons: Lesson[] = [
   {
     id: 'dynamically-sized',
     title: 'Dynamically Sized Types',
-    summary: 'Working with Dynamically Sized Types (DSTs) like `str` and `[T]` using pointers like `&` or `Box`.',
+    summary:
+      'Working with Dynamically Sized Types (DSTs) like `str` and `[T]` using pointers like `&` or `Box`.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-dynamically-sized-types.html',
     topicId: 'advanced-types',
     order: 5,
@@ -497,7 +587,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-string-slice-advanced.html',
     topicId: 'strings-advanced',
     order: 1,
-    questions: ['str-slice-adv-q1', 'str-slice-adv-q2', 'str-slice-adv-q3', 'str-slice-adv-q4', 'str-slice-adv-q5'],
+    questions: [
+      'str-slice-adv-q1',
+      'str-slice-adv-q2',
+      'str-slice-adv-q3',
+      'str-slice-adv-q4',
+      'str-slice-adv-q5',
+    ],
   },
   {
     id: 'string-literal',
@@ -506,7 +602,13 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-string-literal-advanced.html',
     topicId: 'strings-advanced',
     order: 2,
-    questions: ['str-lit-adv-q1', 'str-lit-adv-q2', 'str-lit-adv-q3', 'str-lit-adv-q4', 'str-lit-adv-q5'],
+    questions: [
+      'str-lit-adv-q1',
+      'str-lit-adv-q2',
+      'str-lit-adv-q3',
+      'str-lit-adv-q4',
+      'str-lit-adv-q5',
+    ],
   },
   {
     id: 'raw-string',
@@ -535,12 +637,19 @@ export const lessons: Lesson[] = [
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-closure-traits.html',
     topicId: 'functional-programming',
     order: 2,
-    questions: ['closure-traits-q1', 'closure-traits-q2', 'closure-traits-q3', 'closure-traits-q4', 'closure-traits-q5'],
+    questions: [
+      'closure-traits-q1',
+      'closure-traits-q2',
+      'closure-traits-q3',
+      'closure-traits-q4',
+      'closure-traits-q5',
+    ],
   },
   {
     id: 'iterators',
     title: 'Iterators',
-    summary: 'Working with iterators, which produce a sequence of values, and understanding their lazy nature.',
+    summary:
+      'Working with iterators, which produce a sequence of values, and understanding their lazy nature.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-iterators.html',
     topicId: 'functional-programming',
     order: 3,
@@ -549,18 +658,26 @@ export const lessons: Lesson[] = [
   {
     id: 'iterator-adaptors',
     title: 'Iterator Adaptors',
-    summary: 'Using consuming and producing adaptors like `map`, `filter`, and `collect` for data processing.',
+    summary:
+      'Using consuming and producing adaptors like `map`, `filter`, and `collect` for data processing.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-iterator-adaptors.html',
     topicId: 'functional-programming',
     order: 4,
-    questions: ['iter-adapt-q1', 'iter-adapt-q2', 'iter-adapt-q3', 'iter-adapt-q4', 'iter-adapt-q5'],
+    questions: [
+      'iter-adapt-q1',
+      'iter-adapt-q2',
+      'iter-adapt-q3',
+      'iter-adapt-q4',
+      'iter-adapt-q5',
+    ],
   },
 
   // System Programming (A.52-A.54)
   {
     id: 'unsafe',
     title: 'Unsafe Rust',
-    summary: 'Understanding `unsafe` blocks for operations that bypass Rust\'s safety guarantees, like dereferencing raw pointers.',
+    summary:
+      "Understanding `unsafe` blocks for operations that bypass Rust's safety guarantees, like dereferencing raw pointers.",
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-unsafe.html',
     topicId: 'system-programming',
     order: 1,
@@ -569,7 +686,8 @@ export const lessons: Lesson[] = [
   {
     id: 'testing',
     title: 'Testing',
-    summary: 'Writing unit, documentation, and integration tests in Rust using the `#[test]` attribute.',
+    summary:
+      'Writing unit, documentation, and integration tests in Rust using the `#[test]` attribute.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-testing.html',
     topicId: 'system-programming',
     order: 2,
@@ -578,7 +696,8 @@ export const lessons: Lesson[] = [
   {
     id: 'attributes',
     title: 'Attributes',
-    summary: 'Using attributes like `#[derive]` and `#[cfg]` for metadata and conditional compilation.',
+    summary:
+      'Using attributes like `#[derive]` and `#[cfg]` for metadata and conditional compilation.',
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-attributes.html',
     topicId: 'system-programming',
     order: 3,
@@ -637,9 +756,16 @@ export const lessons: Lesson[] = [
     id: 'recoverable-errors',
     title: 'Error Propagation & Handling',
     summary: 'Comprehensive error handling strategies, including the `?` operator for propagation.',
-    attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-recoverable-error-error-handling.html',
+    attributionUrl:
+      'https://dasarpemrogramanrust.novalagung.com/A-recoverable-error-error-handling.html',
     topicId: 'error-handling',
     order: 3,
-    questions: ['err-handle-q1', 'err-handle-q2', 'err-handle-q3', 'err-handle-q4', 'err-handle-q5'],
+    questions: [
+      'err-handle-q1',
+      'err-handle-q2',
+      'err-handle-q3',
+      'err-handle-q4',
+      'err-handle-q5',
+    ],
   },
 ];

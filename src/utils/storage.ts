@@ -59,17 +59,17 @@ export const storage = {
     try {
       const results = await AsyncStorage.multiGet(keys);
       const data: Record<string, T | null> = {};
-      
+
       results.forEach(([key, value]) => {
         data[key] = value ? JSON.parse(value) : null;
       });
-      
+
       return data;
     } catch (error) {
       console.warn('Failed to get multiple keys:', error);
       return {};
     }
-  }
+  },
 };
 
 // Typed storage functions for specific data types
@@ -77,26 +77,26 @@ export const progressStorage = {
   async get() {
     return storage.get<any>(STORAGE_KEYS.USER_PROGRESS);
   },
-  
+
   async set(progress: any) {
     return storage.set(STORAGE_KEYS.USER_PROGRESS, progress);
   },
-  
+
   async clear() {
     return storage.remove(STORAGE_KEYS.USER_PROGRESS);
-  }
+  },
 };
 
 export const settingsStorage = {
   async get() {
     return storage.get<any>(STORAGE_KEYS.USER_SETTINGS);
   },
-  
+
   async set(settings: any) {
     return storage.set(STORAGE_KEYS.USER_SETTINGS, settings);
   },
-  
+
   async clear() {
     return storage.remove(STORAGE_KEYS.USER_SETTINGS);
-  }
+  },
 };

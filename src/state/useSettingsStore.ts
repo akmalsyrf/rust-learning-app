@@ -9,7 +9,7 @@ interface SettingsState extends UserSettings {
   setNotificationTime: (time: string) => void;
   setSoundEnabled: (enabled: boolean) => void;
   getEffectiveTheme: () => 'light' | 'dark';
-  
+
   // Persistence actions
   loadFromStorage: () => Promise<void>;
   saveToStorage: () => Promise<void>;
@@ -24,22 +24,22 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
   soundEnabled: true,
 
   // Actions
-  setTheme: (theme) => {
+  setTheme: theme => {
     set({ theme });
     get().saveToStorage();
   },
-  
-  setNotificationsEnabled: (enabled) => {
+
+  setNotificationsEnabled: enabled => {
     set({ notificationsEnabled: enabled });
     get().saveToStorage();
   },
-  
-  setNotificationTime: (time) => {
+
+  setNotificationTime: time => {
     set({ notificationTime: time });
     get().saveToStorage();
   },
-  
-  setSoundEnabled: (enabled) => {
+
+  setSoundEnabled: enabled => {
     set({ soundEnabled: enabled });
     get().saveToStorage();
   },
@@ -69,9 +69,13 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
       if (savedSettings) {
         set({
           theme: savedSettings.theme || 'light',
-          notificationsEnabled: savedSettings.notificationsEnabled !== undefined ? savedSettings.notificationsEnabled : true,
+          notificationsEnabled:
+            savedSettings.notificationsEnabled !== undefined
+              ? savedSettings.notificationsEnabled
+              : true,
           notificationTime: savedSettings.notificationTime || '19:00',
-          soundEnabled: savedSettings.soundEnabled !== undefined ? savedSettings.soundEnabled : true,
+          soundEnabled:
+            savedSettings.soundEnabled !== undefined ? savedSettings.soundEnabled : true,
         });
         console.log('Settings loaded from storage');
       }
@@ -89,7 +93,7 @@ export const useSettingsStore = create<SettingsState>()((set, get) => ({
         notificationTime: state.notificationTime,
         soundEnabled: state.soundEnabled,
       };
-      
+
       await settingsStorage.set(settingsData);
       console.log('Settings saved to storage');
     } catch (error) {

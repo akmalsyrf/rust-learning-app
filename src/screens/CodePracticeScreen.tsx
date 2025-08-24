@@ -8,17 +8,24 @@ import { CodePracticeScreenProps } from '../types/navigation';
 export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
   const { lessonId } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
-  
+
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
-  
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', padding: 16 }}>
         <Text style={{ fontSize: 18, color: theme.colors.text, textAlign: 'center' }}>
           Code Practice for lesson: {lessonId}
         </Text>
-        <Text style={{ fontSize: 14, color: theme.colors.textSecondary, marginTop: 8, textAlign: 'center' }}>
+        <Text
+          style={{
+            fontSize: 14,
+            color: theme.colors.textSecondary,
+            marginTop: 8,
+            textAlign: 'center',
+          }}
+        >
           Code editor and exercises will be implemented here
         </Text>
       </View>

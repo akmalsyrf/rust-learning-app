@@ -21,12 +21,8 @@ export default function App() {
         }
 
         // Load persistent data from storage
-        await Promise.all([
-          progressStore.loadFromStorage(),
-          settingsStore.loadFromStorage(),
-        ]);
+        await Promise.all([progressStore.loadFromStorage(), settingsStore.loadFromStorage()]);
         console.log('Persistent data loaded from storage');
-        
       } catch (error) {
         console.warn('Error initializing app:', error);
       }
@@ -38,7 +34,7 @@ export default function App() {
   return (
     <>
       <AppNavigator />
-      <StatusBar style="auto" />
+      <StatusBar style='auto' />
     </>
   );
 }

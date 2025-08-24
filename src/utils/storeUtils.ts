@@ -12,7 +12,7 @@ export const useSafeTheme = () => {
 // Safe progress hook
 export const useSafeProgress = () => {
   const progressStore = useProgressStore();
-  
+
   return {
     xp: progressStore?.xp || 0,
     currentStreakDays: progressStore?.currentStreakDays || 0,
@@ -30,7 +30,7 @@ export const useSafeProgress = () => {
 // Safe data hook
 export const useSafeData = () => {
   const dataStore = useDataStore();
-  
+
   return {
     getTopics: dataStore?.getTopics || (() => []),
     getTopic: dataStore?.getTopic || (() => undefined),
@@ -45,7 +45,7 @@ export const useSafeData = () => {
 // Safe settings hook
 export const useSafeSettings = () => {
   const settingsStore = useSettingsStore();
-  
+
   return {
     theme: settingsStore?.theme || 'light',
     notificationsEnabled: settingsStore?.notificationsEnabled || true,

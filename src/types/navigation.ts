@@ -28,10 +28,7 @@ export type StackNavigationProps = NativeStackNavigationProp<RootStackParamList>
 export type TabNavigationProps = BottomTabNavigationProp<TabParamList>;
 
 // Combined navigation prop for screens that can access both
-export type NavigationProps = CompositeNavigationProp<
-  TabNavigationProps,
-  StackNavigationProps
->;
+export type NavigationProps = CompositeNavigationProp<TabNavigationProps, StackNavigationProps>;
 
 // Route props for specific screens
 export type LessonScreenRouteProp = RouteProp<RootStackParamList, 'Lesson'>;

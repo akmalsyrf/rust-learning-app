@@ -12,43 +12,55 @@ interface XPBadgeProps {
   animated?: boolean;
 }
 
-export default function XPBadge({ 
-  xp, 
-  size = 'medium', 
-  showIcon = true, 
+export default function XPBadge({
+  xp,
+  size = 'medium',
+  showIcon = true,
   showLabel = true,
-  animated = false 
+  animated = false,
 }: XPBadgeProps) {
   const { getEffectiveTheme } = useSettingsStore();
-  
+
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
 
   const getIconSize = () => {
     switch (size) {
-      case 'small': return 16;
-      case 'medium': return 20;
-      case 'large': return 24;
-      default: return 20;
+      case 'small':
+        return 16;
+      case 'medium':
+        return 20;
+      case 'large':
+        return 24;
+      default:
+        return 20;
     }
   };
 
   const getTextSize = () => {
     switch (size) {
-      case 'small': return 12;
-      case 'medium': return 16;
-      case 'large': return 20;
-      default: return 16;
+      case 'small':
+        return 12;
+      case 'medium':
+        return 16;
+      case 'large':
+        return 20;
+      default:
+        return 16;
     }
   };
 
   const getLabelSize = () => {
     switch (size) {
-      case 'small': return 10;
-      case 'medium': return 12;
-      case 'large': return 14;
-      default: return 12;
+      case 'small':
+        return 10;
+      case 'medium':
+        return 12;
+      case 'large':
+        return 14;
+      default:
+        return 12;
     }
   };
 
@@ -69,13 +81,20 @@ export default function XPBadge({
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'legend': return '#FFD700'; // Gold
-      case 'expert': return '#C0C0C0'; // Silver
-      case 'advanced': return '#CD7F32'; // Bronze
-      case 'intermediate': return theme.colors.primary;
-      case 'beginner': return theme.colors.success;
-      case 'newbie': return theme.colors.textSecondary;
-      default: return theme.colors.accent;
+      case 'legend':
+        return '#FFD700'; // Gold
+      case 'expert':
+        return '#C0C0C0'; // Silver
+      case 'advanced':
+        return '#CD7F32'; // Bronze
+      case 'intermediate':
+        return theme.colors.primary;
+      case 'beginner':
+        return theme.colors.success;
+      case 'newbie':
+        return theme.colors.textSecondary;
+      default:
+        return theme.colors.accent;
     }
   };
 
@@ -83,52 +102,35 @@ export default function XPBadge({
   const levelColor = getLevelColor(level);
 
   const getSizeStyle = () => {
-    const sizeKey = `container${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles;
+    const sizeKey =
+      `container${size.charAt(0).toUpperCase() + size.slice(1)}` as keyof typeof styles;
     return styles[sizeKey];
   };
 
   return (
-    <View style={[
-      styles.container, 
-      getSizeStyle(),
-      animated && styles.animatedContainer
-    ]}>
-      {showIcon && (
-        <Ionicons 
-          name="star" 
-          size={getIconSize()} 
-          color={levelColor} 
-        />
-      )}
-      
+    <View style={[styles.container, getSizeStyle(), animated && styles.animatedContainer]}>
+      {showIcon && <Ionicons name='star' size={getIconSize()} color={levelColor} />}
+
       <View style={styles.textContainer}>
-        <Text style={[
-          styles.xpNumber, 
-          { fontSize: getTextSize(), color: levelColor }
-        ]}>
+        <Text style={[styles.xpNumber, { fontSize: getTextSize(), color: levelColor }]}>
           {formatXP(xp)}
         </Text>
-        
-        {showLabel && (
-          <Text style={[
-            styles.xpLabel, 
-            { fontSize: getLabelSize() }
-          ]}>
-            XP
-          </Text>
-        )}
+
+        {showLabel && <Text style={[styles.xpLabel, { fontSize: getLabelSize() }]}>XP</Text>}
       </View>
-      
+
       {size === 'large' && (
-        <Text style={[
-          styles.levelBadge,
-          { 
-            fontSize: getLabelSize(),
-            backgroundColor: levelColor + '20',
-            borderColor: levelColor + '40',
-            color: levelColor
-          }
-        ]}>
+        <Text
+          style={[
+            styles.levelBadge,
+            {
+              fontSize: getLabelSize(),
+              backgroundColor: levelColor + '20',
+              borderColor: levelColor + '40',
+              color: levelColor,
+            },
+          ]}
+        >
           {level.toUpperCase()}
         </Text>
       )}
@@ -136,41 +138,42 @@ export default function XPBadge({
   );
 }
 
-const createStyles = (theme: any) => StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  containerSmall: {
-    gap: theme.spacing.xs,
-  },
-  containerMedium: {
-    gap: theme.spacing.sm,
-  },
-  containerLarge: {
-    gap: theme.spacing.sm,
-  },
-  animatedContainer: {
-    // Add animation styles if needed
-  },
-  textContainer: {
-    alignItems: 'flex-start',
-  },
-  xpNumber: {
-    fontWeight: '700',
-    lineHeight: 1.2,
-  },
-  xpLabel: {
-    color: theme.colors.textSecondary,
-    fontWeight: '500',
-    marginTop: -2,
-  },
-  levelBadge: {
-    paddingHorizontal: theme.spacing.xs,
-    paddingVertical: 2,
-    borderRadius: theme.borderRadius.sm,
-    borderWidth: 1,
-    fontWeight: '600',
-    overflow: 'hidden',
-  },
-});
+const createStyles = (theme: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    containerSmall: {
+      gap: theme.spacing.xs,
+    },
+    containerMedium: {
+      gap: theme.spacing.sm,
+    },
+    containerLarge: {
+      gap: theme.spacing.sm,
+    },
+    animatedContainer: {
+      // Add animation styles if needed
+    },
+    textContainer: {
+      alignItems: 'flex-start',
+    },
+    xpNumber: {
+      fontWeight: '700',
+      lineHeight: 1.2,
+    },
+    xpLabel: {
+      color: theme.colors.textSecondary,
+      fontWeight: '500',
+      marginTop: -2,
+    },
+    levelBadge: {
+      paddingHorizontal: theme.spacing.xs,
+      paddingVertical: 2,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      fontWeight: '600',
+      overflow: 'hidden',
+    },
+  });

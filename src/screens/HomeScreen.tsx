@@ -10,15 +10,16 @@ import { HomeScreenProps } from '../types/navigation';
 
 export default function HomeScreen({ navigation }: HomeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
-  const { xp, currentStreakDays, getTodayXP, highestStreakDays, getLessonStars } = useProgressStore();
+  const { xp, currentStreakDays, getTodayXP, highestStreakDays, getLessonStars } =
+    useProgressStore();
   const { getTopics, getLessonsForTopic } = useDataStore();
-  
+
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
-  
+
   const styles = createStyles(theme);
   const todayXP = getTodayXP();
-  
+
   // Find the next lesson to continue
   const getNextLesson = () => {
     const allTopics = getTopics();
@@ -32,23 +33,23 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
     }
     return null; // All lessons completed
   };
-  
+
   const nextLesson = getNextLesson();
-  
+
   const calculateOverallProgress = () => {
     const allTopics = getTopics();
     let totalLessons = 0;
     let completedLessons = 0;
-    
+
     allTopics.forEach(topic => {
       const lessons = getLessonsForTopic(topic.id);
       totalLessons += lessons.length;
       completedLessons += lessons.filter(lesson => getLessonStars(lesson.id) > 0).length;
     });
-    
+
     return totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
   };
-  
+
   const overallProgress = calculateOverallProgress();
 
   return (
@@ -65,7 +66,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           {/* Streak Card */}
           <View style={styles.statCard}>
             <View style={styles.statIcon}>
-              <Ionicons name="flame" size={24} color={theme.colors.streak} />
+              <Ionicons name='flame' size={24} color={theme.colors.streak} />
             </View>
             <Text style={styles.statNumber}>{currentStreakDays}</Text>
             <Text style={styles.statLabel}>Day Streak</Text>
@@ -74,7 +75,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           {/* XP Card */}
           <View style={styles.statCard}>
             <View style={styles.statIcon}>
-              <Ionicons name="star" size={24} color={theme.colors.accent} />
+              <Ionicons name='star' size={24} color={theme.colors.accent} />
             </View>
             <Text style={styles.statNumber}>{xp}</Text>
             <Text style={styles.statLabel}>Total XP</Text>
@@ -83,7 +84,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           {/* Today XP Card */}
           <View style={styles.statCard}>
             <View style={styles.statIcon}>
-              <Ionicons name="today" size={24} color={theme.colors.primary} />
+              <Ionicons name='today' size={24} color={theme.colors.primary} />
             </View>
             <Text style={styles.statNumber}>{todayXP}</Text>
             <Text style={styles.statLabel}>Today XP</Text>
@@ -97,11 +98,8 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
             <Text style={styles.goalProgress}>{todayXP}/50 XP</Text>
           </View>
           <View style={styles.progressBar}>
-            <View 
-              style={[
-                styles.progressFill, 
-                { width: `${Math.min((todayXP / 50) * 100, 100)}%` }
-              ]} 
+            <View
+              style={[styles.progressFill, { width: `${Math.min((todayXP / 50) * 100, 100)}%` }]}
             />
           </View>
           <Text style={styles.goalDescription}>
@@ -130,7 +128,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
 
         {/* Quick Actions */}
         <View style={styles.actionsContainer}>
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.primaryAction}
             onPress={() => {
               if (nextLesson) {
@@ -140,26 +138,26 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               }
             }}
           >
-            <Ionicons name="play" size={20} color="white" />
+            <Ionicons name='play' size={20} color='white' />
             <Text style={styles.primaryActionText}>
               {nextLesson ? 'Continue Learning' : 'Browse Modules'}
             </Text>
           </TouchableOpacity>
 
           <View style={styles.secondaryActions}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.secondaryAction}
               onPress={() => navigation.navigate('Leaderboard')}
             >
-              <Ionicons name="trophy" size={20} color={theme.colors.text} />
+              <Ionicons name='trophy' size={20} color={theme.colors.text} />
               <Text style={styles.secondaryActionText}>Leaderboard</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.secondaryAction}
               onPress={() => navigation.navigate('Profile')}
             >
-              <Ionicons name="person" size={20} color={theme.colors.text} />
+              <Ionicons name='person' size={20} color={theme.colors.text} />
               <Text style={styles.secondaryActionText}>Profile</Text>
             </TouchableOpacity>
           </View>
@@ -177,172 +175,173 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   );
 }
 
-const createStyles = (theme: Theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
-  content: {
-    padding: theme.spacing.md,
-  },
-  header: {
-    marginBottom: theme.spacing.lg,
-  },
-  welcomeText: {
-    fontSize: theme.typography.heading.fontSize,
-    fontWeight: theme.typography.heading.fontWeight as any,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
-  },
-  subtitle: {
-    fontSize: theme.typography.body.fontSize,
-    color: theme.colors.textSecondary,
-  },
-  statsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: theme.spacing.lg,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    alignItems: 'center',
-    marginHorizontal: theme.spacing.xs,
-  },
-  statIcon: {
-    marginBottom: theme.spacing.xs,
-  },
-  statNumber: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: theme.colors.text,
-    marginBottom: theme.spacing.xs,
-  },
-  statLabel: {
-    fontSize: theme.typography.caption.fontSize,
-    color: theme.colors.textSecondary,
-  },
-  goalCard: {
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    marginBottom: theme.spacing.lg,
-  },
-  goalHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: theme.spacing.sm,
-  },
-  goalTitle: {
-    fontSize: theme.typography.subheading.fontSize,
-    fontWeight: theme.typography.subheading.fontWeight as any,
-    color: theme.colors.text,
-  },
-  goalProgress: {
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: '600',
-    color: theme.colors.primary,
-  },
-  progressBar: {
-    height: 8,
-    backgroundColor: theme.colors.border,
-    borderRadius: 4,
-    marginBottom: theme.spacing.sm,
-  },
-  progressFill: {
-    height: '100%',
-    backgroundColor: theme.colors.primary,
-    borderRadius: 4,
-  },
-  goalDescription: {
-    fontSize: theme.typography.caption.fontSize,
-    color: theme.colors.textSecondary,
-  },
-  actionsContainer: {
-    marginBottom: theme.spacing.lg,
-  },
-  primaryAction: {
-    backgroundColor: theme.colors.primary,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    marginBottom: theme.spacing.md,
-  },
-  primaryActionText: {
-    color: 'white',
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: '600',
-    marginLeft: theme.spacing.sm,
-  },
-  secondaryActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  secondaryAction: {
-    flex: 1,
-    backgroundColor: theme.colors.surface,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    marginHorizontal: theme.spacing.xs,
-  },
-  secondaryActionText: {
-    color: theme.colors.text,
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: '500',
-    marginLeft: theme.spacing.sm,
-  },
-  recentCard: {
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-  },
-  recentTitle: {
-    fontSize: theme.typography.subheading.fontSize,
-    fontWeight: theme.typography.subheading.fontWeight as any,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
-  },
-  recentItem: {
-    fontSize: theme.typography.body.fontSize,
-    color: theme.colors.textSecondary,
-    marginBottom: theme.spacing.xs,
-  },
-  progressOverview: {
-    marginBottom: theme.spacing.lg,
-  },
-  sectionTitle: {
-    fontSize: theme.typography.subheading.fontSize,
-    fontWeight: theme.typography.subheading.fontWeight as any,
-    color: theme.colors.text,
-    marginBottom: theme.spacing.md,
-  },
-  overviewCard: {
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.borderRadius.lg,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
-  overviewItem: {
-    alignItems: 'center',
-  },
-  overviewValue: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.xs,
-  },
-  overviewLabel: {
-    fontSize: theme.typography.caption.fontSize,
-    color: theme.colors.textSecondary,
-    textAlign: 'center',
-  },
-});
+const createStyles = (theme: Theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
+    content: {
+      padding: theme.spacing.md,
+    },
+    header: {
+      marginBottom: theme.spacing.lg,
+    },
+    welcomeText: {
+      fontSize: theme.typography.heading.fontSize,
+      fontWeight: theme.typography.heading.fontWeight as any,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
+    subtitle: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    statsContainer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: theme.spacing.lg,
+    },
+    statCard: {
+      flex: 1,
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      alignItems: 'center',
+      marginHorizontal: theme.spacing.xs,
+    },
+    statIcon: {
+      marginBottom: theme.spacing.xs,
+    },
+    statNumber: {
+      fontSize: 24,
+      fontWeight: '700',
+      color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
+    statLabel: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    goalCard: {
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.lg,
+    },
+    goalHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.sm,
+    },
+    goalTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight as any,
+      color: theme.colors.text,
+    },
+    goalProgress: {
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600',
+      color: theme.colors.primary,
+    },
+    progressBar: {
+      height: 8,
+      backgroundColor: theme.colors.border,
+      borderRadius: 4,
+      marginBottom: theme.spacing.sm,
+    },
+    progressFill: {
+      height: '100%',
+      backgroundColor: theme.colors.primary,
+      borderRadius: 4,
+    },
+    goalDescription: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    actionsContainer: {
+      marginBottom: theme.spacing.lg,
+    },
+    primaryAction: {
+      backgroundColor: theme.colors.primary,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.md,
+    },
+    primaryActionText: {
+      color: 'white',
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600',
+      marginLeft: theme.spacing.sm,
+    },
+    secondaryActions: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    },
+    secondaryAction: {
+      flex: 1,
+      backgroundColor: theme.colors.surface,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      marginHorizontal: theme.spacing.xs,
+    },
+    secondaryActionText: {
+      color: theme.colors.text,
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '500',
+      marginLeft: theme.spacing.sm,
+    },
+    recentCard: {
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+    },
+    recentTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight as any,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.md,
+    },
+    recentItem: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+      marginBottom: theme.spacing.xs,
+    },
+    progressOverview: {
+      marginBottom: theme.spacing.lg,
+    },
+    sectionTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight as any,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.md,
+    },
+    overviewCard: {
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+    },
+    overviewItem: {
+      alignItems: 'center',
+    },
+    overviewValue: {
+      fontSize: 20,
+      fontWeight: '700',
+      color: theme.colors.primary,
+      marginBottom: theme.spacing.xs,
+    },
+    overviewLabel: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+      textAlign: 'center',
+    },
+  });
