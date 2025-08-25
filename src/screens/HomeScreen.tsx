@@ -147,7 +147,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               style={styles.secondaryAction}
               onPress={() => navigation.navigate('FreeCodePractice')}
             >
-              <Ionicons name='code-slash' size={20} color={theme.colors.text} />
+              <Ionicons name='code-slash' size={24} color={theme.colors.primary} />
               <Text style={styles.secondaryActionText}>
                 {t('freeCodePractice.title', 'Free Code Practice')}
               </Text>
@@ -157,7 +157,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               style={styles.secondaryAction}
               onPress={() => navigation.navigate('Leaderboard')}
             >
-              <Ionicons name='trophy' size={20} color={theme.colors.text} />
+              <Ionicons name='trophy' size={24} color={theme.colors.primary} />
               <Text style={styles.secondaryActionText}>
                 {t('navigation.leaderboard', 'Leaderboard')}
               </Text>
@@ -167,7 +167,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
               style={styles.secondaryAction}
               onPress={() => navigation.navigate('Profile')}
             >
-              <Ionicons name='person' size={20} color={theme.colors.text} />
+              <Ionicons name='person' size={24} color={theme.colors.primary} />
               <Text style={styles.secondaryActionText}>{t('navigation.profile', 'Profile')}</Text>
             </TouchableOpacity>
           </View>
@@ -295,22 +295,27 @@ const createStyles = (theme: Theme) =>
     secondaryActions: {
       flexDirection: 'row',
       justifyContent: 'space-between',
+      gap: theme.spacing.sm, // Use gap instead of marginHorizontal
     },
     secondaryAction: {
       flex: 1,
       backgroundColor: theme.colors.surface,
-      flexDirection: 'row',
+      flexDirection: 'column', // Changed to column for better text layout
       alignItems: 'center',
       justifyContent: 'center',
       padding: theme.spacing.md,
       borderRadius: theme.borderRadius.lg,
-      marginHorizontal: theme.spacing.xs,
+      minHeight: 80, // Ensure consistent height
+      borderWidth: 1,
+      borderColor: theme.colors.border,
     },
     secondaryActionText: {
       color: theme.colors.text,
-      fontSize: theme.typography.body.fontSize,
+      fontSize: theme.typography.caption.fontSize, // Smaller font size
       fontWeight: '500',
-      marginLeft: theme.spacing.sm,
+      textAlign: 'center', // Center align text
+      marginTop: theme.spacing.xs, // Space between icon and text
+      lineHeight: theme.typography.lineHeights.normal, // Use available line height
     },
     recentCard: {
       backgroundColor: theme.colors.surface,

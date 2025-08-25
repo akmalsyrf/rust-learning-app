@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { Platform } from 'react-native';
 
 // Import screens
 import HomeScreen from '../screens/HomeScreen';
@@ -57,30 +58,30 @@ function TabNavigator() {
 
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        // Tab Bar Styling
+        // Tab Bar Styling - Platform-specific with increased spacing
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: theme.colors.textSecondary,
         tabBarStyle: {
           backgroundColor: theme.colors.surface,
           borderTopColor: theme.colors.border,
           borderTopWidth: 1,
-          height: 60,
-          paddingBottom: 8,
-          paddingTop: 8,
-          paddingHorizontal: 16,
-          elevation: 8,
-          shadowColor: theme.colors.border,
-          shadowOffset: { width: 0, height: -2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
+          height: Platform.OS === 'ios' ? 100 : 80, // Increased height for more spacing
+          paddingBottom: Platform.OS === 'ios' ? 30 : 16, // Increased bottom padding
+          paddingTop: 12, // Increased top padding
+          paddingHorizontal: 20, // Increased horizontal padding
+          elevation: Platform.OS === 'android' ? 8 : 0,
+          shadowColor: Platform.OS === 'ios' ? theme.colors.border : 'transparent',
+          shadowOffset: Platform.OS === 'ios' ? { width: 0, height: -2 } : { width: 0, height: 0 },
+          shadowOpacity: Platform.OS === 'ios' ? 0.1 : 0,
+          shadowRadius: Platform.OS === 'ios' ? 4 : 0,
         },
         tabBarLabelStyle: {
           fontSize: theme.typography.sizes.xs,
           fontWeight: theme.typography.weights.medium as any,
-          marginTop: 2,
+          marginTop: 4, // Increased from 0 for better spacing
         },
         tabBarIconStyle: {
-          marginTop: 4,
+          marginTop: 6, // Increased from 2 for better spacing
         },
         // Header Styling
         headerStyle: {

@@ -353,7 +353,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
             ) : (
               <Ionicons name='play' size={20} color={theme.colors.white} />
             )}
-            <Text style={styles.actionButtonText}>
+            <Text style={styles.actionButtonText} numberOfLines={1}>
               {isExecuting
                 ? t('codePractice.running', 'Running...')
                 : t('codePractice.runCode', 'Run Code')}
@@ -362,7 +362,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
 
           <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
             <Ionicons name='checkmark' size={20} color={theme.colors.white} />
-            <Text style={styles.actionButtonText}>
+            <Text style={styles.actionButtonText} numberOfLines={1}>
               {t('codePractice.checkSolution', 'Check Solution')}
             </Text>
           </TouchableOpacity>
@@ -372,7 +372,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
             onPress={() => setShowSolution(!showSolution)}
           >
             <Ionicons name='eye' size={20} color={theme.colors.primary} />
-            <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
+            <Text style={[styles.actionButtonText, styles.secondaryButtonText]} numberOfLines={1}>
               {showSolution ? t('codePractice.hide', 'Hide') : t('codePractice.show', 'Show')}{' '}
               {t('codePractice.solution', 'Solution')}
             </Text>
@@ -406,7 +406,7 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
             ) : (
               <Ionicons name='play' size={20} color={theme.colors.white} />
             )}
-            <Text style={styles.actionButtonText}>
+            <Text style={styles.actionButtonText} numberOfLines={1}>
               {isExecuting
                 ? t('codePractice.running', 'Running...')
                 : t('codePractice.runCode', 'Run Code')}
@@ -671,17 +671,20 @@ const createStyles = (theme: Theme) =>
       flexDirection: 'row',
       gap: theme.spacing.sm,
       marginBottom: theme.spacing.lg,
+      flexWrap: 'wrap', // Allow wrapping if needed
     },
     actionButton: {
       flexDirection: 'row',
       alignItems: 'center',
+      justifyContent: 'center',
       gap: theme.spacing.xs,
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
       backgroundColor: theme.colors.primary,
       borderRadius: theme.borderRadius.sm,
-      flex: 1,
-      justifyContent: 'center',
+      minHeight: 44, // Ensure consistent height
+      minWidth: 120, // Ensure minimum width for text
+      flex: 1, // Take available space
     },
     actionButtonDisabled: {
       backgroundColor: theme.colors.textSecondary,
@@ -691,6 +694,8 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.white,
       fontSize: theme.typography.body.fontSize,
       fontWeight: '600' as any,
+      textAlign: 'center', // Center align text
+      flexShrink: 1, // Allow text to shrink if needed
     },
     secondaryButton: {
       backgroundColor: 'transparent',
@@ -762,6 +767,8 @@ const createStyles = (theme: Theme) =>
     previewRunButton: {
       flex: 1,
       justifyContent: 'center',
+      minHeight: 44, // Ensure consistent height
+      minWidth: 120, // Ensure minimum width for text
     },
   });
 
