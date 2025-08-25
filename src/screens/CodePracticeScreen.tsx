@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useDataStore } from '../state/useDataStore';
 import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { CodePracticeScreenProps } from '../types/navigation';
-import { useDataStore } from '../state/useDataStore';
-import { CodePractice } from '../types';
 import CodePracticeCard from '../components/CodePracticeCard';
-import { useLanguage } from '../i18n';
+import { CodePractice } from '../types';
 
-export default function CodePracticeScreen({ navigation, route }: CodePracticeScreenProps) {
+export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
+  const { getCodePractices, getTopics } = useDataStore();
   const { t } = useTranslation();
-  const { currentLanguage } = useLanguage();
-  const isCurrLangNeedsPlural = currentLanguage !== 'id';
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
 
-  const { getCodePracticesForLesson, getCodePracticesForTopic } = useDataStore();
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [selectedLesson, setSelectedLesson] = useState<string | null>(null);
   const [practices, setPractices] = useState<CodePractice[]>([]);
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'easy' | 'medium' | 'hard'>('all');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   useEffect(() => {
     loadPractices();
-  }, [route.params, getCodePracticesForLesson, getCodePracticesForTopic]);
+  }, [route.params, getCodePractices, getTopics]);
 
   const loadPractices = () => {
     let loadedPractices: CodePractice[] = [];
 
     if (route.params?.lessonId) {
-      loadedPractices = getCodePracticesForLesson(route.params.lessonId);
+      loadedPractices = getCodePractices().filter(p => p.lessonId === route.params.lessonId);
     } else if (route.params?.topicId) {
-      loadedPractices = getCodePracticesForTopic(route.params.topicId);
+      loadedPractices = getCodePractices().filter(p => p.topicId === route.params.topicId);
     } else {
       // Show all practices if no specific lesson or topic
-      loadedPractices = getCodePracticesForLesson('hello-world'); // Default to first lesson
+      loadedPractices = getCodePractices();
     }
 
     setPractices(loadedPractices);
@@ -177,8 +176,7 @@ export default function CodePracticeScreen({ navigation, route }: CodePracticeSc
         <View style={styles.practiceCount}>
           <Text style={styles.practiceCountText}>
             {filteredPractices.length} {t('codePractice.practice', 'practice')}
-            {filteredPractices.length !== 1 && isCurrLangNeedsPlural ? 's' : ''}{' '}
-            {t('codePractice.found', 'found')}
+            {filteredPractices.length !== 1 ? 's' : ''} {t('codePractice.found', 'found')}
           </Text>
         </View>
 

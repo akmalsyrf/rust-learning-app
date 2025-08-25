@@ -24,9 +24,17 @@ interface CodePracticeCardProps {
   practice: CodePractice;
   onComplete?: (practiceId: string, userCode: string) => void;
   onHint?: (practiceId: string, hintIndex: number) => void;
+  onCodeExecution?: (practiceId: string, result: any) => void;
+  isPreview?: boolean;
 }
 
-const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplete, onHint }) => {
+const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
+  practice,
+  onComplete,
+  onHint,
+  onCodeExecution,
+  isPreview = false,
+}) => {
   const { getEffectiveTheme } = useSettingsStore();
   const { t } = useTranslation();
   const isDark = getEffectiveTheme() === 'dark';
@@ -70,12 +78,25 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       const result = await codeExecutionService.executeRustCode(userCode);
       setExecutionResult(result);
 
+      // Call the callback if provided
+      if (onCodeExecution) {
+        onCodeExecution(practice.id, result);
+      }
+
       if (!result.success) {
         Alert.alert(t('codePractice.codeExecutionFailed', 'Code Execution Failed'), result.error, [
           { text: t('common.ok', 'OK') },
         ]);
       }
     } catch (error) {
+      const errorResult = { success: false, output: '', error: 'An unexpected error occurred' };
+      setExecutionResult(errorResult);
+
+      // Call the callback with error result
+      if (onCodeExecution) {
+        onCodeExecution(practice.id, errorResult);
+      }
+
       Alert.alert(
         t('codePractice.executionError', 'Execution Error'),
         t(
@@ -320,42 +341,79 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({ practice, onComplet
       </View>
 
       {/* Action Buttons */}
-      <View style={styles.actions}>
-        <TouchableOpacity
-          style={[styles.actionButton, isExecuting && styles.actionButtonDisabled]}
-          onPress={handleRunCode}
-          disabled={isExecuting}
-        >
-          {isExecuting ? (
-            <ActivityIndicator size='small' color={theme.colors.white} />
-          ) : (
-            <Ionicons name='play' size={20} color={theme.colors.white} />
-          )}
-          <Text style={styles.actionButtonText}>
-            {isExecuting
-              ? t('codePractice.running', 'Running...')
-              : t('codePractice.runCode', 'Run Code')}
-          </Text>
-        </TouchableOpacity>
+      {!isPreview && (
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={[styles.actionButton, isExecuting && styles.actionButtonDisabled]}
+            onPress={handleRunCode}
+            disabled={isExecuting}
+          >
+            {isExecuting ? (
+              <ActivityIndicator size='small' color={theme.colors.white} />
+            ) : (
+              <Ionicons name='play' size={20} color={theme.colors.white} />
+            )}
+            <Text style={styles.actionButtonText}>
+              {isExecuting
+                ? t('codePractice.running', 'Running...')
+                : t('codePractice.runCode', 'Run Code')}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
-          <Ionicons name='checkmark' size={20} color={theme.colors.white} />
-          <Text style={styles.actionButtonText}>
-            {t('codePractice.checkSolution', 'Check Solution')}
-          </Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
+            <Ionicons name='checkmark' size={20} color={theme.colors.white} />
+            <Text style={styles.actionButtonText}>
+              {t('codePractice.checkSolution', 'Check Solution')}
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.actionButton, styles.secondaryButton]}
-          onPress={() => setShowSolution(!showSolution)}
-        >
-          <Ionicons name='eye' size={20} color={theme.colors.primary} />
-          <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
-            {showSolution ? t('codePractice.hide', 'Hide') : t('codePractice.show', 'Show')}{' '}
-            {t('codePractice.solution', 'Solution')}
+          <TouchableOpacity
+            style={[styles.actionButton, styles.secondaryButton]}
+            onPress={() => setShowSolution(!showSolution)}
+          >
+            <Ionicons name='eye' size={20} color={theme.colors.primary} />
+            <Text style={[styles.actionButtonText, styles.secondaryButtonText]}>
+              {showSolution ? t('codePractice.hide', 'Hide') : t('codePractice.show', 'Show')}{' '}
+              {t('codePractice.solution', 'Solution')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
+      {/* Preview Mode Message */}
+      {isPreview && (
+        <View style={styles.previewMessage}>
+          <Ionicons name='information-circle' size={20} color={theme.colors.info} />
+          <Text style={styles.previewText}>
+            {t(
+              'freeCodePractice.previewMode',
+              'This is a preview. Navigate to full practice to run code and check solutions.'
+            )}
           </Text>
-        </TouchableOpacity>
-      </View>
+        </View>
+      )}
+
+      {/* Preview Mode Run Code Button */}
+      {isPreview && (
+        <View style={styles.previewActions}>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.previewRunButton]}
+            onPress={handleRunCode}
+            disabled={isExecuting}
+          >
+            {isExecuting ? (
+              <ActivityIndicator size='small' color={theme.colors.white} />
+            ) : (
+              <Ionicons name='play' size={20} color={theme.colors.white} />
+            )}
+            <Text style={styles.actionButtonText}>
+              {isExecuting
+                ? t('codePractice.running', 'Running...')
+                : t('codePractice.runCode', 'Run Code')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Execution Result (when available) */}
       {executionResult && (
@@ -679,6 +737,31 @@ const createStyles = (theme: Theme) =>
       fontSize: theme.typography.caption.fontSize,
       color: theme.colors.textSecondary,
       fontFamily: 'monospace',
+    },
+    previewMessage: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: theme.spacing.sm,
+      padding: theme.spacing.md,
+      backgroundColor: theme.colors.info + '10',
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.info,
+      marginTop: theme.spacing.lg,
+    },
+    previewText: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.info,
+      fontStyle: 'italic' as any,
+    },
+    previewActions: {
+      flexDirection: 'row',
+      gap: theme.spacing.sm,
+      marginBottom: theme.spacing.lg,
+    },
+    previewRunButton: {
+      flex: 1,
+      justifyContent: 'center',
     },
   });
 

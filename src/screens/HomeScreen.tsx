@@ -145,6 +145,16 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           <View style={styles.secondaryActions}>
             <TouchableOpacity
               style={styles.secondaryAction}
+              onPress={() => navigation.navigate('FreeCodePractice')}
+            >
+              <Ionicons name='code-slash' size={20} color={theme.colors.text} />
+              <Text style={styles.secondaryActionText}>
+                {t('freeCodePractice.title', 'Free Code Practice')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.secondaryAction}
               onPress={() => navigation.navigate('Leaderboard')}
             >
               <Ionicons name='trophy' size={20} color={theme.colors.text} />

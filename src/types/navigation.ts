@@ -1,7 +1,6 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { CompositeNavigationProp, RouteProp } from '@react-navigation/native';
-import { LessonResult } from './index';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 // Stack navigator param list
 export type RootStackParamList = {
@@ -9,12 +8,12 @@ export type RootStackParamList = {
   Lesson: { lessonId: string };
   Quiz: { lessonId: string };
   CodePractice: { lessonId?: string; topicId?: string };
-  Results: { lessonResult: LessonResult };
+  FreeCodePractice: undefined;
+  Results: { lessonId: string; score: number; totalQuestions: number; timeTaken: number };
   About: undefined;
   LanguageSettings: undefined;
 };
 
-// Tab navigator param list
 export type TabParamList = {
   Home: undefined;
   Modules: undefined;
@@ -22,20 +21,21 @@ export type TabParamList = {
   Profile: undefined;
 };
 
-// Stack navigation prop
+// Navigation prop types
 export type StackNavigationProps = NativeStackNavigationProp<RootStackParamList>;
+export type NavigationProps = CompositeNavigationProp<
+  BottomTabNavigationProp<TabParamList>,
+  NativeStackNavigationProp<RootStackParamList>
+>;
 
-// Tab navigation prop
-export type TabNavigationProps = BottomTabNavigationProp<TabParamList>;
-
-// Combined navigation prop for screens that can access both
-export type NavigationProps = CompositeNavigationProp<TabNavigationProps, StackNavigationProps>;
-
-// Route props for specific screens
+// Route prop types
 export type LessonScreenRouteProp = RouteProp<RootStackParamList, 'Lesson'>;
 export type QuizScreenRouteProp = RouteProp<RootStackParamList, 'Quiz'>;
 export type CodePracticeScreenRouteProp = RouteProp<RootStackParamList, 'CodePractice'>;
+export type FreeCodePracticeScreenRouteProp = RouteProp<RootStackParamList, 'FreeCodePractice'>;
 export type ResultsScreenRouteProp = RouteProp<RootStackParamList, 'Results'>;
+export type AboutScreenRouteProp = RouteProp<RootStackParamList, 'About'>;
+export type LanguageSettingsScreenRouteProp = RouteProp<RootStackParamList, 'LanguageSettings'>;
 
 // Screen props combining navigation and route
 export type LessonScreenProps = {
@@ -53,9 +53,22 @@ export type CodePracticeScreenProps = {
   route: CodePracticeScreenRouteProp;
 };
 
+export type FreeCodePracticeScreenProps = {
+  navigation: StackNavigationProps;
+  route: FreeCodePracticeScreenRouteProp;
+};
+
 export type ResultsScreenProps = {
   navigation: StackNavigationProps;
   route: ResultsScreenRouteProp;
+};
+
+export type AboutScreenProps = {
+  navigation: StackNavigationProps;
+};
+
+export type LanguageSettingsScreenProps = {
+  navigation: StackNavigationProps;
 };
 
 export type HomeScreenProps = {
@@ -72,12 +85,4 @@ export type LeaderboardScreenProps = {
 
 export type ProfileScreenProps = {
   navigation: NavigationProps;
-};
-
-export type AboutScreenProps = {
-  navigation: StackNavigationProps;
-};
-
-export type LanguageSettingsScreenProps = {
-  navigation: StackNavigationProps;
 };

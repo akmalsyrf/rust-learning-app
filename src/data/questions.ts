@@ -1985,7 +1985,7 @@ export const questions: Question[] = [
     type: 'mcq',
     prompt: 'Which of these is NOT one of the three ownership rules in Rust?',
     choices: [
-      'Each value in Rust has a variable that’s called its owner.',
+      "Each value in Rust has a variable that's called its owner.",
       'There can only be one owner at a time.',
       'When the owner goes out of scope, the value will be dropped.',
       'All values must be manually deallocated by the programmer.',
@@ -2500,7 +2500,7 @@ export const questions: Question[] = [
     ],
     correctIndex: 1,
     explanation:
-      "The `'static` lifetime indicates that the data pointed to by the reference lives for the entire program runtime. String literals, for example, have a `\'static` lifetime because they are stored in the program\'s binary.",
+      "The `'static` lifetime indicates that the data pointed to by the reference lives for the entire program runtime. String literals, for example, have a `'static` lifetime because they are stored in the program's binary.",
     topicId: 'traits-generics',
     difficulty: 'advanced',
     points: 20,

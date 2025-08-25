@@ -64,15 +64,17 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
         return userAnswer === question.correctIndex;
       case 'tf':
         return userAnswer === question.answer;
-      case 'fib':
+      case 'fib': {
         const normalizedAnswer = String(userAnswer).toLowerCase().trim();
         return question.acceptableAnswers.some(
           acceptable => acceptable.toLowerCase().trim() === normalizedAnswer
         );
-      case 'predict_output':
+      }
+      case 'predict_output': {
         const normalizedOutput = String(userAnswer).trim();
         const expectedOutput = question.expectedStdout.trim();
         return normalizedOutput === expectedOutput;
+      }
       default:
         return false;
     }
@@ -153,7 +155,12 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
       perfectScore: questionResults.every(r => r.correct),
     };
 
-    navigation.navigate('Results', { lessonResult });
+    navigation.navigate('Results', {
+      lessonId,
+      score: questionResults.filter(r => r.correct).length,
+      totalQuestions: questionResults.length,
+      timeTaken: Date.now() - startTime,
+    });
   };
 
   if (!lesson || questions.length === 0) {
