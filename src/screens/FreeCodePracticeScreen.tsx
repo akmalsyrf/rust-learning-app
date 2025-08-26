@@ -8,11 +8,13 @@ import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { FreeCodePracticeScreenProps } from '../types/navigation';
 import CodePracticeCard from '../components/CodePracticeCard';
+import { useProgressStore } from '../state/useProgressStore';
 
 export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { getCodePractices, getTopics } = useDataStore();
   const { t } = useTranslation();
+  const { xp, getTodayXP } = useProgressStore(); // Get current XP and today XP function
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   const isDark = getEffectiveTheme() === 'dark';
@@ -45,13 +47,22 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
     return allCodePractices.filter(practice => practice.topicId === topicId).length;
   };
 
-  const handlePracticeComplete = () => {
-    // Handle practice completion
-    Alert.alert(
-      t('codePractice.practiceCompleted', 'Practice Completed!'),
-      t('codePractice.greatJob', 'Great job! You completed this practice.'),
-      [{ text: t('common.ok', 'OK') }]
-    );
+  const handlePracticeComplete = (practiceId: string, userCode: string) => {
+    // Find the practice to get its details
+    const practice = allCodePractices.find(p => p.id === practiceId);
+
+    if (practice) {
+      // Calculate XP reward
+      const baseXP = practice.points;
+      const bonusXP = 25; // First completion bonus
+      const totalXP = baseXP + bonusXP;
+
+      Alert.alert(
+        t('codePractice.practiceCompleted', 'Practice Completed!'),
+        `${t('codePractice.greatJob', 'Great job! You completed this practice.')}\n\n🎁 ${t('codePractice.xpEarned', 'XP Earned')}: +${totalXP}`,
+        [{ text: t('common.ok', 'OK') }]
+      );
+    }
   };
 
   const handleNavigateToFullPractice = () => {
@@ -91,6 +102,11 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
             <Text style={styles.statLabel}>
               {t('freeCodePractice.beginnerFriendly', 'Beginner')}
             </Text>
+          </View>
+          <View style={styles.statCard}>
+            <Ionicons name='trophy' size={24} color={theme.colors.success} />
+            <Text style={styles.statNumber}>{xp}</Text>
+            <Text style={styles.statLabel}>{t('common.xp', 'Total XP')}</Text>
           </View>
         </View>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
@@ -53,8 +53,25 @@ export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
   const difficulties = ['all', 'easy', 'medium', 'hard'];
 
   const handlePracticeComplete = (practiceId: string, userCode: string) => {
-    // In a real app, this would save progress and award XP
-    console.log(`Practice ${practiceId} completed with code:`, userCode);
+    // Find the practice to get its details
+    const practice = practices.find(p => p.id === practiceId);
+
+    if (practice) {
+      // Calculate XP reward
+      const baseXP = practice.points;
+      const bonusXP = 25; // First completion bonus
+      const totalXP = baseXP + bonusXP;
+
+      console.log(`Practice ${practiceId} completed with code:`, userCode);
+      console.log(`XP Earned: +${totalXP} (${baseXP} base + ${bonusXP} bonus)`);
+
+      // Show XP earned alert
+      Alert.alert(
+        t('codePractice.practiceCompleted', 'Practice Completed!'),
+        `${t('codePractice.greatJob', 'Great job! You completed this practice.')}\n\n🎁 ${t('codePractice.xpEarned', 'XP Earned')}: +${totalXP}`,
+        [{ text: t('common.ok', 'OK') }]
+      );
+    }
   };
 
   const handleHintUsed = (practiceId: string, hintIndex: number) => {
@@ -188,7 +205,6 @@ export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
                 key={practice.id}
                 practice={practice}
                 onComplete={handlePracticeComplete}
-                onHint={handleHintUsed}
               />
             ))}
           </View>

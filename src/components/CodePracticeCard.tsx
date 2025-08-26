@@ -1,42 +1,38 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useSettingsStore } from '../state/useSettingsStore';
 import { useTranslation } from 'react-i18next';
-import { lightTheme, darkTheme, Theme } from '../theme';
+import { useSettingsStore } from '../state/useSettingsStore';
 import CodeEditor from './CodeEditor';
 import SyntaxHighlighter from './SyntaxHighlighter';
 import { codeExecutionService, RustExecutionResult } from '../services/codeExecution';
-
-interface CodePractice {
-  id: string;
-  title: string;
-  description: string;
-  initialCode: string;
-  solution: string;
-  expectedOutput?: string;
-  hints: string[];
-  difficulty: 'easy' | 'medium' | 'hard';
-  category: string;
-}
+import { useProgressStore } from '../state/useProgressStore';
+import { CodePractice } from '../types';
+import { darkTheme, lightTheme } from '../theme';
 
 interface CodePracticeCardProps {
   practice: CodePractice;
-  onComplete?: (practiceId: string, userCode: string) => void;
-  onHint?: (practiceId: string, hintIndex: number) => void;
-  onCodeExecution?: (practiceId: string, result: any) => void;
   isPreview?: boolean;
+  onComplete?: (practiceId: string, userCode: string) => void;
+  onCodeExecution?: (practiceId: string, result: any) => void;
 }
 
-const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
+export default function CodePracticeCard({
   practice,
-  onComplete,
-  onHint,
-  onCodeExecution,
   isPreview = false,
-}) => {
-  const { getEffectiveTheme } = useSettingsStore();
+  onComplete,
+  onCodeExecution,
+}: CodePracticeCardProps) {
   const { t } = useTranslation();
+  const { getEffectiveTheme } = useSettingsStore();
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
@@ -47,25 +43,16 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
   const [usedHints, setUsedHints] = useState<number[]>([]);
   const [executionResult, setExecutionResult] = useState<RustExecutionResult | null>(null);
   const [isExecuting, setIsExecuting] = useState(false);
-  const [solutionStatus, setSolutionStatus] = useState<'not_checked' | 'correct' | 'incorrect'>(
-    'not_checked'
-  );
 
   const handleCodeChange = (code: string) => {
     setUserCode(code);
-    // Reset solution status when code changes
-    if (solutionStatus !== 'not_checked') {
-      setSolutionStatus('not_checked');
-    }
   };
 
   const handleRunCode = async () => {
-    // Validate code before execution
-    const validation = codeExecutionService.validateRustCode(userCode);
-    if (!validation.isValid) {
+    if (!userCode.trim()) {
       Alert.alert(
-        t('codePractice.codeValidationError', 'Code Validation Error'),
-        `${t('codePractice.pleaseFixIssues', 'Please fix the following issues')}:\n\n${validation.errors.join('\n')}`,
+        t('codePractice.noCode', 'No Code'),
+        t('codePractice.pleaseWriteCode', 'Please write some code first.'),
         [{ text: t('common.ok', 'OK') }]
       );
       return;
@@ -78,24 +65,72 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
       const result = await codeExecutionService.executeRustCode(userCode);
       setExecutionResult(result);
 
-      // Call the callback if provided
-      if (onCodeExecution) {
-        onCodeExecution(practice.id, result);
-      }
+      if (result.success) {
+        // Check if output matches expected output and award XP immediately
+        if (practice.expectedOutput && result.output.trim() === practice.expectedOutput.trim()) {
+          // Calculate XP reward
+          const baseXP = practice.points;
+          const bonusXP = 25; // Bonus for first completion
+          const totalXP = baseXP + bonusXP;
 
-      if (!result.success) {
+          // Award XP immediately
+          try {
+            const xpResult = useProgressStore
+              .getState()
+              .completeCodePractice(practice, userCode, true);
+
+            // Show success alert with XP earned
+            Alert.alert(
+              `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
+              `${t('codePractice.yourCodeOutputMatches', 'Your code output matches the expected output!')}\n\nOutput: "${result.output.trim()}"\n\n🎁 ${t('codePractice.xpEarned', 'XP Earned')}: +${totalXP}`,
+              [
+                {
+                  text: t('codePractice.great', 'Great!'),
+                  onPress: () => {
+                    if (onComplete) {
+                      onComplete(practice.id, userCode);
+                    }
+                  },
+                },
+              ]
+            );
+          } catch (error) {
+            // Show success alert without XP if there's an error
+            Alert.alert(
+              `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
+              `${t('codePractice.yourCodeOutputMatches', 'Your code output matches the expected output!')}\n\nOutput: "${result.output.trim()}"`,
+              [
+                {
+                  text: t('codePractice.great', 'Great!'),
+                  onPress: () => {
+                    if (onComplete) {
+                      onComplete(practice.id, userCode);
+                    }
+                  },
+                },
+              ]
+            );
+          }
+        } else {
+          // Output doesn't match, show normal success
+          Alert.alert(
+            t('codePractice.codeExecuted', 'Code Executed'),
+            t('codePractice.codeExecutedSuccessfully', 'Your code executed successfully!'),
+            [{ text: t('common.ok', 'OK') }]
+          );
+        }
+      } else {
         Alert.alert(t('codePractice.codeExecutionFailed', 'Code Execution Failed'), result.error, [
           { text: t('common.ok', 'OK') },
         ]);
       }
     } catch (error) {
-      const errorResult = { success: false, output: '', error: 'An unexpected error occurred' };
-      setExecutionResult(errorResult);
-
-      // Call the callback with error result
-      if (onCodeExecution) {
-        onCodeExecution(practice.id, errorResult);
-      }
+      setExecutionResult({
+        success: false,
+        output: '',
+        error: error instanceof Error ? error.message : 'Unknown error',
+        executionTime: 0,
+      });
 
       Alert.alert(
         t('codePractice.executionError', 'Execution Error'),
@@ -110,84 +145,11 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
     }
   };
 
-  const handleCheckSolution = async () => {
-    // Check if code has been executed first
-    if (!executionResult) {
-      Alert.alert(
-        t('codePractice.codeNotExecuted', 'Code Not Executed'),
-        t(
-          'codePractice.pleaseRunCodeFirst',
-          'Please run your code first before checking the solution.'
-        ),
-        [{ text: t('common.ok', 'OK') }]
-      );
-      return;
-    }
-
-    // Check if execution was successful
-    if (!executionResult.success) {
-      Alert.alert(
-        t('codePractice.codeExecutionFailed', 'Code Execution Failed'),
-        t(
-          'codePractice.pleaseFixErrors',
-          'Please fix the errors in your code before checking the solution.'
-        ),
-        [{ text: t('common.ok', 'OK') }]
-      );
-      return;
-    }
-
-    // Check if expected output is available
-    if (!practice.expectedOutput) {
-      Alert.alert(
-        t('codePractice.noExpectedOutput', 'No Expected Output'),
-        t(
-          'codePractice.noExpectedOutputText',
-          'This practice does not have an expected output to check against.'
-        ),
-        [{ text: t('common.ok', 'OK') }]
-      );
-      return;
-    }
-
-    // Compare output with expected output
-    const userOutput = executionResult.output.trim();
-    const expectedOutput = practice.expectedOutput.trim();
-
-    const isCorrect = userOutput === expectedOutput;
-
-    if (isCorrect) {
-      setSolutionStatus('correct');
-      Alert.alert(
-        `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
-        `${t('codePractice.yourCodeOutputMatches', 'Your code output matches the expected output!')}\n\nOutput: "${userOutput}"`,
-        [
-          {
-            text: t('codePractice.great', 'Great!'),
-            onPress: () => {
-              if (onComplete) {
-                onComplete(practice.id, userCode);
-              }
-            },
-          },
-        ]
-      );
-    } else {
-      setSolutionStatus('incorrect');
-      Alert.alert(
-        `❌ ${t('codePractice.incorrectSolution', 'Incorrect Solution')}`,
-        `${t('codePractice.yourCodeOutputDoesNotMatch', 'Your code output does not match the expected output.')}\n\nYour output: "${userOutput}"\nExpected: "${expectedOutput}"\n\n${t('codePractice.pleaseCheckCode', 'Please check your code and try again.')}`,
-        [{ text: t('codePractice.tryAgain', 'Try Again') }]
-      );
-    }
-  };
-
   const handleShowHint = (hintIndex: number) => {
     if (!usedHints.includes(hintIndex)) {
       setUsedHints([...usedHints, hintIndex]);
-      if (onHint) {
-        onHint(practice.id, hintIndex);
-      }
+      // The onHint prop is removed, so this function is no longer used for hinting.
+      // Keeping it here for now, but it will not trigger the onHint callback.
     }
     setShowHints(true);
   };
@@ -239,26 +201,6 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
         </View>
         <View style={styles.headerRight}>
           <Text style={styles.category}>{practice.category}</Text>
-          {/* Solution Status Indicator */}
-          {solutionStatus !== 'not_checked' && (
-            <View
-              style={[
-                styles.statusBadge,
-                solutionStatus === 'correct' ? styles.statusCorrect : styles.statusIncorrect,
-              ]}
-            >
-              <Ionicons
-                name={solutionStatus === 'correct' ? 'checkmark-circle' : 'close-circle'}
-                size={16}
-                color={theme.colors.white}
-              />
-              <Text style={styles.statusText}>
-                {solutionStatus === 'correct'
-                  ? t('codePractice.correct', 'Correct')
-                  : t('codePractice.incorrect', 'Incorrect')}
-              </Text>
-            </View>
-          )}
         </View>
       </View>
 
@@ -342,9 +284,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
 
       {/* Action Buttons */}
       {!isPreview && (
-        <View style={styles.actions}>
+        <View style={styles.actionButtons}>
           <TouchableOpacity
-            style={[styles.actionButton, isExecuting && styles.actionButtonDisabled]}
+            style={styles.actionButton}
             onPress={handleRunCode}
             disabled={isExecuting}
           >
@@ -360,21 +302,15 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.actionButton} onPress={handleCheckSolution}>
-            <Ionicons name='checkmark' size={20} color={theme.colors.white} />
-            <Text style={styles.actionButtonText} numberOfLines={1}>
-              {t('codePractice.checkSolution', 'Check Solution')}
-            </Text>
-          </TouchableOpacity>
-
           <TouchableOpacity
-            style={[styles.actionButton, styles.secondaryButton]}
+            style={[styles.actionButton, { backgroundColor: theme.colors.primary }]}
             onPress={() => setShowSolution(!showSolution)}
           >
-            <Ionicons name='eye' size={20} color={theme.colors.primary} />
-            <Text style={[styles.actionButtonText, styles.secondaryButtonText]} numberOfLines={1}>
-              {showSolution ? t('codePractice.hide', 'Hide') : t('codePractice.show', 'Show')}{' '}
-              {t('codePractice.solution', 'Solution')}
+            <Ionicons name='eye' size={20} color={theme.colors.white} />
+            <Text style={styles.actionButtonText} numberOfLines={1}>
+              {showSolution
+                ? t('codePractice.hide', 'Hide')
+                : t('codePractice.solution', 'Solution')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -481,9 +417,9 @@ const CodePracticeCard: React.FC<CodePracticeCardProps> = ({
       )}
     </View>
   );
-};
+}
 
-const createStyles = (theme: Theme) =>
+const createStyles = (theme: any) =>
   StyleSheet.create({
     container: {
       backgroundColor: theme.colors.background,
@@ -667,7 +603,7 @@ const createStyles = (theme: Theme) =>
       paddingLeft: theme.spacing.md,
       paddingRight: theme.spacing.sm,
     },
-    actions: {
+    actionButtons: {
       flexDirection: 'row',
       gap: theme.spacing.sm,
       marginBottom: theme.spacing.lg,
@@ -680,15 +616,11 @@ const createStyles = (theme: Theme) =>
       gap: theme.spacing.xs,
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
-      backgroundColor: theme.colors.primary,
+      backgroundColor: theme.colors.success, // Default green background for Run Code
       borderRadius: theme.borderRadius.sm,
       minHeight: 44, // Ensure consistent height
       minWidth: 120, // Ensure minimum width for text
       flex: 1, // Take available space
-    },
-    actionButtonDisabled: {
-      backgroundColor: theme.colors.textSecondary,
-      opacity: 0.6,
     },
     actionButtonText: {
       color: theme.colors.white,
@@ -771,5 +703,3 @@ const createStyles = (theme: Theme) =>
       minWidth: 120, // Ensure minimum width for text
     },
   });
-
-export default CodePracticeCard;

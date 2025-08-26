@@ -1,5 +1,12 @@
 import { create } from 'zustand';
-import { UserProgress, QuestionResult, LessonResult, QuestionId, LessonId } from '../types';
+import {
+  UserProgress,
+  QuestionResult,
+  LessonResult,
+  QuestionId,
+  LessonId,
+  CodePractice,
+} from '../types';
 import { progressStorage } from '../utils/storage';
 
 interface ProgressState extends UserProgress {
@@ -13,6 +20,16 @@ interface ProgressState extends UserProgress {
   getLessonStars: (lessonId: LessonId) => 0 | 1 | 2 | 3;
   getTotalCorrectAnswers: () => number;
   getTodayXP: () => number;
+  completeCodePractice: (
+    practice: CodePractice,
+    userCode: string,
+    isCorrect: boolean
+  ) => {
+    success: boolean;
+    xpEarned: number;
+    totalXP: number;
+    reason?: string;
+  };
 
   // Persistence actions
   loadFromStorage: () => Promise<void>;
@@ -28,6 +45,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
   // Initial state
   completedQuestions: {},
   lessonStars: {},
+  completedCodePractices: [],
   xp: 0,
   currentStreakDays: 0,
   highestStreakDays: 0,
@@ -190,6 +208,68 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
     }
   },
 
+  completeCodePractice: (practice: CodePractice, userCode: string, isCorrect: boolean) => {
+    const completedPractice = get().completedCodePractices.find(p => p.id === practice.id);
+
+    if (completedPractice) {
+      return { success: false, reason: 'already_completed', xpEarned: 0, totalXP: get().xp };
+    }
+
+    // Only give XP for correct solutions
+    let xpReward = 0;
+
+    if (isCorrect) {
+      // Use points from CodePractice (like quiz questions)
+      xpReward = practice.points;
+
+      // Bonus XP for first-time completion
+      xpReward += 25;
+    }
+    // No XP for incorrect attempts
+
+    // Add to completed practices and update XP
+    set(state => {
+      const today = new Date().toISOString().split('T')[0];
+
+      // Reset daily XP if new day
+      let newDailyXpCap = state.dailyXpCap;
+      if (state.lastXpResetDate !== today) {
+        newDailyXpCap = 0;
+      }
+
+      const newState = {
+        completedCodePractices: [
+          ...state.completedCodePractices,
+          {
+            id: practice.id,
+            completedAt: Date.now(),
+            userCode,
+            isCorrect,
+            xpEarned: xpReward,
+          },
+        ],
+        // Add XP to total (no daily limit)
+        xp: state.xp + xpReward,
+        // Update daily XP cap for today's tracking
+        dailyXpCap: newDailyXpCap + xpReward,
+        // Update last reset date if it's a new day
+        lastXpResetDate: today,
+      };
+      return newState;
+    });
+
+    // Update streak if practice was completed correctly
+    if (isCorrect) {
+      get().updateStreak();
+    }
+
+    if (xpReward > 0) {
+      return { success: true, xpEarned: xpReward, totalXP: get().xp };
+    } else {
+      return { success: false, reason: 'incorrect_solution', xpEarned: 0, totalXP: get().xp };
+    }
+  },
+
   // Persistence methods
   loadFromStorage: async () => {
     try {
@@ -204,6 +284,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
           lastActiveDate: savedProgress.lastActiveDate || '',
           dailyXpCap: savedProgress.dailyXpCap || 0,
           lastXpResetDate: savedProgress.lastXpResetDate || '',
+          completedCodePractices: savedProgress.completedCodePractices || [],
         });
         console.log('Progress loaded from storage');
       }
@@ -218,6 +299,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       const progressData: UserProgress = {
         completedQuestions: state.completedQuestions,
         lessonStars: state.lessonStars,
+        completedCodePractices: state.completedCodePractices,
         xp: state.xp,
         currentStreakDays: state.currentStreakDays,
         highestStreakDays: state.highestStreakDays,
@@ -245,6 +327,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
         lastActiveDate: '',
         dailyXpCap: 0,
         lastXpResetDate: '',
+        completedCodePractices: [],
       });
       console.log('Progress cleared from storage');
     } catch (error) {

@@ -88,11 +88,21 @@ export interface CodePractice {
   category: string;
   lessonId: string;
   topicId: string;
+  points: number; // XP points for completing this practice
+}
+
+export interface CompletedCodePractice {
+  id: string;
+  completedAt: number;
+  userCode: string;
+  isCorrect: boolean;
+  xpEarned: number;
 }
 
 export interface UserProgress {
   completedQuestions: Record<QuestionId, { correct: boolean; timestamp: number }>;
   lessonStars: Record<LessonId, 0 | 1 | 2 | 3>;
+  completedCodePractices: CompletedCodePractice[];
   xp: number;
   currentStreakDays: number;
   highestStreakDays: number;

@@ -18,6 +18,7 @@ export const codePractices: CodePractice[] = [
     category: 'Basic Syntax',
     lessonId: 'hello-world',
     topicId: 'fundamentals',
+    points: 50, // Easy practice = 50 points
   },
 
   {
@@ -39,6 +40,7 @@ export const codePractices: CodePractice[] = [
     category: 'Variables',
     lessonId: 'variables',
     topicId: 'fundamentals',
+    points: 50, // Easy practice = 50 points
   },
 
   {
@@ -60,6 +62,7 @@ export const codePractices: CodePractice[] = [
     category: 'Data Types',
     lessonId: 'scalar-types',
     topicId: 'fundamentals',
+    points: 50, // Easy practice = 50 points
   },
 
   // Control Structures
@@ -81,6 +84,7 @@ export const codePractices: CodePractice[] = [
     category: 'Control Flow',
     lessonId: 'conditional-if',
     topicId: 'control-structures',
+    points: 50, // Easy practice = 50 points
   },
 
   {
@@ -100,6 +104,7 @@ export const codePractices: CodePractice[] = [
     category: 'Loops',
     lessonId: 'for-loops',
     topicId: 'control-structures',
+    points: 50, // Easy practice = 50 points
   },
 
   // Functions & Modules
@@ -122,6 +127,7 @@ export const codePractices: CodePractice[] = [
     category: 'Functions',
     lessonId: 'functions',
     topicId: 'functions-modules',
+    points: 100, // Medium practice = 100 points
   },
 
   // Memory Management
@@ -144,6 +150,7 @@ export const codePractices: CodePractice[] = [
     category: 'Ownership',
     lessonId: 'ownership',
     topicId: 'memory-management',
+    points: 100, // Medium practice = 100 points
   },
 
   {
@@ -165,6 +172,7 @@ export const codePractices: CodePractice[] = [
     category: 'Borrowing',
     lessonId: 'borrowing-ref',
     topicId: 'memory-management',
+    points: 100, // Medium practice = 100 points
   },
 
   // Structs & Enums
@@ -188,6 +196,7 @@ export const codePractices: CodePractice[] = [
     category: 'Structs',
     lessonId: 'structs',
     topicId: 'structs-enums',
+    points: 100, // Medium practice = 100 points
   },
 
   {
@@ -209,6 +218,7 @@ export const codePractices: CodePractice[] = [
     category: 'Enums',
     lessonId: 'enums',
     topicId: 'structs-enums',
+    points: 200, // Hard practice = 200 points
   },
 
   // Pattern Matching
@@ -231,6 +241,7 @@ export const codePractices: CodePractice[] = [
     category: 'Pattern Matching',
     lessonId: 'enums',
     topicId: 'structs-enums',
+    points: 200, // Hard practice = 200 points
   },
 
   // Error Handling
@@ -255,6 +266,7 @@ export const codePractices: CodePractice[] = [
     category: 'Error Handling',
     lessonId: 'functions',
     topicId: 'functions-modules',
+    points: 200, // Hard practice = 200 points
   },
 
   // Traits & Generics
@@ -277,6 +289,7 @@ export const codePractices: CodePractice[] = [
     category: 'Generics',
     lessonId: 'traits',
     topicId: 'traits-generics',
+    points: 200, // Hard practice = 200 points
   },
 
   {
@@ -298,6 +311,7 @@ export const codePractices: CodePractice[] = [
     category: 'Traits',
     lessonId: 'traits',
     topicId: 'traits-generics',
+    points: 200, // Hard practice = 200 points
   },
 
   // Collections
@@ -320,6 +334,7 @@ export const codePractices: CodePractice[] = [
     category: 'Collections',
     lessonId: 'vectors',
     topicId: 'collections',
+    points: 100, // Medium practice = 100 points
   },
   // Data Types & Operations
   {
@@ -342,6 +357,7 @@ export const codePractices: CodePractice[] = [
     category: 'Operators',
     lessonId: 'operators',
     topicId: 'data-types',
+    points: 50, // Easy practice = 50 points
   },
 
   // Control Structures
@@ -363,6 +379,7 @@ export const codePractices: CodePractice[] = [
     category: 'Loops',
     lessonId: 'while-loops',
     topicId: 'control-structures',
+    points: 50, // Easy practice = 50 points
   },
 
   // Collections
@@ -385,6 +402,7 @@ export const codePractices: CodePractice[] = [
     category: 'Collections',
     lessonId: 'tuples',
     topicId: 'collections',
+    points: 50, // Easy practice = 50 points
   },
 
   // Structs & Enums
@@ -407,6 +425,7 @@ export const codePractices: CodePractice[] = [
     category: 'Structs',
     lessonId: 'struct-methods',
     topicId: 'structs-enums',
+    points: 100, // Medium practice = 100 points
   },
 
   // Memory Management
@@ -429,6 +448,7 @@ export const codePractices: CodePractice[] = [
     category: 'Borrowing',
     lessonId: 'mutable-ref',
     topicId: 'memory-management',
+    points: 100, // Medium practice = 100 points
   },
 
   // Functional Programming
@@ -450,6 +470,7 @@ export const codePractices: CodePractice[] = [
     category: 'Functional',
     lessonId: 'closures',
     topicId: 'functional-programming',
+    points: 100, // Medium practice = 100 points
   },
 
   // Error Handling
@@ -473,6 +494,7 @@ export const codePractices: CodePractice[] = [
     category: 'Error Handling',
     lessonId: 'recoverable-errors',
     topicId: 'error-handling',
+    points: 200, // Hard practice = 200 points
   },
   // =================================================================
   // Lanjutan Fundamentals
@@ -495,6 +517,7 @@ export const codePractices: CodePractice[] = [
     category: 'Basic Syntax',
     lessonId: 'comments',
     topicId: 'fundamentals',
+    points: 50, // Easy practice = 50 points
   },
   {
     id: 'cp-024',
@@ -514,6 +537,7 @@ export const codePractices: CodePractice[] = [
     category: 'Data Types',
     lessonId: 'string-literals',
     topicId: 'fundamentals',
+    points: 50, // Easy practice = 50 points
   },
 
   // =================================================================
@@ -537,6 +561,7 @@ export const codePractices: CodePractice[] = [
     category: 'Variables',
     lessonId: 'constants',
     topicId: 'data-types',
+    points: 50, // Easy practice = 50 points
   },
   {
     id: 'cp-026',
@@ -556,6 +581,7 @@ export const codePractices: CodePractice[] = [
     category: 'Data Types',
     lessonId: 'type-alias-casting',
     topicId: 'data-types',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -580,6 +606,7 @@ export const codePractices: CodePractice[] = [
     category: 'Loops',
     lessonId: 'loop-break-continue',
     topicId: 'control-structures',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -604,6 +631,7 @@ export const codePractices: CodePractice[] = [
     category: 'Collections',
     lessonId: 'arrays',
     topicId: 'collections',
+    points: 50, // Easy practice = 50 points
   },
   {
     id: 'cp-029',
@@ -623,6 +651,7 @@ export const codePractices: CodePractice[] = [
     category: 'Collections',
     lessonId: 'slices',
     topicId: 'collections',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -646,6 +675,7 @@ export const codePractices: CodePractice[] = [
     category: 'Modules',
     lessonId: 'inline-modules',
     topicId: 'functions-modules',
+    points: 100, // Medium practice = 100 points
   },
   {
     id: 'cp-031',
@@ -665,6 +695,7 @@ export const codePractices: CodePractice[] = [
     category: 'Modules',
     lessonId: 'use-statements',
     topicId: 'module-system-advanced',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -689,6 +720,7 @@ export const codePractices: CodePractice[] = [
     category: 'Structs',
     lessonId: 'struct-update',
     topicId: 'structs-enums',
+    points: 50, // Easy practice = 50 points
   },
   {
     id: 'cp-033',
@@ -708,6 +740,7 @@ export const codePractices: CodePractice[] = [
     category: 'Structs',
     lessonId: 'tuple-structs',
     topicId: 'structs-enums',
+    points: 50, // Easy practice = 50 points
   },
   {
     id: 'cp-034',
@@ -727,6 +760,7 @@ export const codePractices: CodePractice[] = [
     category: 'Enums',
     lessonId: 'enum-methods',
     topicId: 'structs-enums',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -751,6 +785,7 @@ export const codePractices: CodePractice[] = [
     category: 'Slices',
     lessonId: 'slice-references',
     topicId: 'memory-management',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -775,6 +810,7 @@ export const codePractices: CodePractice[] = [
     category: 'Traits',
     lessonId: 'trait-default',
     topicId: 'traits-generics',
+    points: 100, // Medium practice = 100 points
   },
   {
     id: 'cp-037',
@@ -796,6 +832,7 @@ export const codePractices: CodePractice[] = [
     category: 'Generics',
     lessonId: 'trait-bound',
     topicId: 'traits-generics',
+    points: 200, // Hard practice = 200 points
   },
   {
     id: 'cp-038',
@@ -817,6 +854,7 @@ export const codePractices: CodePractice[] = [
     category: 'Ownership',
     lessonId: 'lifetime-annotation',
     topicId: 'traits-generics',
+    points: 200, // Hard practice = 200 points
   },
 
   // =================================================================
@@ -840,6 +878,7 @@ export const codePractices: CodePractice[] = [
     category: 'Functions',
     lessonId: 'advanced-functions',
     topicId: 'advanced-types',
+    points: 200, // Hard practice = 200 points
   },
 
   // =================================================================
@@ -865,6 +904,7 @@ export const codePractices: CodePractice[] = [
     category: 'Functional',
     lessonId: 'iterator-adaptors',
     topicId: 'functional-programming',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -888,6 +928,7 @@ export const codePractices: CodePractice[] = [
     category: 'System',
     lessonId: 'unsafe',
     topicId: 'system-programming',
+    points: 200, // Hard practice = 200 points
   },
   {
     id: 'cp-042',
@@ -908,6 +949,7 @@ export const codePractices: CodePractice[] = [
     category: 'Attributes',
     lessonId: 'attributes',
     topicId: 'system-programming',
+    points: 100, // Medium practice = 100 points
   },
 
   // =================================================================
@@ -931,6 +973,7 @@ export const codePractices: CodePractice[] = [
     category: 'Smart Pointers',
     lessonId: 'smart-pointers',
     topicId: 'advanced-concepts',
+    points: 100, // Medium practice = 100 points
   },
   {
     id: 'cp-044',
@@ -950,6 +993,7 @@ export const codePractices: CodePractice[] = [
     category: 'Concurrency',
     lessonId: 'concurrency',
     topicId: 'advanced-concepts',
+    points: 200, // Hard practice = 200 points
   },
 
   // =================================================================
@@ -974,5 +1018,6 @@ export const codePractices: CodePractice[] = [
     category: 'Error Handling',
     lessonId: 'panic',
     topicId: 'error-handling',
+    points: 50, // Easy practice = 50 points
   },
 ];
