@@ -3,14 +3,19 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
+import { useProgressStore, XP_PERFECT_LESSON_BONUS } from '../state/useProgressStore';
 import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme, Theme } from '../theme';
 import { ResultsScreenProps } from '../types/navigation';
+import { useDataStore } from '../state/useDataStore';
+import { getNextLesson } from '../utils';
 
 export default function ResultsScreen({ route, navigation }: ResultsScreenProps) {
-  const { lessonId, score, totalQuestions, timeTaken } = route.params;
+  const { lessonId, score, totalQuestions, timeTaken, xpEarned, isPerfectScore } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
   const { t } = useTranslation();
+  const { getTopics, getLessonsForTopic } = useDataStore();
+  const { getLessonStars } = useProgressStore();
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
@@ -21,6 +26,29 @@ export default function ResultsScreen({ route, navigation }: ResultsScreenProps)
   const timeInMinutes = timeInSeconds / 60;
   const questionsPerMinute = timeInMinutes > 0 ? (totalQuestions / timeInMinutes).toFixed(1) : '0';
   const averageTimePerQuestion = timeInSeconds / totalQuestions;
+
+  // Get next lesson for continue learning
+  const nextLesson = getNextLesson({
+    allTopics: getTopics(),
+    getLessonsForTopic,
+    getLessonStars,
+  });
+
+  const handleContinueLearning = () => {
+    if (nextLesson) {
+      navigation.navigate('Lesson', { lessonId: nextLesson.id });
+    } else {
+      navigation.goBack();
+    }
+  };
+
+  const handleRetakeQuiz = () => {
+    if (lessonId) {
+      navigation.navigate('Lesson', { lessonId });
+    } else {
+      navigation.goBack();
+    }
+  };
 
   const getPerformanceMessage = () => {
     if (percentage === 100) {
@@ -73,6 +101,26 @@ export default function ResultsScreen({ route, navigation }: ResultsScreenProps)
               {percentage}%
             </Text>
           </View>
+
+          {/* XP Breakdown */}
+          <View style={styles.xpBreakdown}>
+            <View style={styles.xpRow}>
+              <Text style={styles.xpLabel}>{t('results.questionsXP', 'Questions XP')}</Text>
+              <Text style={styles.xpValue}>{xpEarned} XP</Text>
+            </View>
+            {isPerfectScore && (
+              <View style={styles.xpRow}>
+                <Text style={styles.xpLabel}>
+                  {t('results.perfectBonus', 'Perfect Score Bonus')}
+                </Text>
+                <Text style={styles.xpValue}>+{XP_PERFECT_LESSON_BONUS} XP</Text>
+              </View>
+            )}
+            <View style={[styles.xpRow, styles.totalXPRow]}>
+              <Text style={styles.xpLabel}>{t('results.totalXP', 'Total XP')}</Text>
+              <Text style={[styles.xpValue, styles.totalXPValue]}>{xpEarned} XP</Text>
+            </View>
+          </View>
         </View>
 
         {/* Performance Metrics */}
@@ -117,14 +165,14 @@ export default function ResultsScreen({ route, navigation }: ResultsScreenProps)
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.primaryButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.primaryButton} onPress={handleContinueLearning}>
             <Ionicons name='arrow-back' size={20} color='white' />
             <Text style={styles.primaryButtonText}>
               {t('results.continueLearning', 'Continue Learning')}
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.secondaryButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.secondaryButton} onPress={handleRetakeQuiz}>
             <Ionicons name='refresh' size={20} color={theme.colors.primary} />
             <Text style={styles.secondaryButtonText}>{t('results.retakeQuiz', 'Retake Quiz')}</Text>
           </TouchableOpacity>
@@ -216,6 +264,36 @@ const createStyles = (theme: Theme) =>
       fontSize: 32,
       fontWeight: '700',
       textAlign: 'center',
+    },
+    xpBreakdown: {
+      width: '100%',
+      marginTop: theme.spacing.md,
+      paddingHorizontal: theme.spacing.sm,
+    },
+    xpRow: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.xs,
+    },
+    xpLabel: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    xpValue: {
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600',
+      color: theme.colors.text,
+    },
+    totalXPRow: {
+      marginTop: theme.spacing.md,
+      paddingTop: theme.spacing.sm,
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.border,
+    },
+    totalXPValue: {
+      fontWeight: '700',
+      color: theme.colors.primary,
     },
     metricsContainer: {
       flexDirection: 'row',

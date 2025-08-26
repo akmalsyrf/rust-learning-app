@@ -9,7 +9,14 @@ export type RootStackParamList = {
   Quiz: { lessonId: string };
   CodePractice: { lessonId?: string; topicId?: string };
   FreeCodePractice: undefined;
-  Results: { lessonId: string; score: number; totalQuestions: number; timeTaken: number };
+  Results: {
+    lessonId: string;
+    score: number;
+    totalQuestions: number;
+    timeTaken: number;
+    xpEarned: number;
+    isPerfectScore: boolean;
+  };
   About: undefined;
   LanguageSettings: undefined;
 };

@@ -4,48 +4,33 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useDataStore } from '../state/useDataStore';
-import { useProgressStore } from '../state/useProgressStore';
+import { useProgressStore, XP_PERFECT_LESSON_BONUS } from '../state/useProgressStore';
 import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 import QuestionCard from '../components/QuestionCard';
-import { Question, QuestionResult, LessonResult, Lesson } from '../types';
+import { Question, QuestionResult, LessonResult } from '../types';
 import { QuizScreenProps } from '../types/navigation';
-import { getNextLesson } from '../utils';
 
 export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   const { lessonId } = route.params;
-  const { getEffectiveTheme } = useSettingsStore();
-  const { getLesson, getQuestionsForLesson, getTopics, getLessonsForTopic } = useDataStore();
-  const { completeQuestion, completeLesson, getLessonStars } = useProgressStore();
   const { t } = useTranslation();
-
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string | number | boolean>>({});
-  const [showResults, setShowResults] = useState(false);
-  const [questionResults, setQuestionResults] = useState<QuestionResult[]>([]);
-  const [startTime] = useState(Date.now());
-
-  const isDark = getEffectiveTheme() === 'dark';
-  const theme = isDark ? darkTheme : lightTheme;
-  const styles = createStyles(theme);
-
-  const [nextLesson, setNextLesson] = useState<Lesson | null>(null);
-  // Find the next lesson to continue after the quiz is finished
-  useEffect(() => {
-    const allTopics = getTopics();
-    const nextLesson = getNextLesson({
-      allTopics,
-      getLessonsForTopic,
-      getLessonStars,
-    });
-    setNextLesson(nextLesson);
-  }, [showResults]);
+  const { getEffectiveTheme } = useSettingsStore();
+  const { getLesson, getQuestionsForLesson } = useDataStore();
+  const { completeQuestion, completeLesson } = useProgressStore();
 
   const lesson = getLesson(lessonId);
   const questions = getQuestionsForLesson(lessonId);
-  const currentQuestion = questions[currentQuestionIndex];
-  // for fill in the blank and code output questions, we need to store the text input
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [startTime, setStartTime] = useState(Date.now());
   const [textInput, setTextInput] = useState('');
+
+  const theme = getEffectiveTheme() === 'dark' ? darkTheme : lightTheme;
+  const styles = createStyles(theme);
+
+  useEffect(() => {
+    setStartTime(Date.now());
+  }, []);
 
   useEffect(() => {
     if (!lesson || questions.length === 0) {
@@ -71,9 +56,8 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
         );
       }
       case 'predict_output': {
-        const normalizedOutput = String(userAnswer).trim();
-        const expectedOutput = question.expectedStdout.trim();
-        return normalizedOutput === expectedOutput;
+        const normalizedAnswer = String(userAnswer).trim();
+        return question.expectedStdout.trim() === normalizedAnswer;
       }
       default:
         return false;
@@ -81,10 +65,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
   };
 
   const handleAnswer = (answer: string | number | boolean) => {
-    setAnswers(prev => ({
-      ...prev,
-      [currentQuestion.id]: answer,
-    }));
+    setAnswers(prev => ({ ...prev, [questions[currentQuestionIndex].id]: answer }));
   };
 
   const handleNext = () => {
@@ -107,60 +88,49 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
       const userAnswer = answers[question.id];
       const isCorrect = userAnswer !== undefined ? checkAnswer(question, userAnswer) : false;
 
-      const result: QuestionResult = {
+      const qResult: QuestionResult = {
         questionId: question.id,
         correct: isCorrect,
         userAnswer: userAnswer || '',
         timeSpent: 0, // Could be implemented with per-question timing
+        points: question.points,
       };
 
       // Update progress for each question
-      completeQuestion(result);
+      completeQuestion(qResult);
 
-      return result;
+      return qResult;
     });
-
-    setQuestionResults(results);
 
     // Calculate lesson completion
     const correctCount = results.filter(r => r.correct).length;
     const perfectScore = correctCount === questions.length;
-    const xpEarned = correctCount * 10 + (perfectScore ? 10 : 0);
+    const xpEarned =
+      results.reduce((total, r) => total + r.points, 0) +
+      (perfectScore ? XP_PERFECT_LESSON_BONUS : 0);
 
     const lessonResult: LessonResult = {
       lessonId,
-      questionResults: results,
       completedAt: Date.now(),
-      xpEarned,
+      xpEarned: xpEarned,
       perfectScore,
+      questionResults: results,
     };
 
     completeLesson(lessonResult);
-    setShowResults(true);
-  };
-
-  const restartQuiz = () => {
-    setCurrentQuestionIndex(0);
-    setAnswers({});
-    setShowResults(false);
-    setQuestionResults([]);
-  };
-
-  const goToResults = () => {
-    const lessonResult: LessonResult = {
-      lessonId,
-      questionResults,
-      completedAt: Date.now(),
-      xpEarned: questionResults.filter(r => r.correct).length * 10,
-      perfectScore: questionResults.every(r => r.correct),
-    };
 
     navigation.navigate('Results', {
       lessonId,
-      score: questionResults.filter(r => r.correct).length,
-      totalQuestions: questionResults.length,
+      score: correctCount,
+      totalQuestions: questions.length,
       timeTaken: Date.now() - startTime,
+      xpEarned,
+      isPerfectScore: perfectScore,
     });
+
+    setTextInput('');
+    setAnswers({});
+    setCurrentQuestionIndex(0);
   };
 
   if (!lesson || questions.length === 0) {
@@ -176,66 +146,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
     );
   }
 
-  if (showResults) {
-    const correctCount = questionResults.filter(r => r.correct).length;
-    const percentage = Math.round((correctCount / questions.length) * 100);
-
-    return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={styles.content}>
-          <View style={styles.resultsHeader}>
-            <Ionicons
-              name={percentage >= 70 ? 'checkmark-circle' : 'close-circle'}
-              size={64}
-              color={percentage >= 70 ? theme.colors.success : theme.colors.warning}
-            />
-            <Text style={styles.resultsTitle}>{t('quiz.quizComplete', 'Quiz Complete!')}</Text>
-            <Text style={styles.resultsScore}>
-              {correctCount}/{questions.length} ({percentage}%)
-            </Text>
-          </View>
-
-          <View style={styles.resultsSummary}>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{correctCount}</Text>
-              <Text style={styles.summaryLabel}>{t('quiz.correct', 'Correct')}</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{questions.length - correctCount}</Text>
-              <Text style={styles.summaryLabel}>{t('quiz.incorrect', 'Incorrect')}</Text>
-            </View>
-            <View style={styles.summaryItem}>
-              <Text style={styles.summaryValue}>{correctCount * 10}</Text>
-              <Text style={styles.summaryLabel}>{t('quiz.xpEarned', 'XP Earned')}</Text>
-            </View>
-          </View>
-
-          <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={styles.primaryButton}
-              onPress={() => {
-                if (nextLesson) {
-                  navigation.navigate('Lesson', { lessonId: nextLesson.id });
-                } else {
-                  navigation.goBack();
-                }
-              }}
-            >
-              <Text style={styles.primaryButtonText}>
-                {t('quiz.continueLearning', 'Continue Learning')}
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.secondaryButton} onPress={restartQuiz}>
-              <Ionicons name='refresh' size={16} color={theme.colors.primary} />
-              <Text style={styles.secondaryButtonText}>{t('quiz.retakeQuiz', 'Retake Quiz')}</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    );
-  }
-
+  const currentQuestion = questions[currentQuestionIndex];
   const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
   const hasAnswered = answers[currentQuestion.id] !== undefined;
 
@@ -319,9 +230,6 @@ const createStyles = (theme: any) =>
       flex: 1,
       backgroundColor: theme.colors.background,
     },
-    content: {
-      padding: theme.spacing.md,
-    },
     header: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -399,71 +307,5 @@ const createStyles = (theme: any) =>
       fontSize: theme.typography.subheading.fontSize,
       color: theme.colors.error,
       marginTop: theme.spacing.md,
-    },
-    resultsHeader: {
-      alignItems: 'center',
-      marginBottom: theme.spacing.lg,
-    },
-    resultsTitle: {
-      fontSize: theme.typography.heading.fontSize,
-      fontWeight: theme.typography.heading.fontWeight,
-      color: theme.colors.text,
-      marginTop: theme.spacing.md,
-      marginBottom: theme.spacing.sm,
-    },
-    resultsScore: {
-      fontSize: theme.typography.subheading.fontSize,
-      color: theme.colors.primary,
-      fontWeight: '600',
-    },
-    resultsSummary: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      backgroundColor: theme.colors.surface,
-      padding: theme.spacing.lg,
-      borderRadius: theme.borderRadius.lg,
-      marginBottom: theme.spacing.lg,
-    },
-    summaryItem: {
-      alignItems: 'center',
-    },
-    summaryValue: {
-      fontSize: 24,
-      fontWeight: '700',
-      color: theme.colors.text,
-      marginBottom: theme.spacing.xs,
-    },
-    summaryLabel: {
-      fontSize: theme.typography.caption.fontSize,
-      color: theme.colors.textSecondary,
-    },
-    actionButtons: {
-      gap: theme.spacing.md,
-    },
-    primaryButton: {
-      backgroundColor: theme.colors.primary,
-      padding: theme.spacing.md,
-      borderRadius: theme.borderRadius.lg,
-      alignItems: 'center',
-    },
-    primaryButtonText: {
-      color: 'white',
-      fontSize: theme.typography.body.fontSize,
-      fontWeight: '600',
-    },
-    secondaryButton: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 2,
-      borderColor: theme.colors.primary,
-      padding: theme.spacing.md,
-      borderRadius: theme.borderRadius.lg,
-      gap: theme.spacing.sm,
-    },
-    secondaryButtonText: {
-      color: theme.colors.primary,
-      fontSize: theme.typography.body.fontSize,
-      fontWeight: '600',
     },
   });

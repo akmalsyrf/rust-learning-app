@@ -74,11 +74,6 @@ export default function CodePracticeScreen({ route }: CodePracticeScreenProps) {
     }
   };
 
-  const handleHintUsed = (practiceId: string, hintIndex: number) => {
-    // In a real app, this would track hint usage
-    console.log(`Hint ${hintIndex} used for practice ${practiceId}`);
-  };
-
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':

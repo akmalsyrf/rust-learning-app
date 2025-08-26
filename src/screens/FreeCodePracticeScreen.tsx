@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -25,7 +25,7 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
   const allTopics = getTopics();
 
   // Set default selected topic to first topic if none selected
-  React.useEffect(() => {
+  useEffect(() => {
     if (allTopics.length > 0 && selectedTopic === null) {
       setSelectedTopic(allTopics[0].id);
     }

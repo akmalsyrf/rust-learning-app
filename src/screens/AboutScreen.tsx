@@ -78,7 +78,7 @@ export default function AboutScreen({ navigation }: AboutScreenProps) {
           </Text>
           <TouchableOpacity
             style={styles.contactButton}
-            onPress={() => Linking.openURL('mailto:support@rustlearning.com')}
+            onPress={() => Linking.openURL('mailto:antumkiriya@gmail.com')}
           >
             <Ionicons name='mail' size={20} color='white' />
             <Text style={styles.contactButtonText}>{t('about.contactUs', 'Contact Us')}</Text>

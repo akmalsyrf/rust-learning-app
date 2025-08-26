@@ -129,6 +129,7 @@ export interface QuestionResult {
   correct: boolean;
   userAnswer: string | number | boolean;
   timeSpent: number; // milliseconds
+  points: number; // XP points for this question
 }
 
 export interface LessonResult {

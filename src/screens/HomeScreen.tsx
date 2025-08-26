@@ -107,17 +107,21 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
           <View style={styles.overviewCard}>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{overallProgress}%</Text>
-              <Text style={styles.overviewLabel}>
+              <Text style={styles.overviewLabel} numberOfLines={2}>
                 {t('home.overallProgress', 'Overall Progress')}
               </Text>
             </View>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{highestStreakDays}</Text>
-              <Text style={styles.overviewLabel}>{t('home.bestStreak', 'Best Streak')}</Text>
+              <Text style={styles.overviewLabel} numberOfLines={2}>
+                {t('home.bestStreak', 'Best Streak')}
+              </Text>
             </View>
             <View style={styles.overviewItem}>
               <Text style={styles.overviewValue}>{xp}</Text>
-              <Text style={styles.overviewLabel}>{t('home.totalXP', 'Total XP')}</Text>
+              <Text style={styles.overviewLabel} numberOfLines={2}>
+                {t('home.totalXP', 'Total XP')}
+              </Text>
             </View>
           </View>
         </View>
@@ -347,20 +351,32 @@ const createStyles = (theme: Theme) =>
       padding: theme.spacing.md,
       borderRadius: theme.borderRadius.lg,
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-evenly', // Distribute space evenly between all items
+      alignItems: 'stretch',
     },
     overviewItem: {
+      flex: 0, // Don't use flex grow, use fixed width instead
       alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: theme.spacing.xs,
+      minHeight: 60,
+      width: '30%', // Fixed width for all items
+      maxWidth: '30%',
     },
     overviewValue: {
       fontSize: 20,
       fontWeight: '700',
       color: theme.colors.primary,
       marginBottom: theme.spacing.xs,
+      textAlign: 'center',
     },
     overviewLabel: {
       fontSize: theme.typography.caption.fontSize,
       color: theme.colors.textSecondary,
       textAlign: 'center',
+      lineHeight: theme.typography.lineHeights.normal,
+      flexShrink: 1,
+      paddingHorizontal: theme.spacing.xs,
+      width: '100%', // Ensure text takes full width of container
     },
   });

@@ -37,9 +37,8 @@ interface ProgressState extends UserProgress {
   clearStorage: () => Promise<void>;
 }
 
-const DAILY_XP_LIMIT = 100;
-const XP_PER_CORRECT = 10;
-const XP_PERFECT_LESSON_BONUS = 10;
+export const XP_PERFECT_LESSON_BONUS = 10;
+export const XP_REWARD_FIRST_TIME_CODE_PRATICE = 25;
 
 export const useProgressStore = create<ProgressState>()((set, get) => ({
   // Initial state
@@ -65,17 +64,12 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       },
     }));
 
-    // Add XP for correct answer
-    if (result.correct) {
-      get().addXP(XP_PER_CORRECT);
-    }
-
     // Auto-save to storage
     get().saveToStorage();
   },
 
   completeLesson: (result: LessonResult) => {
-    const { lessonId, questionResults, perfectScore } = result;
+    const { lessonId, questionResults, xpEarned } = result;
 
     // Calculate stars based on performance
     const correctCount = questionResults.filter(q => q.correct).length;
@@ -95,10 +89,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       },
     }));
 
-    // Add bonus XP for perfect lesson
-    if (perfectScore) {
-      get().addXP(XP_PERFECT_LESSON_BONUS);
-    }
+    get().addXP(xpEarned);
 
     // Update streak
     get().updateStreak();
@@ -154,18 +145,12 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       get().resetDailyXP();
     }
 
-    // Check daily limit
-    const remainingXP = DAILY_XP_LIMIT - state.dailyXpCap;
-    const actualXPToAdd = Math.min(amount, remainingXP);
+    set({
+      xp: state.xp + amount,
+      dailyXpCap: state.dailyXpCap + amount,
+    });
 
-    if (actualXPToAdd > 0) {
-      set({
-        xp: state.xp + actualXPToAdd,
-        dailyXpCap: state.dailyXpCap + actualXPToAdd,
-      });
-    }
-
-    return actualXPToAdd;
+    return amount;
   },
 
   resetDailyXP: () => {
@@ -223,7 +208,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       xpReward = practice.points;
 
       // Bonus XP for first-time completion
-      xpReward += 25;
+      xpReward += XP_REWARD_FIRST_TIME_CODE_PRATICE;
     }
     // No XP for incorrect attempts
 
@@ -248,7 +233,7 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
             xpEarned: xpReward,
           },
         ],
-        // Add XP to total (no daily limit)
+        // Add XP to total
         xp: state.xp + xpReward,
         // Update daily XP cap for today's tracking
         dailyXpCap: newDailyXpCap + xpReward,

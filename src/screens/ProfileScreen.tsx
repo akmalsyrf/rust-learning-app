@@ -239,7 +239,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
             <View style={styles.settingLeft}>
               <Ionicons name='trash' size={20} color={currentTheme.colors.error} />
               <Text style={[styles.settingText, { color: currentTheme.colors.error }]}>
-                {t('settings.clearCache', 'Clear All Data')}
+                {t('settings.clearData', 'Clear All Data')}
               </Text>
             </View>
             <View style={styles.settingRight}>
