@@ -73,12 +73,11 @@ export default function CodePracticeCard({
           const bonusXP = 25; // Bonus for first completion
           const totalXP = baseXP + bonusXP;
 
-          // Award XP immediately
-          try {
-            const xpResult = useProgressStore
-              .getState()
-              .completeCodePractice(practice, userCode, true);
+          const xpResult = useProgressStore
+            .getState()
+            .completeCodePractice(practice, userCode, true);
 
+          if (xpResult.success && xpResult.xpEarned > 0) {
             // Show success alert with XP earned
             Alert.alert(
               `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
@@ -94,19 +93,14 @@ export default function CodePracticeCard({
                 },
               ]
             );
-          } catch (error) {
-            // Show success alert without XP if there's an error
+          } else {
+            // Show success alert without XP if xpResult is not successful
             Alert.alert(
               `🎉 ${t('codePractice.correctSolution', 'Correct Solution!')}`,
               `${t('codePractice.yourCodeOutputMatches', 'Your code output matches the expected output!')}\n\nOutput: "${result.output.trim()}"`,
               [
                 {
                   text: t('codePractice.great', 'Great!'),
-                  onPress: () => {
-                    if (onComplete) {
-                      onComplete(practice.id, userCode);
-                    }
-                  },
                 },
               ]
             );
