@@ -1,32 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useSettingsStore } from '../state/useSettingsStore';
-import { useTranslation } from 'react-i18next';
 import { useDataStore } from '../state/useDataStore';
 import { useProgressStore } from '../state/useProgressStore';
-import { lightTheme, darkTheme } from '../theme';
+import { useTranslation } from 'react-i18next';
+import { lightTheme, darkTheme, Theme } from '../theme';
 import { LessonScreenProps } from '../types/navigation';
-import { useLanguage } from '../i18n';
+import { getTopicTitle, getLessonTitle, getLessonSummary } from '../utils/localization';
 
 export default function LessonScreen({ route, navigation }: LessonScreenProps) {
   const { lessonId } = route.params;
-  const { currentLanguage } = useLanguage();
-  const isCurrLangNeedsPlural = currentLanguage !== 'id';
   const { getEffectiveTheme } = useSettingsStore();
-  const { t } = useTranslation();
-  const { getLesson, getTopic, getQuestionsForLesson } = useDataStore();
+  const { getLesson, getTopic, getQuestionsForLesson, getCodePracticesForLesson } = useDataStore();
   const { getLessonStars } = useProgressStore();
+  const { t, i18n } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
 
-  const lesson = getLesson(lessonId);
-  const topic = lesson ? getTopic(lesson.topicId) : null;
-  const questions = getQuestionsForLesson(lessonId);
-  const stars = getLessonStars(lessonId);
+  // Get current language
+  const currentLanguage = i18n.language as 'en' | 'id';
+
+  const [lesson, setLesson] = useState<any>(null);
+  const [topic, setTopic] = useState<any>(null);
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [codePractices, setCodePractices] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadLessonData = async () => {
+      const lessonData = getLesson(lessonId);
+      if (lessonData) {
+        setLesson(lessonData);
+        const topicData = getTopic(lessonData.topicId);
+        setTopic(topicData);
+        const questionsData = getQuestionsForLesson(lessonId);
+        setQuestions(questionsData);
+        const practicesData = getCodePracticesForLesson(lessonId);
+        setCodePractices(practicesData);
+      }
+    };
+
+    loadLessonData();
+  }, [lessonId, getLesson, getTopic, getQuestionsForLesson, getCodePracticesForLesson]);
 
   if (!lesson || !topic) {
     return (
@@ -44,13 +62,15 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
     );
   }
 
-  const renderStars = (stars: number) => {
+  const stars = getLessonStars(lessonId);
+
+  const renderStars = (starCount: number) => {
     return Array.from({ length: 3 }, (_, index) => (
       <Ionicons
         key={index}
-        name={index < stars ? 'star' : 'star-outline'}
+        name={index < starCount ? 'star' : 'star-outline'}
         size={20}
-        color={index < stars ? theme.colors.accent : theme.colors.border}
+        color={index < starCount ? theme.colors.accent : theme.colors.border}
       />
     ));
   };
@@ -61,9 +81,9 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.breadcrumb}>
-            <Text style={styles.topicName}>{topic.title}</Text>
+            <Text style={styles.topicName}>{getTopicTitle(topic, currentLanguage)}</Text>
             <Ionicons name='chevron-forward' size={16} color={theme.colors.textSecondary} />
-            <Text style={styles.lessonName}>{lesson.title}</Text>
+            <Text style={styles.lessonName}>{getLessonTitle(lesson, currentLanguage)}</Text>
           </View>
 
           <View style={styles.progressIndicator}>
@@ -76,8 +96,8 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
 
         {/* Lesson Content */}
         <View style={styles.contentCard}>
-          <Text style={styles.lessonTitle}>{lesson.title}</Text>
-          <Text style={styles.lessonSummary}>{lesson.summary}</Text>
+          <Text style={styles.lessonTitle}>{getLessonTitle(lesson, currentLanguage)}</Text>
+          <Text style={styles.lessonSummary}>{getLessonSummary(lesson, currentLanguage)}</Text>
 
           {/* Attribution */}
           <View style={styles.attributionContainer}>
@@ -189,7 +209,7 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
                 {t('lessonScreen.greatWork', 'Great work!')}{' '}
                 {t('lessonScreen.youveCompletedLesson', "You've completed this lesson with")}{' '}
                 {stars} {t('lessonScreen.star', 'star')}
-                {stars !== 1 && isCurrLangNeedsPlural ? 's' : ''}.
+                {stars !== 1 && currentLanguage === 'en' ? 's' : ''}.
               </Text>
             </View>
           </View>
@@ -237,6 +257,16 @@ const createStyles = (theme: any) =>
     },
     starsContainer: {
       flexDirection: 'row',
+    },
+    loadingContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: theme.spacing.xl,
+    },
+    loadingText: {
+      fontSize: theme.typography.subheading.fontSize,
+      color: theme.colors.textSecondary,
     },
     errorContainer: {
       flex: 1,

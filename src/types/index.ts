@@ -4,8 +4,14 @@ export type QuestionId = string;
 
 export interface QuestionBase {
   id: QuestionId;
-  prompt: string;
-  explanation?: string; // shown after answer
+  prompt: {
+    en: string;
+    id: string;
+  };
+  explanation?: {
+    en: string;
+    id: string;
+  }; // shown after answer
   topicId: TopicId;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
   points: number;
@@ -13,7 +19,10 @@ export interface QuestionBase {
 
 export interface MultipleChoiceQuestion extends QuestionBase {
   type: 'mcq';
-  choices: string[];
+  choices: {
+    en: string;
+    id: string;
+  }[];
   correctIndex: number;
 }
 
@@ -60,17 +69,29 @@ export type Question =
 
 export interface Topic {
   id: TopicId;
-  title: string;
-  description: string;
+  title: {
+    en: string;
+    id: string;
+  };
+  description: {
+    en: string;
+    id: string;
+  };
   order: number;
   lessons: LessonId[];
 }
 
 export interface Lesson {
   id: LessonId;
-  title: string;
+  title: {
+    en: string;
+    id: string;
+  };
   topicId: TopicId;
-  summary: string;
+  summary: {
+    en: string;
+    id: string;
+  };
   questions: QuestionId[];
   attributionUrl: string; // link to the source section used
   order: number;
@@ -78,12 +99,21 @@ export interface Lesson {
 
 export interface CodePractice {
   id: string;
-  title: string;
-  description: string;
+  title: {
+    en: string;
+    id: string;
+  };
+  description: {
+    en: string;
+    id: string;
+  };
   initialCode: string;
   expectedOutput?: string;
   solution: string;
-  hints: string[];
+  hints: {
+    en: string;
+    id: string;
+  }[];
   difficulty: 'easy' | 'medium' | 'hard';
   category: string;
   lessonId: string;

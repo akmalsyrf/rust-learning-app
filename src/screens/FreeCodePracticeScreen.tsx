@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -9,47 +9,44 @@ import { lightTheme, darkTheme, Theme } from '../theme';
 import { FreeCodePracticeScreenProps } from '../types/navigation';
 import CodePracticeCard from '../components/CodePracticeCard';
 import { useProgressStore } from '../state/useProgressStore';
+import { getTopicTitle } from '../utils/localization';
 
 export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { getCodePractices, getTopics } = useDataStore();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { xp, getTodayXP } = useProgressStore(); // Get current XP and today XP function
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
-
   const styles = createStyles(theme);
-  const allCodePractices = getCodePractices();
-  const allTopics = getTopics();
 
-  // Set default selected topic to first topic if none selected
-  useEffect(() => {
-    if (allTopics.length > 0 && selectedTopic === null) {
-      setSelectedTopic(allTopics[0].id);
-    }
-  }, [allTopics, selectedTopic]);
+  // Get current language
+  const currentLanguage = i18n.language as 'en' | 'id';
 
-  // Filter practices by selected topic (now always filtered)
-  const filteredPractices = selectedTopic
-    ? allCodePractices.filter(practice => practice.topicId === selectedTopic)
-    : [];
+  const topics = getTopics();
+  const allPractices = getCodePractices();
 
-  // Get topic name by ID
-  const getTopicName = (topicId: string) => {
-    const topic = allTopics.find(t => t.id === topicId);
-    return topic ? topic.title : 'Unknown Topic';
+  // Default to first topic if available
+  const [selectedTopic, setSelectedTopic] = useState<string>(topics.length > 0 ? topics[0].id : '');
+
+  const filteredPractices = useMemo(() => {
+    if (!selectedTopic) return allPractices;
+    return allPractices.filter(practice => practice.topicId === selectedTopic);
+  }, [selectedTopic, allPractices]);
+
+  const getPracticesCountByTopic = (topicId: string) => {
+    return allPractices.filter(practice => practice.topicId === topicId).length;
   };
 
-  // Get practices count by topic
-  const getPracticesCountByTopic = (topicId: string) => {
-    return allCodePractices.filter(practice => practice.topicId === topicId).length;
+  const getTopicName = (topicId: string) => {
+    const topic = topics.find(t => t.id === topicId);
+    return topic ? getTopicTitle(topic, currentLanguage) : '';
   };
 
   const handlePracticeComplete = (practiceId: string, userCode: string) => {
     // Find the practice to get its details
-    const practice = allCodePractices.find(p => p.id === practiceId);
+    const practice = allPractices.find(p => p.id === practiceId);
 
     if (practice) {
       // Calculate XP reward
@@ -74,9 +71,13 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
       <ScrollView contentContainerStyle={styles.content}>
         {/* Header */}
         <View style={styles.header}>
+          <Ionicons name='code-slash' size={48} color={theme.colors.primary} />
           <Text style={styles.title}>{t('freeCodePractice.title', 'Free Code Practice')}</Text>
           <Text style={styles.subtitle}>
-            {t('freeCodePractice.subtitle', 'Practice Rust coding with these free exercises')}
+            {t(
+              'freeCodePractice.subtitle',
+              'Practice Rust programming with hands-on coding exercises'
+            )}
           </Text>
         </View>
 
@@ -84,20 +85,20 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
         <View style={styles.statsContainer}>
           <View style={styles.statCard}>
             <Ionicons name='code-slash' size={24} color={theme.colors.primary} />
-            <Text style={styles.statNumber}>{allCodePractices.length}</Text>
+            <Text style={styles.statNumber}>{allPractices.length}</Text>
             <Text style={styles.statLabel}>
               {t('freeCodePractice.totalExercises', 'Total Exercises')}
             </Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name='library' size={24} color={theme.colors.accent} />
-            <Text style={styles.statNumber}>{allTopics.length}</Text>
+            <Text style={styles.statNumber}>{topics.length}</Text>
             <Text style={styles.statLabel}>{t('freeCodePractice.topics', 'Topics')}</Text>
           </View>
           <View style={styles.statCard}>
             <Ionicons name='star' size={24} color={theme.colors.streak} />
             <Text style={styles.statNumber}>
-              {allCodePractices.filter(p => p.difficulty === 'easy').length}
+              {allPractices.filter(p => p.difficulty === 'easy').length}
             </Text>
             <Text style={styles.statLabel}>
               {t('freeCodePractice.beginnerFriendly', 'Beginner')}
@@ -110,26 +111,24 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
           </View>
         </View>
 
-        {/* Topic Filter */}
-        <View style={styles.filterSection}>
+        {/* Topic Selection */}
+        <View style={styles.topicsSection}>
           <Text style={styles.sectionTitle}>
-            {t('freeCodePractice.filterByTopic', 'Filter by Topic')}
+            {t('freeCodePractice.selectTopic', 'Select a Topic')}
           </Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.topicFilter}>
-            {allTopics.map(topic => (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.topicsScroll}>
+            {topics.map(topic => (
               <TouchableOpacity
                 key={topic.id}
                 style={[
-                  styles.topicChip,
-                  selectedTopic === topic.id && styles.topicChipActive,
-                  { borderColor: theme.colors.border },
+                  styles.topicButton,
+                  selectedTopic === topic.id && styles.topicButtonSelected,
                 ]}
                 onPress={() => setSelectedTopic(topic.id)}
               >
                 <Text
                   style={[
-                    styles.topicChipText,
-                    selectedTopic === topic.id && styles.topicChipTextActive,
+                    styles.topicButtonText,
                     {
                       color:
                         selectedTopic === topic.id
@@ -138,7 +137,7 @@ export default function FreeCodePracticeScreen({ navigation }: FreeCodePracticeS
                     },
                   ]}
                 >
-                  {topic.title}
+                  {getTopicTitle(topic, currentLanguage)}
                 </Text>
                 <Text style={styles.topicCount}>{getPracticesCountByTopic(topic.id)}</Text>
               </TouchableOpacity>
@@ -269,7 +268,7 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       textAlign: 'center',
     },
-    filterSection: {
+    topicsSection: {
       marginBottom: theme.spacing.lg,
     },
     sectionTitle: {
@@ -278,11 +277,11 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.text,
       marginBottom: theme.spacing.md,
     },
-    topicFilter: {
+    topicsScroll: {
       flexDirection: 'row',
       paddingBottom: theme.spacing.xs,
     },
-    topicChip: {
+    topicButton: {
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
       borderRadius: theme.borderRadius.lg,
@@ -293,17 +292,14 @@ const createStyles = (theme: Theme) =>
       justifyContent: 'center',
       minWidth: 80,
     },
-    topicChipActive: {
+    topicButtonSelected: {
       backgroundColor: theme.colors.primary + '15',
       borderColor: theme.colors.primary,
     },
-    topicChipText: {
+    topicButtonText: {
       fontSize: theme.typography.caption.fontSize,
       fontWeight: '500',
       textAlign: 'center',
-    },
-    topicChipTextActive: {
-      fontWeight: '600',
     },
     topicCount: {
       fontSize: 10,

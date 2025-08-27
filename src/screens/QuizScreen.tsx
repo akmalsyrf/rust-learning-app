@@ -103,11 +103,12 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
     });
 
     // Calculate lesson completion
-    const correctCount = results.filter(r => r.correct).length;
-    const perfectScore = correctCount === questions.length;
-    const xpEarned =
-      results.reduce((total, r) => total + r.points, 0) +
-      (perfectScore ? XP_PERFECT_LESSON_BONUS : 0);
+    const correctQuiz = results.filter(r => r.correct);
+    const perfectScore = correctQuiz.length === questions.length;
+    let xpEarned = correctQuiz.reduce((total, r) => total + r.points, 0);
+    if (perfectScore) {
+      xpEarned += XP_PERFECT_LESSON_BONUS;
+    }
 
     const lessonResult: LessonResult = {
       lessonId,
@@ -121,7 +122,7 @@ export default function QuizScreen({ route, navigation }: QuizScreenProps) {
 
     navigation.navigate('Results', {
       lessonId,
-      score: correctCount,
+      score: correctQuiz.length,
       totalQuestions: questions.length,
       timeTaken: Date.now() - startTime,
       xpEarned,

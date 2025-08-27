@@ -426,6 +426,8 @@ export default {
     correctAnswer: 'Jawaban benar:',
     whatWillCodeOutput: 'Apa yang akan dioutput oleh kode ini?',
     enterExpectedOutput: 'Masukkan output yang diharapkan...',
+    chooseCorrectFix: 'Pilih perbaikan yang benar:',
+    explanation: 'Penjelasan',
   },
 
   // Lesson Screen

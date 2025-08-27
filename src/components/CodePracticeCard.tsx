@@ -17,6 +17,11 @@ import { codeExecutionService, RustExecutionResult } from '../services/codeExecu
 import { useProgressStore } from '../state/useProgressStore';
 import { CodePractice } from '../types';
 import { darkTheme, lightTheme } from '../theme';
+import {
+  getCodePracticeTitle,
+  getCodePracticeDescription,
+  getCodePracticeHints,
+} from '../utils/localization';
 
 interface CodePracticeCardProps {
   practice: CodePractice;
@@ -31,11 +36,19 @@ export default function CodePracticeCard({
   onComplete,
   onCodeExecution,
 }: CodePracticeCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { getEffectiveTheme } = useSettingsStore();
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
+
+  // Get current language
+  const currentLanguage = i18n.language as 'en' | 'id';
+
+  // Get localized text
+  const localizedTitle = getCodePracticeTitle(practice, currentLanguage);
+  const localizedDescription = getCodePracticeDescription(practice, currentLanguage);
+  const localizedHints = getCodePracticeHints(practice, currentLanguage);
 
   const [userCode, setUserCode] = useState(practice.initialCode);
   const [showSolution, setShowSolution] = useState(false);
@@ -179,7 +192,7 @@ export default function CodePracticeCard({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>{practice.title}</Text>
+          <Text style={styles.title}>{localizedTitle}</Text>
           <View style={styles.difficultyBadge}>
             <Ionicons
               name={getDifficultyIcon(practice.difficulty) as any}
@@ -200,7 +213,7 @@ export default function CodePracticeCard({
 
       {/* Description */}
       <View style={styles.descriptionContainer}>
-        <Text style={styles.description}>{practice.description}</Text>
+        <Text style={styles.description}>{localizedDescription}</Text>
       </View>
 
       {/* Code Editor */}
@@ -230,51 +243,52 @@ export default function CodePracticeCard({
         </View>
       )}
 
-      {/* Hints */}
-      <View style={styles.hintsSection}>
-        <View style={styles.hintsHeader}>
-          <Text style={styles.sectionTitle}>
-            {t('codePractice.hints', 'Hints')} ({practice.hints.length})
-          </Text>
-          <TouchableOpacity style={styles.hintToggle} onPress={() => setShowHints(!showHints)}>
+      {/* Hints Section */}
+      {practice.hints.length > 0 && (
+        <View style={styles.hintsContainer}>
+          <TouchableOpacity style={styles.hintsHeader} onPress={() => setShowHints(!showHints)}>
             <Ionicons
-              name={showHints ? 'chevron-up' : 'chevron-down'}
+              name={showHints ? 'chevron-down' : 'chevron-forward'}
               size={20}
-              color={theme.colors.primary}
+              color={theme.colors.textSecondary}
             />
+            <Text style={styles.hintsTitle}>
+              {t('codePractice.hints', 'Hints')} ({localizedHints.length})
+            </Text>
           </TouchableOpacity>
-        </View>
 
-        {showHints && (
-          <View style={styles.hintsList}>
-            {practice.hints.map((hint, index) => (
-              <View key={index} style={styles.hintItem}>
-                <TouchableOpacity
-                  style={[styles.hintButton, usedHints.includes(index) && styles.hintButtonUsed]}
-                  onPress={() => handleShowHint(index)}
-                  disabled={usedHints.includes(index)}
-                >
-                  <Ionicons
-                    name={usedHints.includes(index) ? 'checkmark-circle' : 'bulb'}
-                    size={16}
-                    color={usedHints.includes(index) ? theme.colors.success : theme.colors.primary}
-                  />
-                  <Text
-                    style={[
-                      styles.hintButtonText,
-                      usedHints.includes(index) && styles.hintButtonTextUsed,
-                    ]}
+          {showHints && (
+            <View style={styles.hintsList}>
+              {localizedHints.map((hint, index) => (
+                <View key={index} style={styles.hintItem}>
+                  <TouchableOpacity
+                    style={[styles.hintButton, usedHints.includes(index) && styles.hintButtonUsed]}
+                    onPress={() => handleShowHint(index)}
                   >
-                    {t('codePractice.hint', 'Hint')} {index + 1}
-                  </Text>
-                </TouchableOpacity>
+                    <Ionicons
+                      name={usedHints.includes(index) ? 'bulb' : 'bulb-outline'}
+                      size={16}
+                      color={
+                        usedHints.includes(index) ? theme.colors.accent : theme.colors.textSecondary
+                      }
+                    />
+                    <Text
+                      style={[
+                        styles.hintButtonText,
+                        usedHints.includes(index) && styles.hintButtonTextUsed,
+                      ]}
+                    >
+                      {t('codePractice.hint', 'Hint')} {index + 1}
+                    </Text>
+                  </TouchableOpacity>
 
-                {usedHints.includes(index) && <Text style={styles.hintText}>{hint}</Text>}
-              </View>
-            ))}
-          </View>
-        )}
-      </View>
+                  {usedHints.includes(index) && <Text style={styles.hintText}>{hint}</Text>}
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+      )}
 
       {/* Action Buttons */}
       {!isPreview && (
@@ -551,12 +565,6 @@ const createStyles = (theme: any) =>
     hintsSection: {
       marginBottom: theme.spacing.lg,
     },
-    hintsHeader: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      marginBottom: theme.spacing.sm,
-    },
     hintToggle: {
       padding: theme.spacing.xs,
     },
@@ -695,5 +703,27 @@ const createStyles = (theme: any) =>
       justifyContent: 'center',
       minHeight: 44, // Ensure consistent height
       minWidth: 120, // Ensure minimum width for text
+    },
+    hintsContainer: {
+      marginTop: theme.spacing.lg,
+      backgroundColor: theme.colors.surface,
+      borderRadius: theme.borderRadius.sm,
+      borderWidth: 1,
+      borderColor: theme.colors.border,
+      overflow: 'hidden',
+    },
+    hintsHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: theme.spacing.sm,
+      paddingHorizontal: theme.spacing.md,
+      borderBottomWidth: 1,
+      borderBottomColor: theme.colors.border,
+    },
+    hintsTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight as any,
+      color: theme.colors.text,
+      marginLeft: theme.spacing.sm,
     },
   });

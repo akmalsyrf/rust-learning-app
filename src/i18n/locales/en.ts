@@ -423,6 +423,8 @@ export default {
     correctAnswer: 'Correct answer(s):',
     whatWillCodeOutput: 'What will this code output?',
     enterExpectedOutput: 'Enter the expected output...',
+    chooseCorrectFix: 'Choose the correct fix:',
+    explanation: 'Explanation',
   },
 
   // Lesson Screen

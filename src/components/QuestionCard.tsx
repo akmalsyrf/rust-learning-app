@@ -5,6 +5,11 @@ import { Question } from '../types';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
+import {
+  getQuestionPrompt,
+  getQuestionExplanation,
+  getQuestionChoices,
+} from '../utils/localization';
 
 interface QuestionCardProps {
   question: Question;
@@ -26,12 +31,21 @@ export default function QuestionCard({
   setTextInput,
 }: QuestionCardProps) {
   const { getEffectiveTheme } = useSettingsStore();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [selectedAnswer, setSelectedAnswer] = useState<string | number | boolean | null>(null);
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
+
+  // Get current language
+  const currentLanguage = i18n.language as 'en' | 'id';
+
+  // Get localized text
+  const localizedPrompt = getQuestionPrompt(question, currentLanguage);
+  const localizedExplanation = getQuestionExplanation(question, currentLanguage);
+  const localizedChoices =
+    question.type === 'mcq' ? getQuestionChoices(question, currentLanguage) : [];
 
   const handleAnswer = (answer: string | number | boolean) => {
     setSelectedAnswer(answer);
@@ -43,7 +57,7 @@ export default function QuestionCard({
 
     return (
       <View style={styles.choicesContainer}>
-        {question.choices.map((choice, index) => {
+        {localizedChoices.map((choice, index) => {
           const isSelected = selectedAnswer === index || userAnswer === index;
           const isCorrectChoice = question.correctIndex === index;
 
@@ -223,7 +237,7 @@ export default function QuestionCard({
         <View style={styles.codeBlock}>
           <Text style={styles.codeText}>{question.code}</Text>
         </View>
-        <Text style={styles.codePrompt}>Choose the correct fix:</Text>
+        <Text style={styles.codePrompt}>{t('questionCard.chooseCorrectFix')}</Text>
         <View style={styles.choicesContainer}>
           {question.choices.map((choice, index) => {
             const isSelected = selectedAnswer === index || userAnswer === index;
@@ -282,7 +296,7 @@ export default function QuestionCard({
         </View>
       </View>
 
-      <Text style={styles.prompt}>{question.prompt}</Text>
+      <Text style={styles.prompt}>{localizedPrompt}</Text>
 
       {question.type === 'mcq' && renderMultipleChoice()}
       {question.type === 'tf' && renderTrueFalse()}
@@ -294,9 +308,9 @@ export default function QuestionCard({
         <View style={styles.explanationContainer}>
           <View style={styles.explanationHeader}>
             <Ionicons name='bulb' size={16} color={theme.colors.info} />
-            <Text style={styles.explanationTitle}>Explanation</Text>
+            <Text style={styles.explanationTitle}>{t('questionCard.explanation')}</Text>
           </View>
-          <Text style={styles.explanationText}>{question.explanation}</Text>
+          <Text style={styles.explanationText}>{localizedExplanation}</Text>
         </View>
       )}
     </View>

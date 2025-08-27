@@ -8,16 +8,20 @@ import { useProgressStore } from '../state/useProgressStore';
 import { useTranslation } from 'react-i18next';
 import { lightTheme, darkTheme } from '../theme';
 import { ModulesScreenProps } from '../types/navigation';
+import { getTopicTitle, getTopicDescription, getLessonTitle } from '../utils/localization';
 
 export default function ModulesScreen({ navigation }: ModulesScreenProps) {
   const { getEffectiveTheme } = useSettingsStore();
   const { getTopics, getLessonsForTopic } = useDataStore();
   const { getLessonStars } = useProgressStore();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
   const theme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(theme);
+
+  // Get current language
+  const currentLanguage = i18n.language as 'en' | 'id';
 
   const topics = getTopics();
 
@@ -68,6 +72,10 @@ export default function ModulesScreen({ navigation }: ModulesScreenProps) {
           const progressPercentage =
             progress.total > 0 ? (progress.completed / progress.total) * 100 : 0;
 
+          // Get localized title and description
+          const localizedTitle = getTopicTitle(topic, currentLanguage);
+          const localizedDescription = getTopicDescription(topic, currentLanguage);
+
           return (
             <TouchableOpacity
               key={topic.id}
@@ -82,8 +90,8 @@ export default function ModulesScreen({ navigation }: ModulesScreenProps) {
             >
               <View style={styles.topicHeader}>
                 <View style={styles.topicInfo}>
-                  <Text style={styles.topicTitle}>{topic.title}</Text>
-                  <Text style={styles.topicDescription}>{topic.description}</Text>
+                  <Text style={styles.topicTitle}>{localizedTitle}</Text>
+                  <Text style={styles.topicDescription}>{localizedDescription}</Text>
                 </View>
                 <View style={styles.topicProgress}>
                   <Text style={styles.progressText}>
@@ -110,7 +118,9 @@ export default function ModulesScreen({ navigation }: ModulesScreenProps) {
                     return (
                       <View key={lesson.id} style={styles.lessonItem}>
                         <View style={styles.lessonInfo}>
-                          <Text style={styles.lessonTitle}>{lesson.title}</Text>
+                          <Text style={styles.lessonTitle}>
+                            {getLessonTitle(lesson, currentLanguage)}
+                          </Text>
                           <View style={styles.starsContainer}>{renderStars(stars)}</View>
                         </View>
                         <Ionicons

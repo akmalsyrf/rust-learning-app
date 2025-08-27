@@ -4,8 +4,14 @@ export const lessons: Lesson[] = [
   // Fundamentals (A.1-A.5)
   {
     id: 'hello-world',
-    title: 'Hello World',
-    summary: 'Learn how to write your first Rust program and understand the basic structure.',
+    title: {
+      en: 'Hello World',
+      id: 'Halo Dunia',
+    },
+    summary: {
+      en: 'Learn how to write your first Rust program and understand the basic structure.',
+      id: 'Pelajari cara menulis program Rust pertama Anda dan pahami struktur dasarnya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-hello-world.html',
     topicId: 'fundamentals',
     order: 1,
@@ -13,9 +19,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'comments',
-    title: 'Comments',
-    summary:
-      'Learn about different types of comments in Rust including line, block, and doc comments.',
+    title: {
+      en: 'Comments',
+      id: 'Komentar',
+    },
+    summary: {
+      en: 'Learn about different types of comments in Rust including line, block, and doc comments.',
+      id: 'Pelajari tentang berbagai jenis komentar di Rust termasuk komentar baris, blok, dan dokumentasi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-comments.html',
     topicId: 'fundamentals',
     order: 2,
@@ -23,8 +34,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'variables',
-    title: 'Variables & Mutability',
-    summary: 'Understand variable declaration, mutability, constants, and shadowing in Rust.',
+    title: {
+      en: 'Variables & Mutability',
+      id: 'Variabel & Mutabilitas',
+    },
+    summary: {
+      en: 'Understand variable declaration, mutability, constants, and shadowing in Rust.',
+      id: 'Pahami deklarasi variabel, mutabilitas, konstanta, dan shadowing di Rust.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-variables.html',
     topicId: 'fundamentals',
     order: 3,
@@ -32,8 +49,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'scalar-types',
-    title: 'Scalar Data Types',
-    summary: 'Learn about integers, floats, booleans, and characters in Rust.',
+    title: {
+      en: 'Scalar Data Types',
+      id: 'Tipe Data Skalar',
+    },
+    summary: {
+      en: 'Learn about integers, floats, booleans, and characters in Rust.',
+      id: 'Pelajari tentang integer, float, boolean, dan karakter di Rust.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-scalar-data-types.html',
     topicId: 'fundamentals',
     order: 4,
@@ -41,8 +64,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'string-literals',
-    title: 'String Literals',
-    summary: 'Understanding string literals (&str) and the basics of string data.',
+    title: {
+      en: 'String Literals',
+      id: 'Literal String',
+    },
+    summary: {
+      en: 'Understanding string literals (&str) and the basics of string data.',
+      id: 'Memahami literal string (&str) dan dasar-dasar data string.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-string-literals.html',
     topicId: 'fundamentals',
     order: 5,
@@ -52,8 +81,14 @@ export const lessons: Lesson[] = [
   // Data Types (A.7-A.8, A.27)
   {
     id: 'constants',
-    title: 'Constants',
-    summary: 'Learn the difference between constants and variables and how to declare them.',
+    title: {
+      en: 'Constants',
+      id: 'Konstanta',
+    },
+    summary: {
+      en: 'Learn the difference between constants and variables and how to declare them.',
+      id: 'Pelajari perbedaan antara konstanta dan variabel serta cara mendeklarasikannya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-constants.html',
     topicId: 'data-types',
     order: 1,
@@ -61,8 +96,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'operators',
-    title: 'Operators',
-    summary: 'Understand arithmetic, comparison, logical, and bitwise operators in Rust.',
+    title: {
+      en: 'Operators',
+      id: 'Operator',
+    },
+    summary: {
+      en: 'Understand arithmetic, comparison, logical, and bitwise operators in Rust.',
+      id: 'Pahami operator aritmatika, perbandingan, logika, dan bitwise di Rust.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-operators.html',
     topicId: 'data-types',
     order: 2,
@@ -70,9 +111,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'type-alias-casting',
-    title: 'Type Alias & Casting',
-    summary:
-      'Learn about creating type aliases with `type` and explicit type casting using the `as` keyword.',
+    title: {
+      en: 'Type Alias & Casting',
+      id: 'Alias Tipe & Casting',
+    },
+    summary: {
+      en: 'Learn about creating type aliases with `type` and explicit type casting using the `as` keyword.',
+      id: 'Pelajari tentang membuat alias tipe dengan `type` dan casting tipe eksplisit menggunakan kata kunci `as`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-type-alias-type-casting.html',
     topicId: 'data-types',
     order: 3,
@@ -82,8 +128,14 @@ export const lessons: Lesson[] = [
   // Control Structures (A.9-A.12)
   {
     id: 'conditional-if',
-    title: 'Conditional If-Else',
-    summary: 'Learn about if, else if, and using if as an expression to assign values.',
+    title: {
+      en: 'Conditional If-Else',
+      id: 'Kondisional If-Else',
+    },
+    summary: {
+      en: 'Learn about if, else if, and using if as an expression to assign values.',
+      id: 'Pelajari tentang if, else if, dan menggunakan if sebagai ekspresi untuk memberikan nilai.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-conditional-if.html',
     topicId: 'control-structures',
     order: 1,
@@ -91,8 +143,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'while-loops',
-    title: 'While Loops',
-    summary: 'Understanding how to use while loops for conditional iteration.',
+    title: {
+      en: 'While Loops',
+      id: 'Perulangan While',
+    },
+    summary: {
+      en: 'Understanding how to use while loops for conditional iteration.',
+      id: 'Memahami cara menggunakan perulangan while untuk iterasi kondisional.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-while-loops.html',
     topicId: 'control-structures',
     order: 2,
@@ -100,9 +158,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'loop-break-continue',
-    title: 'Loop, Break, Continue',
-    summary:
-      'Learn about infinite loops, returning values from loops, and flow control with break/continue.',
+    title: {
+      en: 'Loop, Break, Continue',
+      id: 'Loop, Break, Continue',
+    },
+    summary: {
+      en: 'Learn about infinite loops, returning values from loops, and flow control with break/continue.',
+      id: 'Pelajari tentang perulangan tak terbatas, mengembalikan nilai dari perulangan, dan kontrol alur dengan break/continue.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-loop-break-continue.html',
     topicId: 'control-structures',
     order: 3,
@@ -110,8 +173,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'for-loops',
-    title: 'For Loops',
-    summary: 'Understanding for loops for iterating over collections and ranges.',
+    title: {
+      en: 'For Loops',
+      id: 'Perulangan For',
+    },
+    summary: {
+      en: 'Understanding for loops for iterating over collections and ranges.',
+      id: 'Memahami perulangan for untuk melakukan iterasi pada koleksi dan rentang.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-for-loops.html',
     topicId: 'control-structures',
     order: 4,
@@ -121,8 +190,14 @@ export const lessons: Lesson[] = [
   // Collections (A.13-A.16)
   {
     id: 'arrays',
-    title: 'Arrays',
-    summary: 'Learn about fixed-size arrays, declaration, and accessing elements.',
+    title: {
+      en: 'Arrays',
+      id: 'Array',
+    },
+    summary: {
+      en: 'Learn about fixed-size arrays, declaration, and accessing elements.',
+      id: 'Pelajari tentang array berukuran tetap, deklarasi, dan cara mengakses elemennya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-arrays.html',
     topicId: 'collections',
     order: 1,
@@ -130,9 +205,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'slices',
-    title: 'Slices',
-    summary:
-      'Understanding how to create references to a contiguous sequence of elements in a collection.',
+    title: {
+      en: 'Slices',
+      id: 'Slice',
+    },
+    summary: {
+      en: 'Understanding how to create references to a contiguous sequence of elements in a collection.',
+      id: 'Memahami cara membuat referensi ke urutan elemen yang berdekatan dalam sebuah koleksi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-slices.html',
     topicId: 'collections',
     order: 2,
@@ -140,9 +220,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'tuples',
-    title: 'Tuples',
-    summary:
-      'Learn about tuples for grouping values of different types, destructuring, and element access.',
+    title: {
+      en: 'Tuples',
+      id: 'Tuple',
+    },
+    summary: {
+      en: 'Learn about tuples for grouping values of different types, destructuring, and element access.',
+      id: 'Pelajari tentang tuple untuk mengelompokkan nilai dari tipe yang berbeda, destrukturisasi, dan akses elemen.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-tuples.html',
     topicId: 'collections',
     order: 3,
@@ -150,9 +235,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'vectors',
-    title: 'Vectors',
-    summary:
-      'Understanding dynamic, growable arrays (vectors), including creating, updating, and reading elements.',
+    title: {
+      en: 'Vectors',
+      id: 'Vektor',
+    },
+    summary: {
+      en: 'Understanding dynamic, growable arrays (vectors), including creating, updating, and reading elements.',
+      id: 'Memahami array dinamis yang dapat berkembang (vektor), termasuk membuat, memperbarui, dan membaca elemen.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-vectors.html',
     topicId: 'collections',
     order: 4,
@@ -162,9 +252,14 @@ export const lessons: Lesson[] = [
   // Functions & Modules (A.17-A.22)
   {
     id: 'functions',
-    title: 'Functions',
-    summary:
-      'Learn how to define functions with parameters and return values, and understand the difference between statements and expressions.',
+    title: {
+      en: 'Functions',
+      id: 'Fungsi',
+    },
+    summary: {
+      en: 'Learn how to define functions with parameters and return values, and understand the difference between statements and expressions.',
+      id: 'Pelajari cara mendefinisikan fungsi dengan parameter dan nilai kembalian, serta pahami perbedaan antara statement dan ekspresi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-functions.html',
     topicId: 'functions-modules',
     order: 1,
@@ -172,8 +267,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'module-path',
-    title: 'Module Path',
-    summary: 'Understanding module paths for navigating the module tree using `super` and `crate`.',
+    title: {
+      en: 'Module Path',
+      id: 'Path Modul',
+    },
+    summary: {
+      en: 'Understanding module paths for navigating the module tree using `super` and `crate`.',
+      id: 'Memahami path modul untuk menavigasi pohon modul menggunakan `super` dan `crate`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-module-path.html',
     topicId: 'functions-modules',
     order: 2,
@@ -181,8 +282,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'package-crate',
-    title: 'Package & Crate',
-    summary: 'Learn the distinction between Rust packages and crates (binary or library).',
+    title: {
+      en: 'Package & Crate',
+      id: 'Package & Crate',
+    },
+    summary: {
+      en: 'Learn the distinction between Rust packages and crates (binary or library).',
+      id: 'Pelajari perbedaan antara package dan crate (binary atau library) di Rust.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-package-crate.html',
     topicId: 'functions-modules',
     order: 3,
@@ -190,8 +297,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'modules',
-    title: 'Modules',
-    summary: 'Understanding how to use modules to organize code within a crate.',
+    title: {
+      en: 'Modules',
+      id: 'Modul',
+    },
+    summary: {
+      en: 'Understanding how to use modules to organize code within a crate.',
+      id: 'Memahami cara menggunakan modul untuk mengorganisir kode di dalam sebuah crate.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-modules.html',
     topicId: 'functions-modules',
     order: 4,
@@ -199,8 +312,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'inline-modules',
-    title: 'Inline Modules',
-    summary: 'Learn how to define modules inline within a single file.',
+    title: {
+      en: 'Inline Modules',
+      id: 'Modul Inline',
+    },
+    summary: {
+      en: 'Learn how to define modules inline within a single file.',
+      id: 'Pelajari cara mendefinisikan modul secara inline di dalam satu file.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-inline-modules.html',
     topicId: 'functions-modules',
     order: 5,
@@ -208,8 +327,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'module-scope',
-    title: 'Module Scope & Visibility',
-    summary: 'Understanding visibility and scope with the `pub` keyword.',
+    title: {
+      en: 'Module Scope & Visibility',
+      id: 'Scope & Visibilitas Modul',
+    },
+    summary: {
+      en: 'Understanding visibility and scope with the `pub` keyword.',
+      id: 'Memahami visibilitas dan scope dengan kata kunci `pub`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-module-scope.html',
     topicId: 'functions-modules',
     order: 6,
@@ -217,8 +342,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'module-access',
-    title: 'Module Access',
-    summary: 'Learn how to access items across different modules.',
+    title: {
+      en: 'Module Access',
+      id: 'Akses Modul',
+    },
+    summary: {
+      en: 'Learn how to access items across different modules.',
+      id: 'Pelajari cara mengakses item dari modul yang berbeda.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-module-access.html',
     topicId: 'functions-modules',
     order: 7,
@@ -228,8 +359,14 @@ export const lessons: Lesson[] = [
   // Structs & Enums (A.23-A.26, A.28-A.31)
   {
     id: 'structs',
-    title: 'Structs',
-    summary: 'Learn how to define and instantiate custom data structures.',
+    title: {
+      en: 'Structs',
+      id: 'Struct',
+    },
+    summary: {
+      en: 'Learn how to define and instantiate custom data structures.',
+      id: 'Pelajari cara mendefinisikan dan membuat instance dari struktur data kustom.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-structs.html',
     topicId: 'structs-enums',
     order: 1,
@@ -237,8 +374,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'struct-update',
-    title: 'Struct Update Syntax',
-    summary: 'Learn the convenient syntax for creating a new struct instance from an existing one.',
+    title: {
+      en: 'Struct Update Syntax',
+      id: 'Sintaks Pembaruan Struct',
+    },
+    summary: {
+      en: 'Learn the convenient syntax for creating a new struct instance from an existing one.',
+      id: 'Pelajari sintaks yang mudah untuk membuat instance struct baru dari yang sudah ada.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-struct-update-syntax.html',
     topicId: 'structs-enums',
     order: 2,
@@ -252,8 +395,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'tuple-structs',
-    title: 'Tuple Structs',
-    summary: 'Learn about tuple-like structs without named fields.',
+    title: {
+      en: 'Tuple Structs',
+      id: 'Struct Tuple',
+    },
+    summary: {
+      en: 'Learn about tuple-like structs without named fields.',
+      id: 'Pelajari tentang struct yang mirip tuple tanpa field bernama.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-tuple-structs.html',
     topicId: 'structs-enums',
     order: 3,
@@ -267,8 +416,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'unit-structs',
-    title: 'Unit-Like Structs',
-    summary: 'Understanding structs with no fields and their use cases, especially with traits.',
+    title: {
+      en: 'Unit-Like Structs',
+      id: 'Struct Unit-Like',
+    },
+    summary: {
+      en: 'Understanding structs with no fields and their use cases, especially with traits.',
+      id: 'Memahami struct tanpa field dan kasus penggunaannya, terutama dengan trait.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-unit-structs.html',
     topicId: 'structs-enums',
     order: 4,
@@ -282,9 +437,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'struct-methods',
-    title: 'Struct Methods',
-    summary:
-      'Learn how to implement methods and associated functions for structs using `impl` blocks.',
+    title: {
+      en: 'Struct Methods',
+      id: 'Method Struct',
+    },
+    summary: {
+      en: 'Learn how to implement methods and associated functions for structs using `impl` blocks.',
+      id: 'Pelajari cara mengimplementasikan method dan fungsi terkait untuk struct menggunakan blok `impl`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-struct-methods.html',
     topicId: 'structs-enums',
     order: 5,
@@ -292,9 +452,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'enums',
-    title: 'Enums',
-    summary:
-      'Understanding how to define enumerations, which can encode meaning and attach data to variants.',
+    title: {
+      en: 'Enums',
+      id: 'Enum',
+    },
+    summary: {
+      en: 'Understanding how to define enumerations, which can encode meaning and attach data to variants.',
+      id: 'Memahami cara mendefinisikan enumerasi, yang dapat menyandikan makna dan melampirkan data ke varian.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-enums.html',
     topicId: 'structs-enums',
     order: 6,
@@ -302,8 +467,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'enum-methods',
-    title: 'Enum Methods',
-    summary: 'Learn how to implement methods on enums using an `impl` block.',
+    title: {
+      en: 'Enum Methods',
+      id: 'Method Enum',
+    },
+    summary: {
+      en: 'Learn how to implement methods on enums using an `impl` block.',
+      id: 'Pelajari cara mengimplementasikan method pada enum menggunakan blok `impl`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-enum-methods.html',
     topicId: 'structs-enums',
     order: 7,
@@ -319,8 +490,14 @@ export const lessons: Lesson[] = [
   // Advanced Module System (A.32-A.34)
   {
     id: 'use-statements',
-    title: 'Use Statements',
-    summary: 'Learn about bringing items into scope with `use` to shorten paths.',
+    title: {
+      en: 'Use Statements',
+      id: 'Statement `use`',
+    },
+    summary: {
+      en: 'Learn about bringing items into scope with `use` to shorten paths.',
+      id: 'Pelajari tentang membawa item ke dalam scope dengan `use` untuk mempersingkat path.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-use-statements.html',
     topicId: 'module-system-advanced',
     order: 1,
@@ -328,8 +505,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'nested-use',
-    title: 'Nested & Glob Use',
-    summary: 'Understanding how to clean up `use` lists with nested paths and the glob operator.',
+    title: {
+      en: 'Nested & Glob Use',
+      id: '`use` Bersarang & Glob',
+    },
+    summary: {
+      en: 'Understanding how to clean up `use` lists with nested paths and the glob operator.',
+      id: 'Memahami cara membersihkan daftar `use` dengan path bersarang dan operator glob.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-nested-use.html',
     topicId: 'module-system-advanced',
     order: 2,
@@ -343,8 +526,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'use-external-crates',
-    title: 'Use External Crates',
-    summary: 'Learn how to add external crates as dependencies in `Cargo.toml` and use them.',
+    title: {
+      en: 'Use External Crates',
+      id: 'Menggunakan Crate Eksternal',
+    },
+    summary: {
+      en: 'Learn how to add external crates as dependencies in `Cargo.toml` and use them.',
+      id: 'Pelajari cara menambahkan crate eksternal sebagai dependensi di `Cargo.toml` dan menggunakannya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-use-external-crates.html',
     topicId: 'module-system-advanced',
     order: 3,
@@ -360,9 +549,14 @@ export const lessons: Lesson[] = [
   // Memory Management (A.35-A.39)
   {
     id: 'ownership',
-    title: 'Ownership',
-    summary:
-      "Learn Rust's core feature: the ownership system, move semantics, and how memory is managed.",
+    title: {
+      en: 'Ownership',
+      id: 'Kepemilikan (Ownership)',
+    },
+    summary: {
+      en: "Learn Rust's core feature: the ownership system, move semantics, and how memory is managed.",
+      id: 'Pelajari fitur inti Rust: sistem kepemilikan, semantik pemindahan, dan cara memori dikelola.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-ownership.html',
     topicId: 'memory-management',
     order: 1,
@@ -370,8 +564,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'borrowing-ref',
-    title: 'Borrowing & References',
-    summary: 'Learn how to access data without taking ownership using references.',
+    title: {
+      en: 'Borrowing & References',
+      id: 'Meminjam & Referensi',
+    },
+    summary: {
+      en: 'Learn how to access data without taking ownership using references.',
+      id: 'Pelajari cara mengakses data tanpa mengambil alih kepemilikan menggunakan referensi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-borrowing-references.html',
     topicId: 'memory-management',
     order: 2,
@@ -379,9 +579,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'mutable-ref',
-    title: 'Mutable References',
-    summary:
-      'Understanding how to create mutable references to modify borrowed data and the one-writer rule.',
+    title: {
+      en: 'Mutable References',
+      id: 'Referensi Mutable',
+    },
+    summary: {
+      en: 'Understanding how to create mutable references to modify borrowed data and the one-writer rule.',
+      id: 'Memahami cara membuat referensi mutable untuk memodifikasi data yang dipinjam dan aturan satu penulis.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-mutable-references.html',
     topicId: 'memory-management',
     order: 3,
@@ -389,9 +594,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'ref-dangling-ref',
-    title: 'Dangling References',
-    summary:
-      "Learn how Rust's compiler prevents dangling references, ensuring all references point to valid data.",
+    title: {
+      en: 'Dangling References',
+      id: 'Referensi Menggantung (Dangling)',
+    },
+    summary: {
+      en: "Learn how Rust's compiler prevents dangling references, ensuring all references point to valid data.",
+      id: 'Pelajari bagaimana kompiler Rust mencegah referensi menggantung, memastikan semua referensi menunjuk ke data yang valid.',
+    },
     attributionUrl:
       'https://dasarpemrogramanrust.novalagung.com/A-references-dangling-references.html',
     topicId: 'memory-management',
@@ -400,8 +610,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'slice-references',
-    title: 'The Slice Type',
-    summary: 'Understanding slice references for strings and other collections.',
+    title: {
+      en: 'The Slice Type',
+      id: 'Tipe Slice',
+    },
+    summary: {
+      en: 'Understanding slice references for strings and other collections.',
+      id: 'Memahami referensi slice untuk string dan koleksi lainnya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-slice-references.html',
     topicId: 'memory-management',
     order: 5,
@@ -411,8 +627,14 @@ export const lessons: Lesson[] = [
   // Traits & Generics (A.40-A.48)
   {
     id: 'traits',
-    title: 'Traits',
-    summary: 'Learn how to define shared behavior across different types using traits.',
+    title: {
+      en: 'Traits',
+      id: 'Trait',
+    },
+    summary: {
+      en: 'Learn how to define shared behavior across different types using traits.',
+      id: 'Pelajari cara mendefinisikan perilaku bersama di berbagai tipe menggunakan trait.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-traits.html',
     topicId: 'traits-generics',
     order: 1,
@@ -420,8 +642,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-default',
-    title: 'Trait Default Implementation',
-    summary: 'Understanding how to provide default implementations for trait methods.',
+    title: {
+      en: 'Trait Default Implementation',
+      id: 'Implementasi Default Trait',
+    },
+    summary: {
+      en: 'Understanding how to provide default implementations for trait methods.',
+      id: 'Memahami cara menyediakan implementasi default untuk method trait.',
+    },
     attributionUrl:
       'https://dasarpemrogramanrust.novalagung.com/A-trait-default-implementation.html',
     topicId: 'traits-generics',
@@ -436,8 +664,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-parameter',
-    title: 'Trait as Parameter',
-    summary: 'Using traits to accept different types as function parameters with `impl Trait`.',
+    title: {
+      en: 'Trait as Parameter',
+      id: 'Trait sebagai Parameter',
+    },
+    summary: {
+      en: 'Using traits to accept different types as function parameters with `impl Trait`.',
+      id: 'Menggunakan trait untuk menerima berbagai tipe sebagai parameter fungsi dengan `impl Trait`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-as-parameter.html',
     topicId: 'traits-generics',
     order: 3,
@@ -451,8 +685,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-return',
-    title: 'Trait as Return Type',
-    summary: 'Returning types that implement a specific trait from functions.',
+    title: {
+      en: 'Trait as Return Type',
+      id: 'Trait sebagai Tipe Kembalian',
+    },
+    summary: {
+      en: 'Returning types that implement a specific trait from functions.',
+      id: 'Mengembalikan tipe yang mengimplementasikan trait tertentu dari fungsi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-as-return-type.html',
     topicId: 'traits-generics',
     order: 4,
@@ -466,8 +706,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-bound',
-    title: 'Trait Bounds',
-    summary: 'Understanding trait bounds for constraining generic types in functions and structs.',
+    title: {
+      en: 'Trait Bounds',
+      id: 'Batasan Trait (Trait Bounds)',
+    },
+    summary: {
+      en: 'Understanding trait bounds for constraining generic types in functions and structs.',
+      id: 'Memahami batasan trait untuk membatasi tipe generik dalam fungsi dan struct.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-trait-bound.html',
     topicId: 'traits-generics',
     order: 5,
@@ -481,8 +727,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-conditionally',
-    title: 'Conditional Trait Implementation',
-    summary: 'Conditionally implementing traits for types that meet certain criteria.',
+    title: {
+      en: 'Conditional Trait Implementation',
+      id: 'Implementasi Trait Kondisional',
+    },
+    summary: {
+      en: 'Conditionally implementing traits for types that meet certain criteria.',
+      id: 'Mengimplementasikan trait secara kondisional untuk tipe yang memenuhi kriteria tertentu.',
+    },
     attributionUrl:
       'https://dasarpemrogramanrust.novalagung.com/A-trait-implementation-conditionally.html',
     topicId: 'traits-generics',
@@ -497,8 +749,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'trait-blanket',
-    title: 'Blanket Implementation',
-    summary: 'Understanding how to implement a trait for any type that satisfies certain bounds.',
+    title: {
+      en: 'Blanket Implementation',
+      id: 'Implementasi Menyeluruh (Blanket)',
+    },
+    summary: {
+      en: 'Understanding how to implement a trait for any type that satisfies certain bounds.',
+      id: 'Memahami cara mengimplementasikan trait untuk tipe apa pun yang memenuhi batasan tertentu.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-blanket-implementation.html',
     topicId: 'traits-generics',
     order: 7,
@@ -506,8 +764,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'lifetimes',
-    title: 'Lifetimes',
-    summary: 'Understanding the concept of lifetimes for ensuring references are valid.',
+    title: {
+      en: 'Lifetimes',
+      id: 'Lifetime',
+    },
+    summary: {
+      en: 'Understanding the concept of lifetimes for ensuring references are valid.',
+      id: 'Memahami konsep lifetime untuk memastikan referensi valid.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-lifetimes.html',
     topicId: 'traits-generics',
     order: 8,
@@ -515,8 +779,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'lifetime-annotation',
-    title: 'Lifetime Annotation',
-    summary: 'Learn the syntax for annotating lifetimes in functions and structs.',
+    title: {
+      en: 'Lifetime Annotation',
+      id: 'Anotasi Lifetime',
+    },
+    summary: {
+      en: 'Learn the syntax for annotating lifetimes in functions and structs.',
+      id: 'Pelajari sintaks untuk memberi anotasi lifetime dalam fungsi dan struct.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-lifetime-annotation.html',
     topicId: 'traits-generics',
     order: 9,
@@ -526,8 +796,14 @@ export const lessons: Lesson[] = [
   // Advanced Types (A.49)
   {
     id: 'advanced-functions',
-    title: 'Advanced Functions & Closures',
-    summary: 'Function pointers and how they differ from closures.',
+    title: {
+      en: 'Advanced Functions & Closures',
+      id: 'Fungsi & Closure Tingkat Lanjut',
+    },
+    summary: {
+      en: 'Function pointers and how they differ from closures.',
+      id: 'Pointer fungsi dan perbedaannya dengan closure.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-advanced-functions.html',
     topicId: 'advanced-types',
     order: 1,
@@ -535,9 +811,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'newtype-pattern',
-    title: 'Newtype Pattern',
-    summary:
-      'Using a tuple struct with one element to create a new type for type safety and abstraction.',
+    title: {
+      en: 'Newtype Pattern',
+      id: 'Pola Newtype',
+    },
+    summary: {
+      en: 'Using a tuple struct with one element to create a new type for type safety and abstraction.',
+      id: 'Menggunakan struct tuple dengan satu elemen untuk membuat tipe baru demi keamanan tipe dan abstraksi.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-newtype-pattern.html',
     topicId: 'advanced-types',
     order: 2,
@@ -545,9 +826,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'type-alias',
-    title: 'Type Alias Advanced',
-    summary:
-      'Advanced usage of type aliases for reducing repetition and simplifying complex types.',
+    title: {
+      en: 'Type Alias Advanced',
+      id: 'Alias Tipe Tingkat Lanjut',
+    },
+    summary: {
+      en: 'Advanced usage of type aliases for reducing repetition and simplifying complex types.',
+      id: 'Penggunaan lanjutan alias tipe untuk mengurangi pengulangan dan menyederhanakan tipe yang kompleks.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-type-alias-advanced.html',
     topicId: 'advanced-types',
     order: 3,
@@ -561,8 +847,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'never-type',
-    title: 'The Never Type',
-    summary: 'Understanding the `!` type, which represents computations that never return.',
+    title: {
+      en: 'The Never Type',
+      id: 'Tipe Never (`!`)',
+    },
+    summary: {
+      en: 'Understanding the `!` type, which represents computations that never return.',
+      id: 'Memahami tipe `!`, yang merepresentasikan komputasi yang tidak pernah kembali (return).',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-never-type.html',
     topicId: 'advanced-types',
     order: 4,
@@ -570,9 +862,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'dynamically-sized',
-    title: 'Dynamically Sized Types',
-    summary:
-      'Working with Dynamically Sized Types (DSTs) like `str` and `[T]` using pointers like `&` or `Box`.',
+    title: {
+      en: 'Dynamically Sized Types',
+      id: 'Tipe Berukuran Dinamis (DST)',
+    },
+    summary: {
+      en: 'Working with Dynamically Sized Types (DSTs) like `str` and `[T]` using pointers like `&` or `Box`.',
+      id: 'Bekerja dengan Tipe Berukuran Dinamis (DST) seperti `str` dan `[T]` menggunakan pointer seperti `&` atau `Box`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-dynamically-sized-types.html',
     topicId: 'advanced-types',
     order: 5,
@@ -582,8 +879,14 @@ export const lessons: Lesson[] = [
   // Strings Advanced (A.50)
   {
     id: 'string-slice',
-    title: 'String Slice Advanced',
-    summary: 'Advanced operations and characteristics of string slices.',
+    title: {
+      en: 'String Slice Advanced',
+      id: 'Slice String Tingkat Lanjut',
+    },
+    summary: {
+      en: 'Advanced operations and characteristics of string slices.',
+      id: 'Operasi dan karakteristik lanjutan dari slice string.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-string-slice-advanced.html',
     topicId: 'strings-advanced',
     order: 1,
@@ -597,8 +900,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'string-literal',
-    title: 'String Literal Advanced',
-    summary: 'Advanced features and types of string literals in Rust.',
+    title: {
+      en: 'String Literal Advanced',
+      id: 'Literal String Tingkat Lanjut',
+    },
+    summary: {
+      en: 'Advanced features and types of string literals in Rust.',
+      id: 'Fitur dan jenis lanjutan dari literal string di Rust.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-string-literal-advanced.html',
     topicId: 'strings-advanced',
     order: 2,
@@ -612,8 +921,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'raw-string',
-    title: 'Raw String Literals',
-    summary: 'Working with raw string literals to avoid interpreting escape sequences.',
+    title: {
+      en: 'Raw String Literals',
+      id: 'Literal String Mentah (Raw)',
+    },
+    summary: {
+      en: 'Working with raw string literals to avoid interpreting escape sequences.',
+      id: 'Bekerja dengan literal string mentah untuk menghindari interpretasi urutan escape.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-raw-string.html',
     topicId: 'strings-advanced',
     order: 3,
@@ -623,8 +938,14 @@ export const lessons: Lesson[] = [
   // Functional Programming (A.51)
   {
     id: 'closures',
-    title: 'Closures',
-    summary: 'Understanding closures, anonymous functions that can capture their environment.',
+    title: {
+      en: 'Closures',
+      id: 'Closure',
+    },
+    summary: {
+      en: 'Understanding closures, anonymous functions that can capture their environment.',
+      id: 'Memahami closure, fungsi anonim yang dapat menangkap lingkungannya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-closures.html',
     topicId: 'functional-programming',
     order: 1,
@@ -632,8 +953,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'closure-traits',
-    title: 'Closure Traits (Fn, FnMut, FnOnce)',
-    summary: 'Understanding the `Fn`, `FnMut`, and `FnOnce` traits that closures implement.',
+    title: {
+      en: 'Closure Traits (Fn, FnMut, FnOnce)',
+      id: 'Trait Closure (Fn, FnMut, FnOnce)',
+    },
+    summary: {
+      en: 'Understanding the `Fn`, `FnMut`, and `FnOnce` traits that closures implement.',
+      id: 'Memahami trait `Fn`, `FnMut`, dan `FnOnce` yang diimplementasikan oleh closure.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-closure-traits.html',
     topicId: 'functional-programming',
     order: 2,
@@ -647,9 +974,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'iterators',
-    title: 'Iterators',
-    summary:
-      'Working with iterators, which produce a sequence of values, and understanding their lazy nature.',
+    title: {
+      en: 'Iterators',
+      id: 'Iterator',
+    },
+    summary: {
+      en: 'Working with iterators, which produce a sequence of values, and understanding their lazy nature.',
+      id: 'Bekerja dengan iterator, yang menghasilkan urutan nilai, dan memahami sifatnya yang lazy.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-iterators.html',
     topicId: 'functional-programming',
     order: 3,
@@ -657,9 +989,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'iterator-adaptors',
-    title: 'Iterator Adaptors',
-    summary:
-      'Using consuming and producing adaptors like `map`, `filter`, and `collect` for data processing.',
+    title: {
+      en: 'Iterator Adaptors',
+      id: 'Adaptor Iterator',
+    },
+    summary: {
+      en: 'Using consuming and producing adaptors like `map`, `filter`, and `collect` for data processing.',
+      id: 'Menggunakan adaptor consuming dan producing seperti `map`, `filter`, dan `collect` untuk pemrosesan data.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-iterator-adaptors.html',
     topicId: 'functional-programming',
     order: 4,
@@ -675,9 +1012,14 @@ export const lessons: Lesson[] = [
   // System Programming (A.52-A.54)
   {
     id: 'unsafe',
-    title: 'Unsafe Rust',
-    summary:
-      "Understanding `unsafe` blocks for operations that bypass Rust's safety guarantees, like dereferencing raw pointers.",
+    title: {
+      en: 'Unsafe Rust',
+      id: 'Rust `unsafe`',
+    },
+    summary: {
+      en: "Understanding `unsafe` blocks for operations that bypass Rust's safety guarantees, like dereferencing raw pointers.",
+      id: 'Memahami blok `unsafe` untuk operasi yang melewati jaminan keamanan Rust, seperti dereferensi pointer mentah.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-unsafe.html',
     topicId: 'system-programming',
     order: 1,
@@ -685,9 +1027,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'testing',
-    title: 'Testing',
-    summary:
-      'Writing unit, documentation, and integration tests in Rust using the `#[test]` attribute.',
+    title: {
+      en: 'Testing',
+      id: 'Pengujian (Testing)',
+    },
+    summary: {
+      en: 'Writing unit, documentation, and integration tests in Rust using the `#[test]` attribute.',
+      id: 'Menulis tes unit, dokumentasi, dan integrasi di Rust menggunakan atribut `#[test]`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-testing.html',
     topicId: 'system-programming',
     order: 2,
@@ -695,9 +1042,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'attributes',
-    title: 'Attributes',
-    summary:
-      'Using attributes like `#[derive]` and `#[cfg]` for metadata and conditional compilation.',
+    title: {
+      en: 'Attributes',
+      id: 'Atribut',
+    },
+    summary: {
+      en: 'Using attributes like `#[derive]` and `#[cfg]` for metadata and conditional compilation.',
+      id: 'Menggunakan atribut seperti `#[derive]` dan `#[cfg]` untuk metadata dan kompilasi kondisional.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-attributes.html',
     topicId: 'system-programming',
     order: 3,
@@ -707,8 +1059,14 @@ export const lessons: Lesson[] = [
   // Advanced Concepts (placeholder)
   {
     id: 'smart-pointers',
-    title: 'Smart Pointers',
-    summary: 'Understanding `Box`, `Rc`, `RefCell` and other smart pointers.',
+    title: {
+      en: 'Smart Pointers',
+      id: 'Smart Pointer',
+    },
+    summary: {
+      en: 'Understanding `Box`, `Rc`, `RefCell` and other smart pointers.',
+      id: 'Memahami `Box`, `Rc`, `RefCell` dan smart pointer lainnya.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-smart-pointers.html',
     topicId: 'advanced-concepts',
     order: 1,
@@ -716,8 +1074,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'concurrency',
-    title: 'Concurrency',
-    summary: 'Concurrency and parallelism in Rust, including threads and message passing.',
+    title: {
+      en: 'Concurrency',
+      id: 'Konkurensi',
+    },
+    summary: {
+      en: 'Concurrency and parallelism in Rust, including threads and message passing.',
+      id: 'Konkurensi dan paralelisme di Rust, termasuk thread dan message passing.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-concurrency.html',
     topicId: 'advanced-concepts',
     order: 2,
@@ -725,8 +1089,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'async-await',
-    title: 'Async/Await',
-    summary: 'Asynchronous programming in Rust using `async` and `await`.',
+    title: {
+      en: 'Async/Await',
+      id: 'Async/Await',
+    },
+    summary: {
+      en: 'Asynchronous programming in Rust using `async` and `await`.',
+      id: 'Pemrograman asinkron di Rust menggunakan `async` dan `await`.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-async-await.html',
     topicId: 'advanced-concepts',
     order: 3,
@@ -736,8 +1106,14 @@ export const lessons: Lesson[] = [
   // Error Handling (A.55)
   {
     id: 'panic',
-    title: 'Unrecoverable Errors with `panic!`',
-    summary: 'Understanding `panic!` for unrecoverable errors and stack unwinding.',
+    title: {
+      en: 'Unrecoverable Errors with `panic!`',
+      id: 'Error Tak Terpulihkan dengan `panic!`',
+    },
+    summary: {
+      en: 'Understanding `panic!` for unrecoverable errors and stack unwinding.',
+      id: 'Memahami `panic!` untuk error yang tidak dapat dipulihkan dan stack unwinding.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-panic.html',
     topicId: 'error-handling',
     order: 1,
@@ -745,8 +1121,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'result-type',
-    title: 'Recoverable Errors with `Result`',
-    summary: 'Working with the `Result<T, E>` enum for handling errors that can be recovered from.',
+    title: {
+      en: 'Recoverable Errors with `Result`',
+      id: 'Error Terpulihkan dengan `Result`',
+    },
+    summary: {
+      en: 'Working with the `Result<T, E>` enum for handling errors that can be recovered from.',
+      id: 'Bekerja dengan enum `Result<T, E>` untuk menangani error yang dapat dipulihkan.',
+    },
     attributionUrl: 'https://dasarpemrogramanrust.novalagung.com/A-result-type.html',
     topicId: 'error-handling',
     order: 2,
@@ -754,8 +1136,14 @@ export const lessons: Lesson[] = [
   },
   {
     id: 'recoverable-errors',
-    title: 'Error Propagation & Handling',
-    summary: 'Comprehensive error handling strategies, including the `?` operator for propagation.',
+    title: {
+      en: 'Error Propagation & Handling',
+      id: 'Propagasi & Penanganan Error',
+    },
+    summary: {
+      en: 'Comprehensive error handling strategies, including the `?` operator for propagation.',
+      id: 'Strategi penanganan error yang komprehensif, termasuk operator `?` untuk propagasi.',
+    },
     attributionUrl:
       'https://dasarpemrogramanrust.novalagung.com/A-recoverable-error-error-handling.html',
     topicId: 'error-handling',

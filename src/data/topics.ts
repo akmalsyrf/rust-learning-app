@@ -3,36 +3,66 @@ import { Topic } from '../types';
 export const topics: Topic[] = [
   {
     id: 'fundamentals',
-    title: 'Rust Fundamentals',
-    description: 'Learn the basics of Rust programming',
+    title: {
+      en: 'Rust Fundamentals',
+      id: 'Dasar-Dasar Rust',
+    },
+    description: {
+      en: 'Learn the basics of Rust programming',
+      id: 'Pelajari dasar-dasar pemrograman Rust',
+    },
     order: 1,
     lessons: ['hello-world', 'comments', 'variables', 'scalar-types', 'string-literals'],
   },
   {
     id: 'data-types',
-    title: 'Data Types & Operations',
-    description: 'Understanding Rust data types and operations',
+    title: {
+      en: 'Data Types & Operations',
+      id: 'Tipe Data & Operasi',
+    },
+    description: {
+      en: 'Understanding Rust data types and operations',
+      id: 'Memahami tipe data dan operasi dalam Rust',
+    },
     order: 2,
     lessons: ['constants', 'operators', 'type-alias-casting'],
   },
   {
     id: 'control-structures',
-    title: 'Control Structures',
-    description: 'Learn about control flow in Rust',
+    title: {
+      en: 'Control Structures',
+      id: 'Struktur Kontrol',
+    },
+    description: {
+      en: 'Learn about control flow in Rust',
+      id: 'Pelajari alur kontrol dalam Rust',
+    },
     order: 3,
     lessons: ['conditional-if', 'while-loops', 'loop-break-continue', 'for-loops'],
   },
   {
     id: 'collections',
-    title: 'Collections',
-    description: 'Arrays, slices, tuples, and vectors',
+    title: {
+      en: 'Collections',
+      id: 'Koleksi',
+    },
+    description: {
+      en: 'Arrays, slices, tuples, and vectors',
+      id: 'Array, slice, tuple, dan vector',
+    },
     order: 4,
     lessons: ['arrays', 'slices', 'tuples', 'vectors'],
   },
   {
     id: 'functions-modules',
-    title: 'Functions & Modules',
-    description: 'Functions, modules, and code organization',
+    title: {
+      en: 'Functions & Modules',
+      id: 'Fungsi & Modul',
+    },
+    description: {
+      en: 'Functions, modules, and code organization',
+      id: 'Fungsi, modul, dan organisasi kode',
+    },
     order: 5,
     lessons: [
       'functions',
@@ -46,8 +76,14 @@ export const topics: Topic[] = [
   },
   {
     id: 'structs-enums',
-    title: 'Structs & Enums',
-    description: 'Custom data types and pattern matching',
+    title: {
+      en: 'Structs & Enums',
+      id: 'Struct & Enum',
+    },
+    description: {
+      en: 'Custom data types and pattern matching',
+      id: 'Tipe data kustom dan pattern matching',
+    },
     order: 6,
     lessons: [
       'structs',
@@ -61,22 +97,40 @@ export const topics: Topic[] = [
   },
   {
     id: 'module-system-advanced',
-    title: 'Advanced Module System',
-    description: 'Advanced module organization and use statements',
+    title: {
+      en: 'Advanced Module System',
+      id: 'Sistem Modul Lanjutan',
+    },
+    description: {
+      en: 'Advanced module organization and use statements',
+      id: 'Organisasi modul lanjutan dan pernyataan use',
+    },
     order: 7,
     lessons: ['use-statements', 'nested-use', 'use-external-crates'],
   },
   {
     id: 'memory-management',
-    title: 'Memory Management',
-    description: 'Ownership, borrowing, and references',
+    title: {
+      en: 'Memory Management',
+      id: 'Manajemen Memori',
+    },
+    description: {
+      en: 'Ownership, borrowing, and references',
+      id: 'Ownership, borrowing, dan referensi',
+    },
     order: 8,
     lessons: ['ownership', 'borrowing-ref', 'mutable-ref', 'ref-dangling-ref', 'slice-references'],
   },
   {
     id: 'traits-generics',
-    title: 'Traits & Generics',
-    description: 'Traits, generics, and lifetimes',
+    title: {
+      en: 'Traits & Generics',
+      id: 'Trait & Generik',
+    },
+    description: {
+      en: 'Traits, generics, and lifetimes',
+      id: 'Trait, generik, dan lifetime',
+    },
     order: 9,
     lessons: [
       'traits',
@@ -92,8 +146,14 @@ export const topics: Topic[] = [
   },
   {
     id: 'advanced-types',
-    title: 'Advanced Types',
-    description: 'Advanced type system features',
+    title: {
+      en: 'Advanced Types',
+      id: 'Tipe Lanjutan',
+    },
+    description: {
+      en: 'Advanced type system features',
+      id: 'Fitur sistem tipe lanjutan',
+    },
     order: 10,
     lessons: [
       'advanced-functions',
@@ -105,36 +165,66 @@ export const topics: Topic[] = [
   },
   {
     id: 'strings-advanced',
-    title: 'Advanced Strings',
-    description: 'String manipulation and formatting',
+    title: {
+      en: 'Advanced Strings',
+      id: 'String Lanjutan',
+    },
+    description: {
+      en: 'String manipulation and formatting',
+      id: 'Manipulasi dan pemformatan string',
+    },
     order: 11,
     lessons: ['string-slice', 'string-literal', 'raw-string'],
   },
   {
     id: 'functional-programming',
-    title: 'Functional Programming',
-    description: 'Closures, iterators, and functional patterns',
+    title: {
+      en: 'Functional Programming',
+      id: 'Pemrograman Fungsional',
+    },
+    description: {
+      en: 'Closures, iterators, and functional patterns',
+      id: 'Closure, iterator, dan pola fungsional',
+    },
     order: 12,
     lessons: ['closures', 'closure-traits', 'iterators', 'iterator-adaptors'],
   },
   {
     id: 'system-programming',
-    title: 'System Programming',
-    description: 'Unsafe code, testing, and attributes',
+    title: {
+      en: 'System Programming',
+      id: 'Pemrograman Sistem',
+    },
+    description: {
+      en: 'Unsafe code, testing, and attributes',
+      id: 'Kode unsafe, testing, dan atribut',
+    },
     order: 13,
     lessons: ['unsafe', 'testing', 'attributes'],
   },
   {
     id: 'advanced-concepts',
-    title: 'Advanced Concepts',
-    description: 'Smart pointers, concurrency, and advanced patterns',
+    title: {
+      en: 'Advanced Concepts',
+      id: 'Konsep Lanjutan',
+    },
+    description: {
+      en: 'Smart pointers, concurrency, and advanced patterns',
+      id: 'Smart pointer, konkurensi, dan pola lanjutan',
+    },
     order: 14,
     lessons: ['smart-pointers', 'concurrency', 'async-await'],
   },
   {
     id: 'error-handling',
-    title: 'Error Handling',
-    description: 'Comprehensive error handling in Rust',
+    title: {
+      en: 'Error Handling',
+      id: 'Penanganan Error',
+    },
+    description: {
+      en: 'Comprehensive error handling in Rust',
+      id: 'Penanganan error komprehensif dalam Rust',
+    },
     order: 15,
     lessons: ['panic', 'result-type', 'recoverable-errors'],
   },

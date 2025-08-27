@@ -106,7 +106,9 @@ export default function ResultsScreen({ route, navigation }: ResultsScreenProps)
           <View style={styles.xpBreakdown}>
             <View style={styles.xpRow}>
               <Text style={styles.xpLabel}>{t('results.questionsXP', 'Questions XP')}</Text>
-              <Text style={styles.xpValue}>{xpEarned} XP</Text>
+              <Text style={styles.xpValue}>
+                {isPerfectScore ? xpEarned - XP_PERFECT_LESSON_BONUS : xpEarned} XP
+              </Text>
             </View>
             {isPerfectScore && (
               <View style={styles.xpRow}>
