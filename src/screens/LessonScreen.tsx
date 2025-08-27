@@ -14,7 +14,7 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
   const { lessonId } = route.params;
   const { getEffectiveTheme } = useSettingsStore();
   const { getLesson, getTopic, getQuestionsForLesson, getCodePracticesForLesson } = useDataStore();
-  const { getLessonStars } = useProgressStore();
+  const { getLessonStars, getTotalQuestionAnswered } = useProgressStore();
   const { t, i18n } = useTranslation();
 
   const isDark = getEffectiveTheme() === 'dark';
@@ -196,6 +196,41 @@ export default function LessonScreen({ route, navigation }: LessonScreenProps) {
             </Text>
           </TouchableOpacity>
         </View>
+
+        {/* Review Mistakes Section - Only show if user has answered at least 1 question */}
+        {(() => {
+          const { totalQuestions } = getTotalQuestionAnswered();
+          return totalQuestions > 0;
+        })() && (
+          <View style={styles.reviewCard}>
+            <View style={styles.reviewHeader}>
+              <View style={styles.reviewIcon}>
+                <Ionicons name='refresh-circle' size={24} color={theme.colors.warning} />
+              </View>
+              <View style={styles.reviewInfo}>
+                <Text style={styles.reviewTitle}>
+                  {t('lessonScreen.reviewMistakes', 'Review Your Mistakes')}
+                </Text>
+                <Text style={styles.reviewSubtitle}>
+                  {t(
+                    'lessonScreen.practiceWrongQuestions',
+                    'Practice questions you got wrong before'
+                  )}
+                </Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              style={styles.reviewButton}
+              onPress={() => navigation.navigate('ReviewMistakes')}
+            >
+              <Ionicons name='refresh-circle' size={20} color={theme.colors.warning} />
+              <Text style={styles.reviewButtonText}>
+                {t('lessonScreen.startReview', 'Start Review')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Progress Summary */}
         {stars > 0 && (
@@ -429,6 +464,49 @@ const createStyles = (theme: any) =>
     },
     practiceButtonText: {
       color: theme.colors.secondary,
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600',
+      marginLeft: theme.spacing.sm,
+    },
+    reviewCard: {
+      backgroundColor: theme.colors.surface,
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      marginBottom: theme.spacing.md,
+    },
+    reviewHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: theme.spacing.md,
+    },
+    reviewIcon: {
+      marginRight: theme.spacing.md,
+    },
+    reviewInfo: {
+      flex: 1,
+    },
+    reviewTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
+    reviewSubtitle: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    reviewButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      borderColor: theme.colors.warning,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+    },
+    reviewButtonText: {
+      color: theme.colors.warning,
       fontSize: theme.typography.body.fontSize,
       fontWeight: '600',
       marginLeft: theme.spacing.sm,

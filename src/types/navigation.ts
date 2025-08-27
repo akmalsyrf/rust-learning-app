@@ -17,6 +17,7 @@ export type RootStackParamList = {
     xpEarned: number;
     isPerfectScore: boolean;
   };
+  ReviewMistakes: undefined;
   About: undefined;
   LanguageSettings: undefined;
 };
@@ -71,6 +72,10 @@ export type ResultsScreenProps = {
 };
 
 export type AboutScreenProps = {
+  navigation: StackNavigationProps;
+};
+
+export type ReviewMistakesScreenProps = {
   navigation: StackNavigationProps;
 };
 

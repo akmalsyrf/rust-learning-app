@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,13 +17,25 @@ export default function LeaderboardScreen() {
   const styles = createStyles(theme);
 
   // Mock data for demo
-  const mockLeaderboard = [
-    { rank: 1, name: 'RustMaster', xp: 1250, avatar: '🦀' },
-    { rank: 2, name: 'CodeNinja', xp: 1100, avatar: '🥷' },
-    { rank: 3, name: 'ByteBuster', xp: 950, avatar: '💪' },
-    { rank: 4, name: 'You', xp: xp, avatar: '👤' },
-    { rank: 5, name: 'DevGuru', xp: 800, avatar: '🧠' },
-  ];
+  const [mockLeaderboard, setMockLeaderboard] = useState([
+    { name: 'RustMaster', xp: 1250, avatar: '🦀' },
+    { name: 'CodeNinja', xp: 1100, avatar: '🥷' },
+    { name: 'ByteBuster', xp: 950, avatar: '💪' },
+    { name: 'You', xp: xp, avatar: '👤' },
+    { name: 'DevGuru', xp: 800, avatar: '🧠' },
+    { name: 'CodeWizard', xp: 700, avatar: '👑' },
+    { name: 'HackerPro', xp: 600, avatar: '💻' },
+    { name: 'Fighter', xp: 500, avatar: '🥊' },
+    { name: 'CodeAddict', xp: 400, avatar: '👨‍💻' },
+    { name: 'CodeGuru', xp: 300, avatar: '👨‍💻' },
+    { name: 'ArtistInCode', xp: 200, avatar: '🎨' },
+    { name: 'OrdinaryCoder', xp: 100, avatar: '👨' },
+  ]);
+
+  useEffect(() => {
+    const sortedLeaderboard = [...mockLeaderboard].sort((a, b) => b.xp - a.xp);
+    setMockLeaderboard(sortedLeaderboard);
+  }, [xp]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -40,11 +52,11 @@ export default function LeaderboardScreen() {
         <View style={styles.podium}>
           {mockLeaderboard.slice(0, 3).map((player, index) => (
             <View
-              key={player.rank}
+              key={player.name}
               style={[styles.podiumPosition, index === 0 && styles.firstPlace]}
             >
               <View style={styles.rankBadge}>
-                <Text style={styles.rankText}>{player.rank}</Text>
+                <Text style={styles.rankText}>{index + 1}</Text>
               </View>
               <Text style={styles.avatar}>{player.avatar}</Text>
               <Text style={styles.playerName}>{player.name}</Text>
@@ -54,13 +66,13 @@ export default function LeaderboardScreen() {
         </View>
 
         <View style={styles.leaderboardList}>
-          {mockLeaderboard.map(player => (
+          {mockLeaderboard.map((player, index) => (
             <View
-              key={player.rank}
+              key={player.name}
               style={[styles.playerRow, player.name === 'You' && styles.currentPlayerRow]}
             >
               <View style={styles.playerInfo}>
-                <Text style={styles.playerRank}>#{player.rank}</Text>
+                <Text style={styles.playerRank}>#{index + 1}</Text>
                 <Text style={styles.playerAvatar}>{player.avatar}</Text>
                 <Text
                   style={[styles.playerNameList, player.name === 'You' && styles.currentPlayerName]}

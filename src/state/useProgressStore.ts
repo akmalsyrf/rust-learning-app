@@ -20,6 +20,7 @@ interface ProgressState extends UserProgress {
   getLessonStars: (lessonId: LessonId) => 0 | 1 | 2 | 3;
   getTotalQuestionAnswered: () => { correctAnswers: number; totalQuestions: number };
   getTodayXP: () => number;
+  getIncorrectQuestions: () => QuestionId[];
   completeCodePractice: (
     practice: CodePractice,
     userCode: string,
@@ -193,6 +194,13 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       console.warn('Error getting today XP:', error);
       return 0;
     }
+  },
+
+  getIncorrectQuestions: () => {
+    const state = get();
+    return Object.entries(state.completedQuestions)
+      .filter(([_, result]) => !result.correct)
+      .map(([questionId, _]) => questionId);
   },
 
   completeCodePractice: (practice: CodePractice, userCode: string, isCorrect: boolean) => {

@@ -38,6 +38,7 @@ export default {
     languageSettings: 'Language Settings',
     results: 'Results',
     lesson: 'Lesson',
+    reviewMistakes: 'Review Mistakes',
   },
 
   // Home Screen
@@ -444,6 +445,9 @@ export default {
     startQuiz: 'Start Quiz',
     retakeQuiz: 'Retake Quiz',
     codePractice: 'Code Practice',
+    reviewMistakes: 'Review Your Mistakes',
+    practiceWrongQuestions: 'Practice questions you got wrong before',
+    startReview: 'Start Review',
     handsOnCodingExercises: 'Hands-on coding exercises',
     tryCodeExercises: 'Try Code Exercises',
     yourAchievement: 'Your Achievement',
@@ -481,5 +485,21 @@ export default {
     withScore: 'with a score of',
     timeSpent: 'Time spent',
     averageTime: 'Average time per question',
+  },
+
+  // Review Mistakes
+  reviewMistakes: {
+    title: 'Review Your Mistakes',
+    subtitle: 'Practice questions you got wrong before',
+    progress: 'Progress',
+    score: 'Score',
+    retry: 'Retry',
+    next: 'Next',
+    finish: 'Finish',
+    completed: 'Review Completed!',
+    completedMessage: 'You have reviewed all your mistakes. Great job!',
+    noMistakes: 'No Mistakes to Review!',
+    noMistakesMessage: "Great job! You haven't made any mistakes yet. Keep learning!",
+    info: 'In review mode, you earn half XP for correct answers. This helps you learn from your mistakes!',
   },
 };

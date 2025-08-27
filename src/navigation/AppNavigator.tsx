@@ -13,6 +13,7 @@ import QuizScreen from '../screens/QuizScreen';
 import CodePracticeScreen from '../screens/CodePracticeScreen';
 import FreeCodePracticeScreen from '../screens/FreeCodePracticeScreen';
 import ResultsScreen from '../screens/ResultsScreen';
+import ReviewMistakesScreen from '../screens/ReviewMistakesScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AboutScreen from '../screens/AboutScreen';
@@ -239,6 +240,14 @@ export default function AppNavigator() {
             title: t('navigation.results', 'Results'),
             headerBackTitle: t('common.back', 'Back'),
             gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name='ReviewMistakes'
+          component={ReviewMistakesScreen}
+          options={{
+            title: t('navigation.reviewMistakes', 'Review Mistakes'),
+            headerBackTitle: t('common.back', 'Back'),
           }}
         />
         <Stack.Screen

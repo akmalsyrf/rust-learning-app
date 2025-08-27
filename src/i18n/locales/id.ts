@@ -38,6 +38,7 @@ export default {
     languageSettings: 'Pengaturan Bahasa',
     results: 'Hasil',
     lesson: 'Pelajaran',
+    reviewMistakes: 'Ulas Kesalahan',
   },
 
   // Home Screen
@@ -447,6 +448,9 @@ export default {
     startQuiz: 'Mulai Kuis',
     retakeQuiz: 'Ulangi Kuis',
     codePractice: 'Latihan Kode',
+    reviewMistakes: 'Ulas Kesalahan Anda',
+    practiceWrongQuestions: 'Latih soal-soal yang salah sebelumnya',
+    startReview: 'Mulai Ulasan',
     handsOnCodingExercises: 'Latihan coding langsung',
     tryCodeExercises: 'Coba Latihan Kode',
     yourAchievement: 'Pencapaian Anda',
@@ -484,5 +488,21 @@ export default {
     withScore: 'dengan skor',
     timeSpent: 'Waktu yang dihabiskan',
     averageTime: 'Rata-rata waktu per pertanyaan',
+  },
+
+  // Review Mistakes
+  reviewMistakes: {
+    title: 'Ulas Kesalahan Anda',
+    subtitle: 'Latih soal-soal yang salah sebelumnya',
+    progress: 'Progress',
+    score: 'Skor',
+    retry: 'Coba Lagi',
+    next: 'Selanjutnya',
+    finish: 'Selesai',
+    completed: 'Ulasan Selesai!',
+    completedMessage: 'Anda telah mengulas semua kesalahan Anda. Kerja bagus!',
+    noMistakes: 'Tidak Ada Kesalahan untuk Diulas!',
+    noMistakesMessage: 'Kerja bagus! Anda belum membuat kesalahan apa pun. Terus belajar!',
+    info: 'Dalam mode ulasan, Anda mendapatkan setengah XP untuk jawaban yang benar. Ini membantu Anda belajar dari kesalahan!',
   },
 };
