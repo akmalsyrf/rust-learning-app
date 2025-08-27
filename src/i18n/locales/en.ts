@@ -471,6 +471,7 @@ export default {
     keepLearning: 'Keep Learning',
     retakeQuiz: 'Retake Quiz',
     continueLearning: 'Continue Learning',
+    backToHome: 'Back to Home',
     performance: 'Performance',
     accuracy: 'Accuracy',
     speed: 'Speed',

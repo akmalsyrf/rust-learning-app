@@ -178,6 +178,14 @@ export default function ResultsScreen({ route, navigation }: ResultsScreenProps)
             <Ionicons name='refresh' size={20} color={theme.colors.primary} />
             <Text style={styles.secondaryButtonText}>{t('results.retakeQuiz', 'Retake Quiz')}</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.homeButton}
+            onPress={() => navigation.navigate('MainTabs')}
+          >
+            <Ionicons name='home' size={20} color={theme.colors.accent} />
+            <Text style={styles.homeButtonText}>{t('results.backToHome', 'Back to Home')}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Encouragement Message */}
@@ -383,6 +391,23 @@ const createStyles = (theme: Theme) =>
     },
     secondaryButtonText: {
       color: theme.colors.primary,
+      fontSize: theme.typography.body.fontSize,
+      fontWeight: '600',
+      marginLeft: theme.spacing.sm,
+    },
+    homeButton: {
+      backgroundColor: 'transparent',
+      borderWidth: 1,
+      borderColor: theme.colors.accent,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: theme.spacing.md,
+      borderRadius: theme.borderRadius.lg,
+      marginTop: theme.spacing.sm,
+    },
+    homeButtonText: {
+      color: theme.colors.accent,
       fontSize: theme.typography.body.fontSize,
       fontWeight: '600',
       marginLeft: theme.spacing.sm,

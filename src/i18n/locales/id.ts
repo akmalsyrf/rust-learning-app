@@ -474,6 +474,7 @@ export default {
     keepLearning: 'Terus Belajar',
     retakeQuiz: 'Ulangi Kuis',
     continueLearning: 'Lanjutkan Belajar',
+    backToHome: 'Kembali ke Beranda',
     performance: 'Performa',
     accuracy: 'Akurasi',
     speed: 'Kecepatan',
