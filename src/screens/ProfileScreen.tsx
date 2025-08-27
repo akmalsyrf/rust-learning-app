@@ -14,7 +14,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const {
     xp,
     currentStreakDays,
-    getTotalCorrectAnswers,
+    getTotalQuestionAnswered,
     clearStorage: clearProgress,
   } = useProgressStore();
   const { currentLanguage } = useLanguage();
@@ -24,7 +24,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
   const currentTheme = isDark ? darkTheme : lightTheme;
   const styles = createStyles(currentTheme);
 
-  const totalCorrect = getTotalCorrectAnswers();
+  const questionAnswered = getTotalQuestionAnswered();
 
   const toggleTheme = () => {
     setTheme(isDark ? 'light' : 'dark');
@@ -94,7 +94,7 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
 
           <View style={styles.statCard}>
             <Ionicons name='checkmark-circle' size={24} color={currentTheme.colors.success} />
-            <Text style={styles.statNumber}>{totalCorrect}</Text>
+            <Text style={styles.statNumber}>{questionAnswered.correctAnswers}</Text>
             <Text style={styles.statLabel}>{t('profile.correctAnswers', 'Correct Answers')}</Text>
           </View>
         </View>
@@ -134,18 +134,25 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
               </Text>
             </View>
 
-            <View style={[styles.achievement, totalCorrect >= 10 && styles.achievementUnlocked]}>
+            <View
+              style={[
+                styles.achievement,
+                questionAnswered.correctAnswers >= 10 && styles.achievementUnlocked,
+              ]}
+            >
               <Ionicons
                 name='checkmark-circle'
                 size={24}
                 color={
-                  totalCorrect >= 10 ? currentTheme.colors.success : currentTheme.colors.border
+                  questionAnswered.correctAnswers >= 10
+                    ? currentTheme.colors.success
+                    : currentTheme.colors.border
                 }
               />
               <Text
                 style={[
                   styles.achievementText,
-                  totalCorrect >= 10 && styles.achievementTextUnlocked,
+                  questionAnswered.correctAnswers >= 10 && styles.achievementTextUnlocked,
                 ]}
               >
                 {t('profile.achievement10Correct', '10 Correct')}
@@ -267,7 +274,10 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <View style={styles.progressStats}>
             <View style={styles.progressStat}>
               <Text style={styles.progressStatValue}>
-                {Math.round((totalCorrect / Math.max(totalCorrect + 5, 1)) * 100)}%
+                {Math.round(
+                  (questionAnswered.correctAnswers / questionAnswered.totalQuestions) * 100
+                )}
+                %
               </Text>
               <Text style={styles.progressStatLabel}>{t('profile.accuracy', 'Accuracy')}</Text>
             </View>

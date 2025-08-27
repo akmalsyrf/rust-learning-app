@@ -18,7 +18,7 @@ interface ProgressState extends UserProgress {
   resetDailyXP: () => void;
   getQuestionProgress: (questionId: QuestionId) => { correct: boolean; timestamp: number } | null;
   getLessonStars: (lessonId: LessonId) => 0 | 1 | 2 | 3;
-  getTotalCorrectAnswers: () => number;
+  getTotalQuestionAnswered: () => { correctAnswers: number; totalQuestions: number };
   getTodayXP: () => number;
   completeCodePractice: (
     practice: CodePractice,
@@ -171,9 +171,11 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
     return state.lessonStars[lessonId] || 0;
   },
 
-  getTotalCorrectAnswers: () => {
+  getTotalQuestionAnswered: () => {
     const state = get();
-    return Object.values(state.completedQuestions).filter(q => q.correct).length;
+    const correctAnswers = Object.values(state.completedQuestions).filter(q => q.correct).length;
+    const totalQuestions = Object.values(state.completedQuestions).length;
+    return { correctAnswers, totalQuestions };
   },
 
   getTodayXP: () => {
