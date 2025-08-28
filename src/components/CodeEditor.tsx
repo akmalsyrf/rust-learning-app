@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Dimensions } from 'react-native';
 import { useSettingsStore } from '../state/useSettingsStore';
 import { lightTheme, darkTheme, Theme } from '../theme';
-import SyntaxHighlighter from './SyntaxHighlighter';
+import CodeEditorHeader from './CodeEditorHeader';
+import CodeEditorToolbar from './CodeEditorToolbar';
+import CodeEditorContent from './CodeEditorContent';
+import CodeEditorFooter from './CodeEditorFooter';
+import FullScreenModal from './FullScreenModal';
 
 interface CodeEditorProps {
   initialCode: string;
@@ -27,7 +31,11 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   const [code, setCode] = useState(initialCode);
   const [cursorPosition, setCursorPosition] = useState(0);
   const [isPreviewMode, setIsPreviewMode] = useState(false);
-  const inputRef = useRef<TextInput>(null);
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [showEditorFeatures, setShowEditorFeatures] = useState(false); // Default hidden in normal mode
+  const inputRef = useRef<TextInput | null>(null);
+
+  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
   useEffect(() => {
     setCode(initialCode);
@@ -39,14 +47,26 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   };
 
   const formatCode = () => {
-    // Basic Rust code formatting
+    // Smart Rust code formatting that preserves structure
     let formatted = code
       .trim()
-      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      // Preserve existing line breaks and structure
+      .split('\n')
+      .map(line => {
+        // Clean up each line individually
+        return line
+          .trim() // Remove leading/trailing whitespace
+          .replace(/\s+/g, ' '); // Replace multiple spaces with single space
+      })
+      .filter(line => line.length > 0) // Remove empty lines
+      .join('\n'); // Join lines back together
+
+    // Add proper formatting for common Rust patterns
+    formatted = formatted
       .replace(/\s*\{\s*/g, ' {\n  ') // Format opening braces
       .replace(/\s*\}\s*/g, '\n}') // Format closing braces
       .replace(/\s*;\s*/g, ';\n  ') // Format semicolons
-      .replace(/\n\s*\n/g, '\n') // Remove empty lines
+      .replace(/\n\s*\n/g, '\n') // Remove excessive empty lines
       .trim();
 
     setCode(formatted);
@@ -84,16 +104,13 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
   return (
     <View style={styles.container}>
       {/* Editor Header */}
-      <View style={styles.header}>
-        <View style={styles.languageBadge}>
-          <Text style={styles.languageText}>{language.toUpperCase()}</Text>
-        </View>
-        <View style={styles.positionInfo}>
-          <Text style={styles.positionText}>
-            Ln {currentLine}, Col {currentColumn}
-          </Text>
-        </View>
-      </View>
+      <CodeEditorHeader
+        language={language}
+        currentLine={currentLine}
+        currentColumn={currentColumn}
+        onFullScreenPress={() => setIsFullScreen(true)}
+        theme={theme}
+      />
 
       {/* Code Input */}
       <View style={styles.editorContainer}>
@@ -107,114 +124,67 @@ const CodeEditor: React.FC<CodeEditorProps> = ({
           <Text style={styles.debugText}>Lines: {code.split('\n').length}</Text>
         </View>
 
-        {/* Toggle Button */}
-        <View style={styles.toggleContainer}>
-          <TouchableOpacity
-            style={[styles.toggleButton, !isPreviewMode && styles.toggleButtonActive]}
-            onPress={() => setIsPreviewMode(false)}
-          >
-            <Text
-              style={[styles.toggleButtonText, !isPreviewMode && styles.toggleButtonTextActive]}
-            >
-              Edit
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.toggleButton, isPreviewMode && styles.toggleButtonActive]}
-            onPress={() => setIsPreviewMode(true)}
-          >
-            <Text style={[styles.toggleButtonText, isPreviewMode && styles.toggleButtonTextActive]}>
-              Preview
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {/* Toolbar */}
+        <CodeEditorToolbar
+          isPreviewMode={isPreviewMode}
+          showEditorFeatures={showEditorFeatures}
+          onToggleMode={() => setIsPreviewMode(!isPreviewMode)}
+          onToggleFeatures={() => setShowEditorFeatures(!showEditorFeatures)}
+          theme={theme}
+        />
 
-        {/* Code Input or Syntax Highlighted Preview */}
-        {!isPreviewMode ? (
-          <View style={styles.editorWrapper}>
-            {/* TextInput for editing - now with proper cursor visibility */}
-            <TextInput
-              ref={inputRef}
-              style={[styles.codeInput, code === '' && styles.codeInputEmpty]}
-              value={code}
-              onChangeText={handleCodeChange}
-              onSelectionChange={event => {
-                setCursorPosition(event.nativeEvent.selection.start);
-              }}
-              multiline
-              autoCapitalize='none'
-              autoCorrect={false}
-              autoComplete='off'
-              spellCheck={false}
-              editable={!readOnly}
-              placeholder={placeholder}
-              placeholderTextColor={theme.colors.textSecondary}
-              selectionColor={theme.colors.primary}
-              textAlignVertical='top'
-              numberOfLines={10}
-              scrollEnabled={true}
-            />
-          </View>
-        ) : (
-          <View style={styles.previewContainer}>
-            <SyntaxHighlighter
-              code={code || placeholder}
-              language='rust'
-              theme={isDark ? 'dark' : 'light'}
-              fontSize={theme.typography.sizes.md}
-              lineHeight={theme.typography.lineHeights.normal}
-            />
-          </View>
-        )}
+        {/* Content */}
+        <CodeEditorContent
+          isPreviewMode={isPreviewMode}
+          code={code}
+          placeholder={placeholder}
+          readOnly={readOnly}
+          isDark={isDark}
+          onCodeChange={handleCodeChange}
+          onSelectionChange={(event: any) => {
+            setCursorPosition(event.nativeEvent.selection.start);
+          }}
+          theme={theme}
+          inputRef={inputRef}
+        />
       </View>
 
       {/* Editor Footer */}
-      {!readOnly && (
-        <View style={styles.footer}>
-          <View style={styles.actions}>
-            <TouchableOpacity style={styles.actionButton} onPress={formatCode}>
-              <Text style={styles.actionButtonText}>Format</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton} onPress={clearCode}>
-              <Text style={styles.actionButtonText}>Clear</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.actionButton} onPress={resetCode}>
-              <Text style={styles.actionButtonText}>Reset</Text>
-            </TouchableOpacity>
-          </View>
+      <CodeEditorFooter
+        readOnly={readOnly}
+        showEditorFeatures={showEditorFeatures}
+        onFormat={formatCode}
+        onClear={clearCode}
+        onReset={resetCode}
+        onInsertTemplate={insertTemplate}
+        theme={theme}
+      />
 
-          {/* Quick Templates */}
-          <View style={styles.templates}>
-            <Text style={styles.templatesTitle}>Quick Templates:</Text>
-            <View style={styles.templateButtons}>
-              <TouchableOpacity
-                style={styles.templateButton}
-                onPress={() => insertTemplate('println!("Hello, World!");')}
-              >
-                <Text style={styles.templateButtonText}>Hello World</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.templateButton}
-                onPress={() => insertTemplate('let x = 42;\nprintln!("x = {}", x);')}
-              >
-                <Text style={styles.templateButtonText}>Variable</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.templateButton}
-                onPress={() => insertTemplate('for i in 1..=5 {\n  println!("{}", i);\n}')}
-              >
-                <Text style={styles.templateButtonText}>Loop</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.templateButton}
-                onPress={() => insertTemplate('fn main() {\n  \n}')}
-              >
-                <Text style={styles.templateButtonText}>Main Function</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
+      {/* Full Screen Modal */}
+      <FullScreenModal
+        visible={isFullScreen}
+        isPreviewMode={isPreviewMode}
+        showEditorFeatures={showEditorFeatures}
+        code={code}
+        placeholder={placeholder}
+        readOnly={readOnly}
+        isDark={isDark}
+        screenWidth={screenWidth}
+        screenHeight={screenHeight}
+        onClose={() => setIsFullScreen(false)}
+        onToggleMode={() => setIsPreviewMode(!isPreviewMode)}
+        onToggleFeatures={() => setShowEditorFeatures(!showEditorFeatures)}
+        onCodeChange={handleCodeChange}
+        onSelectionChange={(event: any) => {
+          setCursorPosition(event.nativeEvent.selection.start);
+        }}
+        onFormat={formatCode}
+        onClear={clearCode}
+        onReset={resetCode}
+        onInsertTemplate={insertTemplate}
+        inputRef={inputRef}
+        theme={theme}
+      />
     </View>
   );
 };
@@ -227,36 +197,6 @@ const createStyles = (theme: Theme) =>
       borderWidth: 1,
       borderColor: theme.colors.border,
       overflow: 'hidden',
-    },
-    header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: theme.spacing.md,
-      backgroundColor: theme.colors.primary,
-    },
-    languageBadge: {
-      backgroundColor: theme.colors.white + '20',
-      paddingHorizontal: theme.spacing.sm,
-      paddingVertical: theme.spacing.xs,
-      borderRadius: theme.borderRadius.sm,
-    },
-    languageText: {
-      color: theme.colors.white,
-      fontSize: theme.typography.sizes.xs,
-      fontWeight: '600' as any,
-      letterSpacing: 0.5,
-    },
-    positionInfo: {
-      backgroundColor: theme.colors.white + '20',
-      paddingHorizontal: theme.spacing.sm,
-      paddingVertical: theme.spacing.xs,
-      borderRadius: theme.borderRadius.sm,
-    },
-    positionText: {
-      color: theme.colors.white,
-      fontSize: theme.typography.sizes.xs,
-      fontFamily: 'monospace',
     },
     editorContainer: {
       backgroundColor: theme.colors.background,
@@ -282,119 +222,6 @@ const createStyles = (theme: Theme) =>
       color: theme.colors.textSecondary,
       fontSize: theme.typography.sizes.xs,
       fontFamily: 'monospace',
-    },
-    toggleContainer: {
-      flexDirection: 'row',
-      padding: theme.spacing.sm,
-      backgroundColor: theme.colors.surface,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.border,
-    },
-    toggleButton: {
-      flex: 1,
-      paddingVertical: theme.spacing.sm,
-      paddingHorizontal: theme.spacing.md,
-      alignItems: 'center',
-      borderRadius: theme.borderRadius.sm,
-      marginHorizontal: theme.spacing.xs,
-      backgroundColor: theme.colors.surface,
-    },
-    toggleButtonActive: {
-      backgroundColor: theme.colors.primary,
-    },
-    toggleButtonText: {
-      color: theme.colors.textSecondary,
-      fontSize: theme.typography.sizes.sm,
-      fontWeight: '500' as any,
-    },
-    toggleButtonTextActive: {
-      color: theme.colors.white,
-      fontWeight: '600' as any,
-    },
-    editorWrapper: {
-      minHeight: 200,
-      backgroundColor: theme.colors.background,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-      borderRadius: theme.borderRadius.sm,
-      margin: theme.spacing.sm,
-    },
-    previewContainer: {
-      flex: 1,
-      minHeight: 200,
-      backgroundColor: theme.colors.background,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-      borderRadius: theme.borderRadius.sm,
-      margin: theme.spacing.sm,
-    },
-    codeInput: {
-      padding: theme.spacing.md,
-      fontSize: theme.typography.sizes.md,
-      fontFamily: 'monospace',
-      color: theme.colors.text,
-      lineHeight: theme.typography.lineHeights.normal,
-      textAlignVertical: 'top',
-      minHeight: 200,
-      backgroundColor: 'transparent', // Transparent background for cursor visibility
-      borderWidth: 0, // No border to avoid conflicts
-      borderRadius: 0,
-      margin: 0,
-      // Enable horizontal scrolling for long lines
-      textAlign: 'left',
-    },
-    codeInputEmpty: {
-      backgroundColor: 'transparent',
-    },
-    footer: {
-      padding: theme.spacing.md,
-      backgroundColor: theme.colors.surface,
-      borderTopWidth: 1,
-      borderTopColor: theme.colors.border,
-    },
-    actions: {
-      flexDirection: 'row',
-      marginBottom: theme.spacing.md,
-      gap: theme.spacing.sm,
-    },
-    actionButton: {
-      backgroundColor: theme.colors.primary,
-      paddingHorizontal: theme.spacing.md,
-      paddingVertical: theme.spacing.sm,
-      borderRadius: theme.borderRadius.sm,
-      minWidth: 80,
-      alignItems: 'center',
-    },
-    actionButtonText: {
-      color: theme.colors.white,
-      fontSize: theme.typography.sizes.sm,
-      fontWeight: '600' as any,
-    },
-    templates: {
-      gap: theme.spacing.sm,
-    },
-    templatesTitle: {
-      color: theme.colors.textSecondary,
-      fontSize: theme.typography.sizes.sm,
-      fontWeight: '600' as any,
-    },
-    templateButtons: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: theme.spacing.sm,
-    },
-    templateButton: {
-      backgroundColor: theme.colors.surface,
-      paddingHorizontal: theme.spacing.sm,
-      paddingVertical: theme.spacing.xs,
-      borderRadius: theme.borderRadius.sm,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-    },
-    templateButtonText: {
-      color: theme.colors.text,
-      fontSize: theme.typography.sizes.xs,
-      fontWeight: '500' as any,
     },
   });
 

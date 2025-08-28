@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { lightTheme, darkTheme, Theme } from '../theme';
 
 interface SyntaxHighlighterProps {
@@ -8,6 +8,7 @@ interface SyntaxHighlighterProps {
   theme?: 'light' | 'dark';
   fontSize?: number;
   lineHeight?: number;
+  isFullScreen?: boolean;
 }
 
 const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
@@ -16,6 +17,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
   theme: themeMode = 'light',
   fontSize = 14,
   lineHeight = 20,
+  isFullScreen = false,
 }) => {
   const theme = themeMode === 'dark' ? darkTheme : lightTheme;
   const styles = createStyles(theme, fontSize, lineHeight);
@@ -113,6 +115,27 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
       'Arc',
     ];
 
+    // Check for comments first (highest priority)
+    if (line.trim().startsWith('//')) {
+      // Whole line is a comment
+      tokens.push({ value: line, type: 'comment' });
+      return tokens;
+    }
+
+    // Check for inline comments
+    const commentIndex = line.indexOf('//');
+    if (commentIndex !== -1) {
+      // Parse code before comment
+      const codeBeforeComment = line.substring(0, commentIndex);
+      if (codeBeforeComment.trim()) {
+        tokens.push(...parseCodeTokens(codeBeforeComment, keywords, types));
+      }
+
+      // Add comment part
+      tokens.push({ value: line.substring(commentIndex), type: 'comment' });
+      return tokens;
+    }
+
     // String literals
     const stringRegex = /"([^"\\]|\\.)*"/g;
     let match;
@@ -122,7 +145,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
       // Add text before string
       if (match.index > lastIndex) {
         const beforeString = line.substring(lastIndex, match.index);
-        tokens.push(...parseTextTokens(beforeString, keywords, types));
+        tokens.push(...parseCodeTokens(beforeString, keywords, types));
       }
 
       // Add string literal
@@ -133,7 +156,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
     // Add remaining text
     if (lastIndex < line.length) {
       const remainingText = line.substring(lastIndex);
-      tokens.push(...parseTextTokens(remainingText, keywords, types));
+      tokens.push(...parseCodeTokens(remainingText, keywords, types));
     }
 
     // If no tokens were found, treat the whole line as plain text
@@ -144,7 +167,7 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
     return tokens;
   };
 
-  const parseTextTokens = (text: string, keywords: string[], types: string[]) => {
+  const parseCodeTokens = (text: string, keywords: string[], types: string[]) => {
     const tokens: Array<{ value: string; type: string }> = [];
     const words = text.split(/(\s+)/);
 
@@ -161,8 +184,6 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
         tokens.push({ value: word, type: 'bracket' });
       } else if (/^[+\-*/%=<>!&|^~]+$/.test(word)) {
         tokens.push({ value: word, type: 'operator' });
-      } else if (word.startsWith('//')) {
-        tokens.push({ value: word, type: 'comment' });
       } else {
         tokens.push({ value: word, type: 'text' });
       }
@@ -195,8 +216,16 @@ const SyntaxHighlighter: React.FC<SyntaxHighlighterProps> = ({
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.codeContainer}>{highlightRustCode(code)}</View>
+    <View style={[styles.container, isFullScreen && styles.fullScreenContainer]}>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={true}
+        contentContainerStyle={styles.scrollContent}
+      >
+        <View style={[styles.codeContainer, isFullScreen && styles.fullScreenCodeContainer]}>
+          {highlightRustCode(code)}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -213,6 +242,10 @@ const createStyles = (theme: Theme, fontSize: number, lineHeight: number) =>
     codeContainer: {
       padding: theme.spacing.md,
       backgroundColor: theme.colors.surface,
+      minWidth: '100%',
+    },
+    scrollContent: {
+      flexGrow: 1,
     },
     line: {
       flexDirection: 'row',
@@ -229,9 +262,9 @@ const createStyles = (theme: Theme, fontSize: number, lineHeight: number) =>
       lineHeight: lineHeight,
     },
     codeContent: {
-      flex: 1,
       flexDirection: 'row',
-      flexWrap: 'wrap',
+      flexWrap: 'nowrap',
+      minWidth: 'auto',
     },
     token: {
       fontSize: fontSize,
@@ -256,7 +289,7 @@ const createStyles = (theme: Theme, fontSize: number, lineHeight: number) =>
       color: '#96CEB4', // Green for numbers
     },
     comment: {
-      color: '#FFEAA7', // Yellow for comments
+      color: '#9CA3AF', // Gray for comments (more professional)
       fontStyle: 'italic' as any,
     },
     operator: {
@@ -269,6 +302,14 @@ const createStyles = (theme: Theme, fontSize: number, lineHeight: number) =>
     },
     whitespace: {
       color: 'transparent',
+    },
+    fullScreenContainer: {
+      flex: 1,
+      backgroundColor: 'transparent',
+    },
+    fullScreenCodeContainer: {
+      padding: 0,
+      backgroundColor: 'transparent',
     },
   });
 
