@@ -18,6 +18,7 @@ export type RootStackParamList = {
     isPerfectScore: boolean;
   };
   ReviewMistakes: undefined;
+  Certificate: undefined;
   About: undefined;
   LanguageSettings: undefined;
 };
@@ -42,6 +43,8 @@ export type QuizScreenRouteProp = RouteProp<RootStackParamList, 'Quiz'>;
 export type CodePracticeScreenRouteProp = RouteProp<RootStackParamList, 'CodePractice'>;
 export type FreeCodePracticeScreenRouteProp = RouteProp<RootStackParamList, 'FreeCodePractice'>;
 export type ResultsScreenRouteProp = RouteProp<RootStackParamList, 'Results'>;
+export type ReviewMistakesScreenRouteProp = RouteProp<RootStackParamList, 'ReviewMistakes'>;
+export type CertificateScreenRouteProp = RouteProp<RootStackParamList, 'Certificate'>;
 export type AboutScreenRouteProp = RouteProp<RootStackParamList, 'About'>;
 export type LanguageSettingsScreenRouteProp = RouteProp<RootStackParamList, 'LanguageSettings'>;
 
@@ -76,6 +79,10 @@ export type AboutScreenProps = {
 };
 
 export type ReviewMistakesScreenProps = {
+  navigation: StackNavigationProps;
+};
+
+export type CertificateScreenProps = {
   navigation: StackNavigationProps;
 };
 

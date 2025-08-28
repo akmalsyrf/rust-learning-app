@@ -21,6 +21,12 @@ interface ProgressState extends UserProgress {
   getTotalQuestionAnswered: () => { correctAnswers: number; totalQuestions: number };
   getTodayXP: () => number;
   getIncorrectQuestions: () => QuestionId[];
+  getAllLessonsCompletionStatus: () => {
+    totalCompletedQuestions: number;
+    hasCompletedAnyLesson: boolean;
+  };
+  getAllCodePracticesCompletionStatus: () => { completed: number };
+  getTotalCorrectAnswers: () => number;
   completeCodePractice: (
     practice: CodePractice,
     userCode: string,
@@ -179,6 +185,11 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
     return { correctAnswers, totalQuestions };
   },
 
+  getTotalCorrectAnswers: () => {
+    const state = get();
+    return Object.values(state.completedQuestions).filter(q => q.correct).length;
+  },
+
   getTodayXP: () => {
     try {
       const state = get();
@@ -201,6 +212,23 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
     return Object.entries(state.completedQuestions)
       .filter(([_, result]) => !result.correct)
       .map(([questionId, _]) => questionId);
+  },
+
+  getAllLessonsCompletionStatus: () => {
+    const state = get();
+    // For now, return a simple completion status based on completed questions
+    // This will be enhanced when we have access to lesson data
+    const totalCompletedQuestions = Object.keys(state.completedQuestions).length;
+    return {
+      totalCompletedQuestions,
+      hasCompletedAnyLesson: totalCompletedQuestions > 0,
+    };
+  },
+
+  getAllCodePracticesCompletionStatus: () => {
+    const state = get();
+    const completed = state.completedCodePractices.length;
+    return { completed };
   },
 
   completeCodePractice: (practice: CodePractice, userCode: string, isCorrect: boolean) => {

@@ -39,6 +39,7 @@ export default {
     results: 'Hasil',
     lesson: 'Pelajaran',
     reviewMistakes: 'Ulas Kesalahan',
+    certificate: 'Sertifikat',
   },
 
   // Home Screen
@@ -231,6 +232,8 @@ export default {
       'Kamu hebat! Teruskan latihan harian untuk mempertahankan streak dan membuka lebih banyak pencapaian.',
     accuracy: 'Akurasi',
     thisWeek: 'Minggu Ini',
+    learningResults: 'Hasil Pembelajaran',
+    printCertificate: 'Cetak Sertifikat',
   },
 
   // Settings
@@ -504,5 +507,31 @@ export default {
     noMistakes: 'Tidak Ada Kesalahan untuk Diulas!',
     noMistakesMessage: 'Kerja bagus! Anda belum membuat kesalahan apa pun. Terus belajar!',
     info: 'Dalam mode ulasan, Anda mendapatkan setengah XP untuk jawaban yang benar. Ini membantu Anda belajar dari kesalahan!',
+  },
+
+  // Certificate
+  certificate: {
+    title: 'Sertifikat',
+    subtitle: 'Cetak sertifikat pencapaian Anda',
+    lessonCompletion: 'Penyelesaian Pelajaran',
+    lessonCompletionDescription: 'Sertifikat untuk menyelesaikan semua soal dalam pelajaran',
+    codePracticeCompletion: 'Penyelesaian Latihan Kode',
+    codePracticeCompletionDescription: 'Sertifikat untuk menyelesaikan semua latihan kode',
+    progress: 'Progress',
+    questions: 'soal',
+    practices: 'latihan',
+    downloadCertificate: 'Unduh',
+    shareCertificate: 'Bagikan',
+    printCertificate: 'Cetak Sertifikat',
+    notEligible: 'Tidak Memenuhi Syarat',
+    lessonCertificate: 'Sertifikat Penyelesaian Pelajaran',
+    lessonCertificateMessage: 'Mencetak sertifikat penyelesaian pelajaran...',
+    codePracticeCertificate: 'Sertifikat Latihan Kode',
+    codePracticeCertificateMessage: 'Mencetak sertifikat latihan kode...',
+    lessonNotEligibleMessage:
+      'Anda perlu menyelesaikan setidaknya satu pelajaran untuk mendapatkan sertifikat ini.',
+    codePracticeNotEligibleMessage:
+      'Anda perlu menyelesaikan setidaknya satu latihan kode untuk mendapatkan sertifikat ini.',
+    info: 'Sertifikat diberikan untuk menyelesaikan semua soal dalam pelajaran dan semua latihan kode. Cetak untuk menampilkan pencapaian Anda!',
   },
 };

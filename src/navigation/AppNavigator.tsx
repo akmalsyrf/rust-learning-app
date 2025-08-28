@@ -14,6 +14,7 @@ import CodePracticeScreen from '../screens/CodePracticeScreen';
 import FreeCodePracticeScreen from '../screens/FreeCodePracticeScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import ReviewMistakesScreen from '../screens/ReviewMistakesScreen';
+import CertificateScreen from '../screens/CertificateScreen';
 import LeaderboardScreen from '../screens/LeaderboardScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AboutScreen from '../screens/AboutScreen';
@@ -247,6 +248,14 @@ export default function AppNavigator() {
           component={ReviewMistakesScreen}
           options={{
             title: t('navigation.reviewMistakes', 'Review Mistakes'),
+            headerBackTitle: t('common.back', 'Back'),
+          }}
+        />
+        <Stack.Screen
+          name='Certificate'
+          component={CertificateScreen}
+          options={{
+            title: t('navigation.certificate', 'Certificates'),
             headerBackTitle: t('common.back', 'Back'),
           }}
         />

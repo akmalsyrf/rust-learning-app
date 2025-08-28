@@ -39,6 +39,7 @@ export default {
     results: 'Results',
     lesson: 'Lesson',
     reviewMistakes: 'Review Mistakes',
+    certificate: 'Certificate',
   },
 
   // Home Screen
@@ -229,6 +230,8 @@ export default {
       "You're doing great! Keep up the daily practice to maintain your streak and unlock more achievements.",
     accuracy: 'Accuracy',
     thisWeek: 'This Week',
+    learningResults: 'Learning Results',
+    printCertificate: 'Print Certificate',
   },
 
   // Settings

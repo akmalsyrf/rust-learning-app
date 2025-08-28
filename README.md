@@ -46,6 +46,17 @@ A comprehensive React Native Expo application for learning Rust programming thro
 - ✅ **Progress Visualization**: Progress bars, badges, and visual feedback
 - ✅ **Offline-First**: Local data storage for seamless offline learning
 
+### 🏆 Certificate System
+
+- ✅ **Achievement Certificates**: Professional PDF certificates for lesson and code practice completion
+- ✅ **Dynamic Content**: Real-time progress data with accurate completion statistics
+- ✅ **Multi-page Layout**: Main certificate + detailed topics breakdown with required skills
+- ✅ **Progress Metrics**: Per-topic completion rates, mastery levels, and performance indicators
+- ✅ **Share & Export**: PDF generation with sharing capabilities to social platforms
+- ✅ **Internationalization**: Certificate content in English and Indonesian
+- ✅ **Smart Eligibility**: Automatic eligibility checking based on user progress
+- ✅ **Professional Design**: Beautiful certificate layout with Rust branding and watermark
+
 ## 📱 Screen Structure
 
 1. **🏠 Home Screen**: Daily goals, streak counter, quick stats, continue learning button
@@ -244,6 +255,14 @@ x = 10;  // Error!
 - **Settings Store**: App preferences, theme selection, notification settings
 - **Data Store**: Lessons, questions, topics with optimized computed getters
 
+### Certificate System Architecture
+
+- **Certificate Generator**: HTML-to-PDF generation with professional styling
+- **Progress Integration**: Real-time data from progress store for accurate certificates
+- **Dynamic Content**: Per-topic skills and progress metrics from topics data
+- **Multi-page Layout**: Main certificate + detailed topics breakdown
+- **Export System**: PDF generation with sharing capabilities
+
 ### Component Architecture
 
 - **QuestionCard**: Polymorphic component handling all question types
@@ -256,23 +275,16 @@ x = 10;  // Error!
 ```
 src/data/
 ├── index.ts         # Main data export
-├── topics.ts        # 15 topics with lesson references
+├── topics.ts        # 15 topics with lesson references and required skills
 ├── lessons.ts       # 68 lessons with question mappings
 └── questions.ts     # 350+ questions across all difficulty levels
-```
 
-### Internationalization (i18n) Architecture
+src/utils/
+├── certificateGenerator.ts  # PDF certificate generation and styling
+└── storage.ts              # Local data persistence
 
-```
-src/i18n/
-├── index.ts                    # i18n configuration and initialization
-├── context/
-│   └── LanguageContext.tsx    # React context for language management
-├── locales/
-│   ├── en.ts                  # English translations (266+ keys)
-│   └── id.ts                  # Indonesian translations (266+ keys)
-└── components/
-    └── LanguageSettings.tsx   # Language selection UI component
+src/services/
+└── certificateService.ts   # Certificate PDF generation and sharing
 ```
 
 #### Translation Coverage
@@ -338,6 +350,28 @@ npx expo start --tunnel
 4. **Take Quiz**: Complete 5 interactive questions per lesson to earn XP
 5. **Track Progress**: Monitor your daily streak and compete on the weekly leaderboard
 6. **Customize**: Adjust theme and preferences in the Profile section
+
+### 🏆 **Certificate System**
+
+#### **Lesson Completion Certificates**
+
+- **Eligibility**: Complete at least one quiz in any lesson
+- **Content**: Overall progress, XP earned, accuracy, and streak days
+- **Topics Breakdown**: Detailed page showing completed topics with required skills
+- **Progress Metrics**: Questions completed per topic with mastery levels
+
+#### **Code Practice Certificates**
+
+- **Eligibility**: Complete at least one code practice exercise
+- **Content**: Practice completion stats, XP earned, and performance metrics
+- **Skills Validation**: Required skills for each completed practice area
+- **Achievement Recognition**: Professional certificate for coding proficiency
+
+#### **Certificate Features**
+
+- **PDF Generation**: High-quality PDF format for printing and sharing
+- **Share Capability**: Export and share to LinkedIn, email, or other platforms
+- **Progress Accuracy**: Real-time data from user progress store
 
 ### 🌍 **Language Settings**
 
@@ -520,6 +554,7 @@ This project welcomes contributions from the community:
 - **Features**: Adding new question types or learning mechanics
 - **Testing**: Expanding test coverage and quality assurance
 - **Internationalization**: Adding new languages, improving translations, cultural adaptation
+- **Progress Analytics**: Developing better progress tracking and achievement visualization
 
 ### Development Guidelines
 
@@ -556,5 +591,7 @@ For questions, feedback, or collaboration opportunities:
 - **🔤 Translations**: 266+ translation keys
 - **⚡ Performance**: < 2 second app load time
 - **📱 Compatibility**: iOS 12+, Android 8+ support
+- **🏆 Certificates**: 2 types (Lesson & Code Practice) with multi-page layout
+- **📊 Progress Tracking**: Real-time completion rates and mastery levels per topic
 
 ---

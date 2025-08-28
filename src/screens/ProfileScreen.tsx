@@ -161,6 +161,49 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           </View>
         </View>
 
+        {/* Learning Results Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            {t('profile.learningResults', 'Learning Results')}
+          </Text>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.navigate('Certificate')}
+          >
+            <View style={styles.settingLeft}>
+              <Ionicons name='ribbon' size={20} color={currentTheme.colors.accent} />
+              <Text style={styles.settingText}>
+                {t('profile.printCertificate', 'Print Certificate')}
+              </Text>
+            </View>
+            <View style={styles.settingRight}>
+              <Ionicons
+                name='chevron-forward'
+                size={16}
+                color={currentTheme.colors.textSecondary}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.settingItem}
+            onPress={() => navigation.navigate('ReviewMistakes')}
+          >
+            <View style={styles.settingLeft}>
+              <Ionicons name='refresh-circle' size={20} color={currentTheme.colors.warning} />
+              <Text style={styles.settingText}>{t('reviewMistakes.title', 'Review Mistakes')}</Text>
+            </View>
+            <View style={styles.settingRight}>
+              <Ionicons
+                name='chevron-forward'
+                size={16}
+                color={currentTheme.colors.textSecondary}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+
         {/* Settings */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>{t('settings.title', 'Settings')}</Text>

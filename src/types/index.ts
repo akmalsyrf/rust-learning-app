@@ -79,6 +79,10 @@ export interface Topic {
   };
   order: number;
   lessons: LessonId[];
+  requiredSkills: {
+    en: string;
+    id: string;
+  };
 }
 
 export interface Lesson {
