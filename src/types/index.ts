@@ -173,3 +173,44 @@ export interface LessonResult {
   xpEarned: number;
   perfectScore: boolean;
 }
+
+// AI Quiz Types
+export interface AIQuizQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctAnswer: number; // index dari jawaban yang benar
+  explanation: string;
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  topic: string;
+  codeExample?: string;
+}
+
+export interface AIQuizResponse {
+  questions: AIQuizQuestion[];
+  totalQuestions: number;
+  difficulty: string;
+  topic: string;
+}
+
+export interface AIQuizResult {
+  score: number;
+  totalQuestions: number;
+  percentage: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  timeSpent: number; // dalam detik
+  feedback: string;
+  recommendations: string[];
+}
+
+export interface AIQuizSession {
+  id: string;
+  questions: AIQuizQuestion[];
+  userAnswers: (number | null)[];
+  currentQuestionIndex: number;
+  startTime: number;
+  endTime?: number;
+  isCompleted: boolean;
+  result?: AIQuizResult;
+}

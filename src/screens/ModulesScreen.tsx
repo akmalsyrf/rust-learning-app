@@ -143,6 +143,58 @@ export default function ModulesScreen({ navigation }: ModulesScreenProps) {
           );
         })}
 
+        {/* AI Quiz Card */}
+        <TouchableOpacity
+          style={[styles.topicCard, styles.aiQuizCard]}
+          onPress={() => navigation.navigate('AIQuiz', { questionCount: 5 })}
+        >
+          <View style={styles.aiQuizHeader}>
+            <View style={styles.aiQuizIcon}>
+              <Ionicons name='sparkles' size={24} color={theme.colors.accent} />
+            </View>
+            <View style={styles.aiQuizInfo}>
+              <Text style={styles.aiQuizTitle}>{t('aiQuiz.title', 'AI Quiz')}</Text>
+              <Text style={styles.aiQuizSubtitle}>
+                {t('aiQuiz.subtitle', 'Advanced Rust questions powered by AI')}
+              </Text>
+            </View>
+            <View style={styles.aiQuizBadge}>
+              <Text style={styles.aiQuizBadgeText}>{t('aiQuiz.advancedLevel', 'Advanced')}</Text>
+            </View>
+          </View>
+
+          <Text style={styles.aiQuizDescription}>
+            {t(
+              'aiQuiz.description',
+              'Challenge yourself with AI-generated advanced Rust programming questions'
+            )}
+          </Text>
+
+          <View style={styles.aiQuizFeatures}>
+            <View style={styles.aiQuizFeature}>
+              <Ionicons name='bulb-outline' size={16} color={theme.colors.primary} />
+              <Text style={styles.aiQuizFeatureText}>
+                {t('aiQuiz.poweredByAI', 'Powered by AI')}
+              </Text>
+            </View>
+            <View style={styles.aiQuizFeature}>
+              <Ionicons name='trending-up-outline' size={16} color={theme.colors.success} />
+              <Text style={styles.aiQuizFeatureText}>
+                {t('aiQuiz.advancedLevel', 'Advanced Level')}
+              </Text>
+            </View>
+            <View style={styles.aiQuizFeature}>
+              <Ionicons name='refresh-outline' size={16} color={theme.colors.accent} />
+              <Text style={styles.aiQuizFeatureText}>Unlimited Questions</Text>
+            </View>
+          </View>
+
+          <View style={styles.aiQuizAction}>
+            <Text style={styles.aiQuizActionText}>{t('aiQuiz.startQuiz', 'Start AI Quiz')}</Text>
+            <Ionicons name='arrow-forward' size={20} color={theme.colors.primary} />
+          </View>
+        </TouchableOpacity>
+
         {/* Placeholder topics for demo */}
         {topics.length === 0 && (
           <>
@@ -321,5 +373,90 @@ const createStyles = (theme: any) =>
       color: theme.colors.textSecondary,
       fontStyle: 'italic',
       marginTop: theme.spacing.xs,
+    },
+    // AI Quiz Card Styles
+    aiQuizCard: {
+      backgroundColor: theme.colors.surface,
+      borderWidth: 2,
+      borderColor: theme.colors.accent + '20',
+      position: 'relative',
+      overflow: 'hidden',
+    },
+    aiQuizHeader: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: theme.spacing.md,
+    },
+    aiQuizIcon: {
+      width: 48,
+      height: 48,
+      borderRadius: 24,
+      backgroundColor: theme.colors.accent + '15',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginRight: theme.spacing.md,
+    },
+    aiQuizInfo: {
+      flex: 1,
+    },
+    aiQuizTitle: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight,
+      color: theme.colors.text,
+      marginBottom: theme.spacing.xs,
+    },
+    aiQuizSubtitle: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.textSecondary,
+    },
+    aiQuizBadge: {
+      backgroundColor: theme.colors.accent,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      borderRadius: theme.borderRadius.sm,
+    },
+    aiQuizBadgeText: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.background,
+      fontWeight: '600',
+    },
+    aiQuizDescription: {
+      fontSize: theme.typography.body.fontSize,
+      color: theme.colors.textSecondary,
+      lineHeight: 20,
+      marginBottom: theme.spacing.md,
+    },
+    aiQuizFeatures: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      gap: theme.spacing.sm,
+      marginBottom: theme.spacing.md,
+    },
+    aiQuizFeature: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: theme.colors.background,
+      paddingHorizontal: theme.spacing.sm,
+      paddingVertical: theme.spacing.xs,
+      borderRadius: theme.borderRadius.sm,
+    },
+    aiQuizFeatureText: {
+      fontSize: theme.typography.caption.fontSize,
+      color: theme.colors.text,
+      marginLeft: theme.spacing.xs,
+      fontWeight: '500',
+    },
+    aiQuizAction: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      paddingTop: theme.spacing.sm,
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.border,
+    },
+    aiQuizActionText: {
+      fontSize: theme.typography.subheading.fontSize,
+      fontWeight: theme.typography.subheading.fontWeight,
+      color: theme.colors.primary,
     },
   });

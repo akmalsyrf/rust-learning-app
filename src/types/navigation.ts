@@ -9,6 +9,14 @@ export type RootStackParamList = {
   Quiz: { lessonId: string };
   CodePractice: { lessonId?: string; topicId?: string };
   FreeCodePractice: undefined;
+  AIQuiz: { topic?: string; questionCount?: number };
+  AIQuizResults: {
+    sessionId: string;
+    score: number;
+    totalQuestions: number;
+    timeSpent: number;
+    percentage: number;
+  };
   Results: {
     lessonId: string;
     score: number;
@@ -88,6 +96,16 @@ export type CertificateScreenProps = {
 
 export type LanguageSettingsScreenProps = {
   navigation: StackNavigationProps;
+};
+
+export type AIQuizScreenProps = {
+  navigation: StackNavigationProps;
+  route: RouteProp<RootStackParamList, 'AIQuiz'>;
+};
+
+export type AIQuizResultsScreenProps = {
+  navigation: StackNavigationProps;
+  route: RouteProp<RootStackParamList, 'AIQuizResults'>;
 };
 
 export type HomeScreenProps = {

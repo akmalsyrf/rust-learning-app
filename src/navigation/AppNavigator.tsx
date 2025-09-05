@@ -12,6 +12,8 @@ import LessonScreen from '../screens/LessonScreen';
 import QuizScreen from '../screens/QuizScreen';
 import CodePracticeScreen from '../screens/CodePracticeScreen';
 import FreeCodePracticeScreen from '../screens/FreeCodePracticeScreen';
+import AIQuizScreen from '../screens/AIQuizScreen';
+import AIQuizResultsScreen from '../screens/AIQuizResultsScreen';
 import ResultsScreen from '../screens/ResultsScreen';
 import ReviewMistakesScreen from '../screens/ReviewMistakesScreen';
 import CertificateScreen from '../screens/CertificateScreen';
@@ -232,6 +234,24 @@ export default function AppNavigator() {
           options={{
             title: t('navigation.freeCodePractice', 'Free Code Practice'),
             headerBackTitle: t('common.back', 'Back'),
+          }}
+        />
+        <Stack.Screen
+          name='AIQuiz'
+          component={AIQuizScreen}
+          options={{
+            title: t('aiQuiz.title', 'AI Quiz'),
+            headerBackTitle: t('common.back', 'Back'),
+            gestureEnabled: false,
+          }}
+        />
+        <Stack.Screen
+          name='AIQuizResults'
+          component={AIQuizResultsScreen}
+          options={{
+            title: t('aiQuiz.quizComplete', 'Quiz Complete'),
+            headerBackTitle: t('common.back', 'Back'),
+            gestureEnabled: false,
           }}
         />
         <Stack.Screen

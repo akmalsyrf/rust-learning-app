@@ -81,3 +81,9 @@ android/
 *.apk
 *.aab
 *.ipa
+
+# Environment variables
+.env
+.env.local
+.env.production
+.env.preview
