@@ -317,9 +317,13 @@ export default function ProfileScreen({ navigation }: ProfileScreenProps) {
           <View style={styles.progressStats}>
             <View style={styles.progressStat}>
               <Text style={styles.progressStatValue}>
-                {Math.round(
-                  (questionAnswered.correctAnswers / questionAnswered.totalQuestions) * 100
-                )}
+                {questionAnswered.totalQuestions > 0
+                  ? Math.round(
+                      (Number(questionAnswered.correctAnswers) /
+                        Number(questionAnswered.totalQuestions)) *
+                        100
+                    )
+                  : 0}
                 %
               </Text>
               <Text style={styles.progressStatLabel}>{t('profile.accuracy', 'Accuracy')}</Text>

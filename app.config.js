@@ -44,7 +44,7 @@ export default {
       env: {
         NODE_ENV: process.env.NODE_ENV || 'development',
         DEBUG_MODE: IS_DEV || IS_PREVIEW,
-        EXPO_PUBLIC_GEMINI_API_KEY: process.env.EXPO_PUBLIC_GEMINI_API_KEY,
+        GEMINI_API_KEY: process.env.GEMINI_API_KEY,
       },
     },
   },

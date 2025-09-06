@@ -124,7 +124,7 @@ src/
 ### API Key Setup
 
 1. Get Gemini API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Set environment variable: `EXPO_PUBLIC_GEMINI_API_KEY`
+2. Set environment variable: `GEMINI_API_KEY`
 3. Or configure directly in `src/config/gemini.ts`
 
 ### Customization Options

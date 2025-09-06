@@ -7,7 +7,8 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "GEMINI_API_KEY": "$GEMINI_API_KEY"
       }
     },
     "preview": {
@@ -16,7 +17,8 @@
         "buildType": "apk"
       },
       "env": {
-        "NODE_ENV": "preview"
+        "NODE_ENV": "preview",
+        "GEMINI_API_KEY": "$GEMINI_API_KEY"
       }
     },
     "production": {
@@ -25,7 +27,8 @@
         "gradleCommand": ":app:assembleRelease"
       },
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "GEMINI_API_KEY": "$GEMINI_API_KEY"
       }
     }
   },

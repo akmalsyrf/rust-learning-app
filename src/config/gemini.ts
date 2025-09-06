@@ -1,12 +1,9 @@
-// Gemini AI Configuration
-// To use this feature, you need to:
-// 1. Get a Gemini API key from: https://makersuite.google.com/app/apikey
-// 2. Set the API key in your environment variables or directly here for testing
+import Constants from 'expo-constants';
 
 export const GEMINI_CONFIG = {
   // For development/testing, you can set your API key directly here
   // For production, use environment variables
-  API_KEY: process.env.EXPO_PUBLIC_GEMINI_API_KEY || null,
+  API_KEY: Constants.expoConfig?.extra?.env?.GEMINI_API_KEY || null,
 
   // Model configuration
   MODEL: 'gemini-2.5-pro',
@@ -70,7 +67,7 @@ export const isGeminiConfigured = (): boolean => {
 export const getGeminiApiKey = (): string | null => {
   if (!isGeminiConfigured()) {
     console.warn(
-      'Gemini API key not configured. Please set EXPO_PUBLIC_GEMINI_API_KEY in your environment variables.'
+      'Gemini API key not configured. Please set GEMINI_API_KEY in your environment variables.'
     );
     return null;
   }

@@ -1,12 +1,12 @@
+import Constants from 'expo-constants';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { getLocales } from 'expo-localization';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import en from './locales/en';
 import id from './locales/id';
 
 // Check if we're in development mode
-const isDevelopment = process.env.NODE_ENV === 'development';
+const isDevelopment = Constants.expoConfig?.extra?.env?.NODE_ENV === 'development';
 
 // Get device locale
 const deviceLocale = getLocales()[0];
